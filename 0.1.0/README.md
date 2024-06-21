@@ -1,7 +1,7 @@
 # VarTable
 
 an easy way to render variation table on typst, built on [fletcher](https://github.com/Jollywatt/typst-fletcher)\
-The [documention](̏)
+The [documention]()
 
 
 ```js
