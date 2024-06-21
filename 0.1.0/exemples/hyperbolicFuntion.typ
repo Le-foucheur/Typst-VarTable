@@ -6,7 +6,7 @@
   init: (
     variable: $x$,
     label: (
-      ([sign of $f$], "Sign"),
+      ([sign of $f’$], "Sign"),
       ([variation of $f$], "Variation"),
     ),
   ),

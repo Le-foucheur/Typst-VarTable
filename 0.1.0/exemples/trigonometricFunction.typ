@@ -6,9 +6,9 @@
   init: (
     variable: $x$,
     label: (
-      ([sign of cos], "Sign"),
+      ([sign of cos’], "Sign"),
       ([variation of cos], "Variation"),
-      ([sign of sin], "Sign"),
+      ([sign of sin’], "Sign"),
       ([variation of sin], "Variation"),
     ),
   ),
