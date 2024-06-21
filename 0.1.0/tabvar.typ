@@ -57,21 +57,45 @@
   }
 }
 
+///render a variation table and sign table of your functions
+///
+/// - init (dictionary): initialitation of the table \
+///  - in "variable", is an content wich contain the table’s variable (like $x$ or $t$)
+///  - in "label", you have to put array of 2 arguments that contain in first position the lign’s label and in second position, if the lign is a variation table or a sign table with this following keys : "Variation" and "Sign"
+///
+/// - domain (array): values taken by the variable \
+/// for example if your funtion changes sign or reaches a max/min for $x in {0,1,2,3}$ \
+/// you should write this :
+/// ```
+/// domain: ($0$, $1$, $2$, $3$)
+/// ```
+///
+/// - arrow (string): the style of the arrow\
+/// you can use all diffrents kind of "string" arrow of the package fletcher, so I invite you to read the fletcher documentation
+///
+/// - content (array): the content of the table \
+/// see bellow for more details
+///
+/// - stroke (lenght, color): the table’s color and thickness \
+/// *Caution :* this stroke can take only lenght or color types but none of the others
+///
+/// - stroke-arrow (lenght, color): the arrow’s color and thickness \
+/// *Caution :* this stroke can take only lenght or color types but none of the others
+///
+/// - lign-0 (bool): if you want 0 on lign betwen the sign
 #let tabvar(
-  //parameter
-  content: (), //the content
   init: (
-   "variable": [],  //the variable of the table
-   "label": [] //the labels on the right collum
+    "variable": [],
+    "label": [],
   ),
-  domain: (), //the ensemble where the varable is defined
-  arrow : "->", //what kind of arrow
-  debug: false, //just for development
-  stroke: 1pt + black, //stroke of the entier table exept arrows
-  stroke-arrow: 0.6pt+black, //stroke of arrows
-  lign-0: false, //s'il y a des zéro ou non sur les ligne entre les signes
-
-  ) = {
+  domain: (),
+  arrow: "->",
+  content: ((),),
+  stroke: 1pt + black,
+  stroke-arrow: 0.6pt + black,
+  lign-0: false,
+  _debug: false,
+) = {
 
   // auxiliary function
   let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
@@ -81,10 +105,10 @@
     diagram(
         spacing: ((4/3)*1cm, 1.3pt),
         cell-size: 0pt,
-        debug: debug,
+        debug: _debug,
         node((0,0), stroke: stroke,enclose:  (//contour du tableau
-          ..for i in range(domain.len()+1){
-              for j in range(-2 ,init.at("label").len()*3+1){
+          ..for i in range(domain.len() + 1){
+              for j in range(-2 ,init.at("label").len()*3 +2){
                 ((i,j),)
               }
             }
@@ -97,7 +121,7 @@
         ),
         edge(  // ligne de séparation des label, des varations
           (0.36,-6),
-          (0.36,init.at("label").len()*3+0.9 + if init.at("label").last().last() == signe{3.5} + if init.at("label").last().last() == variation{0.5}),
+          (0.36,init.at("label").len()*3 + 5),
           stroke: stroke
         ),
         node((-0.19,-1), (init.at("variable")), width: 2cm), // affichage de la variable
@@ -184,7 +208,7 @@
                 edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{4.5}),label-sep: -7pt, stroke: stroke.thickness/2 + stroke.paint, if lign-0{box(fill: white,outset: 1pt,$0$)})
               }
             },
-            if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.11, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
+            if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
           )},
 
           if init.at("label").at(j).last() == variation{( // tableau de variation
@@ -205,12 +229,12 @@
                 //la double ligne de l'indéfine
                 edge(
                   (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4),
+                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+8),
                   stroke: stroke.thickness/2 + stroke.paint
                 )
                 edge(
                   (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+4),
+                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+8),
                   stroke: stroke.thickness/2 + stroke.paint
                 )
               }
@@ -284,7 +308,7 @@
             },
             lastele(content.at(j).last(), domain, j,init , stroke), // pour gérer le dernier élément
 
-            if j  != init.at("label").len()-1{edge((-0.74,3*(j)+4), (domain.len()+0.11, 3*(j)+4), stroke: stroke)} // ligne sous les tableaux de variation
+            if j  != init.at("label").len()-1{edge((-0.74,3*(j)+4), (domain.len()+0.122, 3*(j)+4), stroke: stroke)} // ligne sous les tableaux de variation
           )}
         )}
       )

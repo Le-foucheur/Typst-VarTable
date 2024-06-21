@@ -15,7 +15,7 @@
     ($+$, ("||", $+$)),
     (
       (center, $0$),
-      (bottom, top, "||", $-oo$, $+oo$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
       (center, $0$),
     ),
   ),
