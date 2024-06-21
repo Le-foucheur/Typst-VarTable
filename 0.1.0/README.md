@@ -4,10 +4,10 @@ an easy way to render variation table on typst, built on [fletcher](https://gith
 The [documention]()
 
 
-```js
+```typ
 #import "@preview/Tabvar:0.1.0": tabvar
 ```
-# Few exemple
+# Few examples
 
 
 ### trigonomical function
