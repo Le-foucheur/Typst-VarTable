@@ -1,6 +1,5 @@
 #import "@preview/fletcher:0.4.5": *
-#let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
-#let signe = "Signe"
+#let signe = "Sign"
 #let variation = "Variation"
 
 // les deux prochaine fonctions son pour connaitre le nombre d’éléments à skip
@@ -70,9 +69,12 @@
   debug: false, //just for development
   stroke: 1pt + black, //stroke of the entier table exept arrows
   stroke-arrow: 0.6pt+black, //stroke of arrows
-  lign-0: true, //s'il y a des zéro ou non sur les ligne entre les signes
+  lign-0: false, //s'il y a des zéro ou non sur les ligne entre les signes
 
   ) = {
+
+  // auxiliary function
+  let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
 
   //start of function
   context {

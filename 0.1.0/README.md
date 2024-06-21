@@ -9,3 +9,4 @@ The [documention](̏)
 ```
 # Few exemple
 
+![trigonometric function]()
