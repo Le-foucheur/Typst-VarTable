@@ -24,20 +24,20 @@
 // fin des deux fonctions
 
 // pour gérer le dernier élément
-#let lastele(x, interval, j, init, stroke) = {
+#let lastele(x, domain, j, init, stroke) = {
   // le placement de l’élément
   if x.first() == top {
-    node((interval.len() - 1 / 3, 1 + (j) * 3 + 0.32), x.last())
+    node((domain.len() - 1 / 3, 1 + (j) * 3 + 0.32), x.last())
   } else if x.first() == center {
-    node((interval.len() - 1 / 3, 2 + (j) * 3), x.last())
+    node((domain.len() - 1 / 3, 2 + (j) * 3), x.last())
   } else if x.first() == bottom {
-    node((interval.len() - 1 / 3, 3 + (j) * 3 - 0.25), x.last())
+    node((domain.len() - 1 / 3, 3 + (j) * 3 - 0.25), x.last())
   }
   // pour géré le cas de l’indèfinie
   if x.at(1) == "||" {
     edge(
       (
-        interval.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
+        domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
         j * 3 + if j == 0 {
           0.85
         } + if j == 0 and j == init.at("label").len() - 1 {
@@ -47,7 +47,7 @@
         },
       ),
       (
-        interval.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
+        domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
         j * 3 + 4 + if j == init.at("label").len() - 1 {
           -0.1
         },
@@ -64,7 +64,7 @@
    "variable": [],  //the variable of the table
    "label": [] //the labels on the right collum
   ),
-  interval: (), //the ensemble where the varable is defined
+  domain: (), //the ensemble where the varable is defined
   arrow : "->", //what kind of arrow
   debug: false, //just for development
   stroke: 1pt + black, //stroke of the entier table exept arrows
@@ -83,7 +83,7 @@
         cell-size: 0pt,
         debug: debug,
         node((0,0), stroke: stroke,enclose:  (//contour du tableau
-          ..for i in range(interval.len()+1){
+          ..for i in range(domain.len()+1){
               for j in range(-2 ,init.at("label").len()*3+1){
                 ((i,j),)
               }
@@ -92,7 +92,7 @@
         ),
         edge( // ligne de séparation x du reste
           (-0.86,0.87 + if init.at("label").first().last() == signe{0.1}),
-          (interval.len()+0.122,0.87 + if init.at("label").first().last() == signe{0.1}),
+          (domain.len()+0.122,0.87 + if init.at("label").first().last() == signe{0.1}),
           stroke: stroke
         ),
         edge(  // ligne de séparation des label, des varations
@@ -102,10 +102,10 @@
         ),
         node((-0.19,-1), (init.at("variable")), width: 2cm), // affichage de la variable
 
-        for i in range(interval.len()-1){ // affichage de l’intervalle
-          node((i+2/3, -1), interval.at(i), width: (2/3)*1cm)
+        for i in range(domain.len()-1){ // affichage de l’domainle
+          node((i+2/3, -1), domain.at(i), width: (2/3)*1cm)
         },
-        node((interval.len()-1/3,-1), interval.at(interval.len()-1), width: (2/3)*1cm),// affichage du dernier élément de l’intervale
+        node((domain.len()-1/3,-1), domain.at(domain.len()-1), width: (2/3)*1cm),// affichage du dernier élément de l’domaine
 
         ..for j in range(init.at("label").len()){(// affichage des label
           node((-0.19,2+j*3), bo(init.at("label").at(j).first()), height: calc.max(measure(bo(init.at("label").at(j).first())).height, 45pt)),)
@@ -115,14 +115,14 @@
           if init.at("label").at(j).last() == signe{( //tableau de signe
 
             // le cas s’il y a une ligne indèf à la fin
-            if content.at(j).len() != interval.len()-1{
+            if content.at(j).len() != domain.len()-1{
               edge(
                 (
-                  interval.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
+                  domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
                   j * 3 + 1
                 ),
                 (
-                  interval.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
+                  domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
                   j * 3 + 3 + if j == init.at("label").len() - 1 {
                     4
                   },
@@ -131,7 +131,7 @@
               )
             },
 
-            for i in range(1,interval.len()-1){ //les labels + et -
+            for i in range(1,domain.len()-1){ //les labels + et -
               if type(content.at(j).at(i))== array and content.at(j).at(i).len() == 0{}
               else if type(content.at(j).at(i))== array and content.at(j).at(i).len() != 0{
                 let decalage = prochainNonVideSigne(content.at(j), i)
@@ -155,7 +155,7 @@
             },
 
             // ligne de séparation
-            for i in range(1,interval.len()-1){
+            for i in range(1,domain.len()-1){
 
               if type(content.at(j).at(i)) == array and content.at(j).at(i).len() == 0{} // pas de ligne de séparation.
               else if type(content.at(j).at(i)) == array and content.at(j).at(i).len() != 0{ // ligne de séparation custom
@@ -184,7 +184,7 @@
                 edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{4.5}),label-sep: -7pt, stroke: stroke.thickness/2 + stroke.paint, if lign-0{box(fill: white,outset: 1pt,$0$)})
               }
             },
-            if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (interval.len()+0.11, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
+            if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.11, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
           )},
 
           if init.at("label").at(j).last() == variation{( // tableau de variation
@@ -282,9 +282,9 @@
                 }
               }
             },
-            lastele(content.at(j).last(), interval, j,init , stroke), // pour gérer le dernier élément
+            lastele(content.at(j).last(), domain, j,init , stroke), // pour gérer le dernier élément
 
-            if j  != init.at("label").len()-1{edge((-0.74,3*(j)+4), (interval.len()+0.11, 3*(j)+4), stroke: stroke)} // ligne sous les tableaux de variation
+            if j  != init.at("label").len()-1{edge((-0.74,3*(j)+4), (domain.len()+0.11, 3*(j)+4), stroke: stroke)} // ligne sous les tableaux de variation
           )}
         )}
       )

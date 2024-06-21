@@ -10,7 +10,7 @@ The [documention](https://github.com/Le-foucheur/Typst-VarTable/blob/main/0.1.0/
 # Few examples
 
 
-### trigonomical function
+### Trigonometric functions
 Turn this :
 ```js
 #import "@preview/Tabvar:0.1.0": tabvar

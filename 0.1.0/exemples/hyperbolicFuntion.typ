@@ -10,7 +10,7 @@
       ([variation of $f$], "Variation"),
     ),
   ),
-  interval: ($ -oo $, $ 0 $, $ +oo $),
+  domain: ($ -oo $, $ 0 $, $ +oo $),
   content: (
     ($+$, ("||", $+$)),
     (
