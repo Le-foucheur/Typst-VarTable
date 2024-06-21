@@ -9,4 +9,4 @@ The [documention](̏)
 ```
 # Few exemple
 
-![trigonometric function]()
+![trigonometric function](https://github.com/Le-foucheur/Typst-VarTable/blob/main/0.1.0/exemples/trigonometricFunction.pdf)

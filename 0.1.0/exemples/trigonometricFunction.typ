@@ -1,4 +1,4 @@
-
+#set page(width: auto, height: auto)
 
 #import "../tabvar.typ": tabvar
 
