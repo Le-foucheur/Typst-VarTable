@@ -97,7 +97,7 @@
         ),
         edge(  // ligne de séparation des label, des varations
           (0.36,-6),
-          (0.36,init.at("label").len()*3+0.9 + if init.at("label").last().last() == signe{3.5}),
+          (0.36,init.at("label").len()*3+0.9 + if init.at("label").last().last() == signe{3.5} + if init.at("label").last().last() == variation{0.5}),
           stroke: stroke
         ),
         node((-0.19,-1), (init.at("variable")), width: 2cm), // affichage de la variable
@@ -205,12 +205,12 @@
                 //la double ligne de l'indéfine
                 edge(
                   (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4 + if j == init.at("label").len() - 1 {-0.1}),
+                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4),
                   stroke: stroke.thickness/2 + stroke.paint
                 )
                 edge(
                   (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+4 + if j == init.at("label").len() - 1 {-0.1}),
+                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+4),
                   stroke: stroke.thickness/2 + stroke.paint
                 )
               }
