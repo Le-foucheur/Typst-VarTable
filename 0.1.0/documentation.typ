@@ -13,7 +13,7 @@
 
 #outline(indent: 2em)
 
-= 1 Introduction
+= 1 - Introduction
 \
 This package is designed to simplify the creation of variation tables for functions.
 To do this, it gives you a typst function, whose parameters are described in detail in this documentation.\
@@ -25,9 +25,9 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 
 #pagebreak()
 
-= 2 tabvar function
+= 2 - tabvar function
 
-== 2.1 general description
+== 2.1 - general description
 
 #let docs = tidy.parse-module(
   read("tabvar.typ"),
@@ -44,18 +44,18 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 )
 
 #pagebreak()
-== 2.2 The content parameter
+== 2.2 - The content parameter
 
 The content parameter must be an array which must itself contain arrays, as many as there are different labels.
 
 So each of these sub-arrays is equivalent to a line, so there are two cases to distinguish, whether the line corresponds to a sign table or a variation table.
 
-=== 2.2.1 Sign table :
+=== 2.2.1 - Sign table :
 
 Now we call this kind arrays : a sign array\
 Our sign array must be contain as many as there are elements in your domain parameter minus one.
 
-==== 2.2.1.1 A cassical sign array
+==== 2.2.1.1 - A cassical sign array
 A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else, you can.
 
 
@@ -124,7 +124,7 @@ but if you want, you can do that :
 But I'm not realy sure about the utility of that\
 (note : on the second example the table is squeezed with the scale function)
 
-==== 2.2.1.2 Custom separation bar
+==== 2.2.1.2 - Custom separation bar
 For all signs except the first, instead of putting the sign directly, you can put a couple, whose first component defines the type of bar just before it. \
 And there are 3 different types of bar :
 - with the ```"|"``` key, you make a simple bar
@@ -207,7 +207,7 @@ and at the end, you could add this element `||` at the end of sign array
   )
 ]
 
-==== 2.2.1.3 Same sign for more than one value of the variable
+==== 2.2.1.3 - Same sign for more than one value of the variable
 For this, it is pretty easy, instead of putting the sign directly, you can put a empty couple
 
 *Example :*
@@ -248,12 +248,12 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
 
 #pagebreak()
 
-=== 2.2.2 Variation table
+=== 2.2.2 - Variation table
 
 As for sign array, we'll call them variation array \
 Our sign array must be contain as many as there are elements in your domain parameter.
 
-==== 2.2.2.1 A classical variation array
+==== 2.2.2.1 - A classical variation array
 
 An variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
 \
@@ -307,7 +307,7 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
   )
 ]
 
-==== 2.2.2.2 Undefines values
+==== 2.2.2.2 - Undefines values
 
 If your function have certain values undefines like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
 
@@ -328,7 +328,6 @@ where :
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -347,7 +346,6 @@ where :
       dx: -20pt,
       scale(x: 90%, y: 90%)[
         #tabvar(
-          lign-0: true,
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -380,7 +378,6 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -401,7 +398,6 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
       dx: -50pt,
       scale(x: 70%, y: 70%)[
         #tabvar(
-          lign-0: true,
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -434,7 +430,6 @@ For example ``` (top, "||", $3$)```
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -453,7 +448,6 @@ For example ``` (top, "||", $3$)```
       dx: -20pt,
       scale(x: 90%, y: 90%)[
         #tabvar(
-          lign-0: true,
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -472,7 +466,7 @@ For example ``` (top, "||", $3$)```
   )
 ]
 
-==== 2.2.2.3 To skip a value
+==== 2.2.2.3 - To skip a value
 
 When you want to use several functions in the same table, you will probably want to skip some values,
 to do this, as with sign arrays, you create an empty array
@@ -485,7 +479,6 @@ to do this, as with sign arrays, you create an empty array
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -504,7 +497,6 @@ to do this, as with sign arrays, you create an empty array
       dx: -20pt,
       scale(x: 90%, y: 90%)[
         #tabvar(
-          lign-0: true,
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -523,5 +515,264 @@ to do this, as with sign arrays, you create an empty array
   )
 ]
 
-= More complex example
+= 3 - More complex example
 
+There is a little bundle of want you can do
+
+== 3.1 - #link("https://en.wikipedia.org/wiki/Gamma_function")[#underline(stroke: blue)[#sym.Gamma function]] on $[0;  +oo]$
+Where it takes a minimum on $[0;+oo[$ for $x = alpha$
+#rect(fill: luma(95%), radius: 10pt, width: 18.2cm)[
+  #grid(
+    columns: (10cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of #sym.Gamma], "Sign"),
+              ([variation of #sym.Gamma], "Variation"),
+            ),
+          ),
+          domain: ($0$, $ alpha $, $ +oo $),
+          content: (
+            ($-$, $+$),
+            (
+              (top, "||", $+oo$),
+              (bottom, $Gamma(alpha)$),
+              (top, $+oo$),
+            ),
+          ),
+        )
+    ```,
+    move(
+      dx: -20pt,
+      scale(x: 90%, y: 90%)[
+        #tabvar(
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of #sym.Gamma’], "Sign"),
+              ([variation of #sym.Gamma], "Variation"),
+            ),
+          ),
+          domain: ($0$, $ alpha $, $ +oo $),
+          content: (
+            ($-$, $+$),
+            (
+              (top, "||", $+oo$),
+              (bottom, $Gamma(alpha)$),
+              (top, $+oo$),
+            ),
+          ),
+        )
+      ],
+    ),
+  )
+]
+
+== 3.2 - A Rational function
+Take $f(x) = (4x^2 + 12x + 29)/(4(x^2 + 3x + 2))$\
+
+So we have $f’(x) = (-2x -3)/(16(x^2 + 3x + 2)^2)$\
+
+And finaly, we get :
+
+#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
+  Code :
+  ```typ
+    #tabvar(
+        init: (
+          variable: $t$,
+          label: (
+            ([sign of $f’$], "Sign"),
+            ([variation of $f$], "Variation"),
+          ),
+        ),
+        domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+        content: (
+          ($+$, ("||", $+$), $-$, ("||", $-$)),
+          (
+            (bottom, $1$),
+            (top, bottom, "||", $+oo$, $-oo$),
+            (top, $-20$),
+            (bottom, top, "||", $-oo$, $+oo$),
+            (bottom, $1$),
+          ),
+        ),
+      )
+  ```
+
+  ──────────────────────────────────────────────
+  Result :
+
+  #align(center)[
+    #tabvar(
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of $f’$], "Sign"),
+          ([variation of $f$], "Variation"),
+        ),
+      ),
+      domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+      content: (
+        ($+$, ("||", $+$), $-$, ("||", $-$)),
+        (
+          (bottom, $1$),
+          (top, bottom, "||", $+oo$, $-oo$),
+          (top, $-20$),
+          (bottom, top, "||", $-oo$, $+oo$),
+          (bottom, $1$),
+        ),
+      ),
+    )
+  ]
+]
+
+== 3.3 #link("https://en.wikipedia.org/wiki/Hyperbolic_functions")[#underline(stroke: blue)[Hyperbolic function]]
+
+#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
+  Code :
+  ```typ
+    #tabvar(
+      arrow: "|-harpoon",
+      stroke-arrow: gradient.linear(..color.map.rainbow),
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of $cosh$], "Sign"),
+          ([variation of $cosh$], "Variation"),
+          ([sign of $sinh$ and $tanh$], "Sign"),
+          ([variation of $sinh$], "Variation"),
+          ([variation of $tanh$], "Variation"),
+        ),
+      ),
+      domain: ($ -oo $, $ 0 $, $ +oo $),
+      content: (
+        ($-$, $+$),
+        (
+          (top, $+oo$),
+          (bottom, $1$),
+          (top, $+oo$),
+        ),
+        ($+$, ()),
+        (
+          (bottom, $-oo$),
+          (),
+          (top, $+oo$),
+        ),
+        (
+          (bottom, $1$),
+          (),
+          (top, $-1$),
+        ),
+      ),
+    )
+  ```
+]
+
+#rect(fill: luma(95%), radius: 10pt, width: 13cm)[
+  Result :
+
+  #align(center)[
+    #tabvar(
+      arrow: "|-harpoon",
+      stroke-arrow: gradient.linear(..color.map.rainbow),
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of $cosh$], "Sign"),
+          ([variation of $cosh$], "Variation"),
+          ([sign of $sinh$ and $tanh$], "Sign"),
+          ([variation of $sinh$], "Variation"),
+          ([variation of $tanh$], "Variation"),
+        ),
+      ),
+      domain: ($ -oo $, $ 0 $, $ +oo $),
+      content: (
+        ($-$, $+$),
+        (
+          (top, $+oo$),
+          (bottom, $1$),
+          (top, $+oo$),
+        ),
+        ($+$, ()),
+        (
+          (bottom, $-oo$),
+          (),
+          (top, $+oo$),
+        ),
+        (
+          (bottom, $1$),
+          (),
+          (top, $-1$),
+        ),
+      ),
+    )
+  ]
+]
+
+== 3.3 A weird table for a simple polynom function
+Take $g(t) = t^2 - t^3$\
+So, we have $g’(t) = 2t - 3t^2$\
+And, it have local extrema for $x = 0$ and $x = 2/3$
+
+#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
+  Code :
+  ```typ
+    #tabvar(
+      lign-0: true,
+      stroke: 5pt + red,
+      arrow: "X-*-<>",
+      stroke-arrow: purple + 1.4pt,
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of $g’$], "Sign"),
+          ([variation of $g$], "Variation"),
+        ),
+      ),
+      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+      content: (
+        ($-$, ("|", $+$), $-$),
+        (
+          (top, $+oo$),
+          (bottom, $0$),
+          (center, $ 4 / 27 $),
+          (bottom, $-oo$),
+        ),
+      ),
+    )
+  ```
+
+  ──────────────────────────────────────────────
+  Result :
+
+  #align(center)[
+    #tabvar(
+      lign-0: true,
+      stroke: 5pt + red,
+      arrow: "X-*-<>",
+      stroke-arrow: purple + 1.4pt,
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of $g’$], "Sign"),
+          ([variation of $g$], "Variation"),
+        ),
+      ),
+      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+      content: (
+        ($-$, ("|", $+$), $-$),
+        (
+          (top, $+oo$),
+          (bottom, $0$),
+          (center, $ 4 / 27 $),
+          (bottom, $-oo$),
+        ),
+      ),
+    )
+  ]
+]

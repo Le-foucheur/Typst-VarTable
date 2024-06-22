@@ -86,11 +86,11 @@
 /// - content (array): the content of the table \
 /// see bellow for more details
 ///
-/// - stroke (lenght, color): the table’s color and thickness \
-/// *Caution :* this stroke can take only lenght or color types but none of the others
+/// - stroke (lenght, color, gradient): the table’s color and thickness \
+/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
 ///
-/// - stroke-arrow (lenght, color): the arrow’s color and thickness \
-/// *Caution :* this stroke can take only lenght or color types but none of the others
+/// - stroke-arrow (lenght, color, gradient): the arrow’s color and thickness \
+/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
 ///
 /// - lign-0 (bool): if you want 0 on lign betwen the sign
 #let tabvar(
@@ -255,7 +255,7 @@
 
                 //la double ligne de l'indéfine
                 edge(
-                  (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
+                  (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and 1 == init.at("label").len() {-0.03}),
                   (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4 + if j == init.at("label").len()-1{4}),
                   stroke: stroke.thickness/2 + stroke.paint
                 )
