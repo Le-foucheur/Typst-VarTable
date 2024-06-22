@@ -1,6 +1,6 @@
 # VarTable
 
-an easy way to render variation table on typst, built on [fletcher](https://github.com/Jollywatt/typst-fletcher)\
+An easy way to render variation table on typst, built on [fletcher](https://github.com/Jollywatt/typst-fletcher)\
 The [documention](https://github.com/Le-foucheur/Typst-VarTable/blob/main/0.1.0/documentation.pdf)
 
 
