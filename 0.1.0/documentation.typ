@@ -7,7 +7,7 @@
 
 #align(center)[
   VarTable is a package to make variation table, in a simple way\
-  this package is build on top of #link("https://github.com/Jollywatt/typst-fletcher")[#underline(stroke: blue)[fletcher]]\
+  This package is build on top of #link("https://github.com/Jollywatt/typst-fletcher")[#underline(stroke: blue)[fletcher]]\
   (version : 0.1.0)
 ]
 
@@ -18,10 +18,10 @@
 This package is designed to simplify the creation of variation tables for functions.
 To do this, it gives you a typst function, whose parameters are described in detail in this documentation.\
 \
-*a word of warning:* it's quite normal that during the array creation process, The elements, such as the lines between the various elements, aren't created as they should be.
+*A word of warning:* it's quite normal that during the array creation process, The elements, such as the lines between the various elements, aren't created as they should be.
 For example, the line between the labels and the rest, which doesn't go all the way to the end.\
 \
-if you encounter any bugs, please report them on my #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main/0.1.0")[#underline(stroke: blue)[GitHub]].
+If you encounter any bugs, please report them on my #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main/0.1.0")[#underline(stroke: blue)[GitHub]].
 
 #pagebreak()
 
@@ -53,10 +53,10 @@ So each of these sub-arrays is equivalent to a line, so there are two cases to d
 === 2.2.1 Sign table :
 
 Now we call this kind arrays : a sign array\
-our sign array must be contain as many as there are elements in your domain parameter minus one.
+Our sign array must be contain as many as there are elements in your domain parameter minus one.
 
 ==== 2.2.1.1 A cassical sign array
-A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else like content, you can.
+A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else, you can.
 
 
 *Example :* \
@@ -88,7 +88,7 @@ A normal sign table :
     ],
   )
 ]
-but if want you can do that :
+but if you want, you can do that :
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (7cm, 7cm),
@@ -121,7 +121,7 @@ but if want you can do that :
     ],
   )
 ]
-But I not realy sur about the utility of that\
+But I'm not realy sure about the utility of that\
 (note : on the second example the table is squeezed with the scale function)
 
 ==== 2.2.1.2 Custom separation bar
@@ -160,7 +160,7 @@ And there are 3 different types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$, $ 10 $),
+        domain: ($2$, $4$, $6$, $8$, $10$),
         content: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
@@ -208,7 +208,7 @@ and at the end, you could add this element `||` at the end of sign array
 ]
 
 ==== 2.2.1.3 Same sign for more than one value of the variable
-For this, is pretty easy, instead of putting the sign directly, you can put a empty couple
+For this, it is pretty easy, instead of putting the sign directly, you can put a empty couple
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -251,11 +251,11 @@ For this, is pretty easy, instead of putting the sign directly, you can put a em
 === 2.2.2 Variation table
 
 As for sign array, we'll call them variation array \
-our sign array must be contain as many as there are elements in your domain parameter.
+Our sign array must be contain as many as there are elements in your domain parameter.
 
 ==== 2.2.2.1 A classical variation array
 
-An variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
+An variation array must be contain couple made of the position ; and whatever you want as long as it's of the content type.\
 \
 The position can be :```typ top, center``` or ```typ bottom```, but no other type of alignment
 
@@ -311,9 +311,9 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
 
 If your function have certain values undefines like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
 
-#sym.star For each values of domain except the start and the end
+#sym.star For each values of domain except the start and the end.
 
-The array of one value should look like at ```typ (pos1, pos2, "||", content1, content2)```\
+The array of one value should look like ```typ (pos1, pos2, "||", content1, content2)```\
 where :
 - pos1 and 2 is ```typ top, center, bottom ``` and pos1 is for the placement of content1 similary for pos2
 - ```"||"``` is to precise the value is undefine
