@@ -21,7 +21,7 @@ To do this, it gives you a typst function, whose parameters are described in det
 *A word of warning:* it's quite normal that during the array creation process, The elements, such as the lines between the various elements, aren't created as they should be.
 For example, the line between the labels and the rest, which doesn't go all the way to the end.\
 \
-If you encounter any bugs, please report them on my #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main/0.1.0")[#underline(stroke: blue)[GitHub]].
+If you encounter any bugs, please report them on my #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main")[#underline(stroke: blue)[GitHub]].
 
 #pagebreak()
 
