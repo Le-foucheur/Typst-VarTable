@@ -160,7 +160,7 @@ And there are 3 different types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$, $10$),
+        domain: ($2$, $4$, $6$, $8$, $ 10 $),
         content: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
