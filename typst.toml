@@ -7,5 +7,5 @@ license = "MIT"
 description = "A simple package to make variation table"
 repository = "https://github.com/Le-foucheur/Typst-VarTable"
 categories = "visualization"
-keywords = []
-exclude = ["./exemples", "documentation.pdf", , "documentation.typ"]
+keywords = ["variation table", "variation", "table", "variationtable"]
+exclude = ["./exemples", "documentation.pdf", "documentation.typ"]
