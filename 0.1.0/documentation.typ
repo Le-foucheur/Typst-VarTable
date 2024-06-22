@@ -474,4 +474,54 @@ For example ``` (top, "||", $3$)```
 
 ==== 2.2.2.3 To skip a value
 
+When you want to use several functions in the same table, you will probably want to skip some values,
+to do this, as with sign arrays, you create an empty array
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        lign-0: true,
+        init: (
+          variable: $t$,
+          label: (([variation], "Variation"),),
+        ),
+        domain: ($2$, $4$, $6$, $8$),
+        content: (
+            (
+              (top, "||", $3$),
+              (),
+              (bottom, $2$),
+            ),
+        ),
+      )
+    ```,
+    move(
+      dx: -20pt,
+      scale(x: 90%, y: 90%)[
+        #tabvar(
+          lign-0: true,
+          init: (
+            variable: $t$,
+            label: (([variation], "Variation"),),
+          ),
+          domain: ($2$, $4$, $6$),
+          content: (
+            (
+              (top, "||", $3$),
+              (),
+              (bottom, $2$),
+            ),
+          ),
+        )
+      ],
+    ),
+  )
+]
+
+= More complex example
 
