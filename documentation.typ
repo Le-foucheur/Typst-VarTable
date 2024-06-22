@@ -1,7 +1,7 @@
 #import "@preview/tidy:0.3.0"
 #import "tabvar.typ": tabvar
 
-#set page(numbering: "1")
+#set page(numbering: "1/1")
 
 #align(center, text(20pt)[*VarTable*\ ])
 
