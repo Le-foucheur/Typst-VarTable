@@ -160,7 +160,7 @@ And there are 3 different types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$, $10$),
+        domain: ($2$, $4$, $6$, $8$, $ 10 $),
         content: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
@@ -255,7 +255,7 @@ Our sign array must be contain as many as there are elements in your domain para
 
 ==== 2.2.2.1 A classical variation array
 
-An variation array must be contain couple made of the position ; and whatever you want as long as it's of the content type.\
+An variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
 \
 The position can be :```typ top, center``` or ```typ bottom```, but no other type of alignment
 
