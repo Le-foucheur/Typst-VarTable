@@ -15,11 +15,11 @@
 
 = 1 Introduction
 \
-this package is designed to simplify the creation of variation tables for functions.
+This package is designed to simplify the creation of variation tables for functions.
 To do this, it gives you a typst function, whose parameters are described in detail in this documentation.\
 \
-*a word of warning:* it's quite normal that during the array creation process, the elements, such as the lines between the various elements, aren't created as they should be.
-for example, the line between the labels and the rest, which doesn't go all the way to the end.\
+*a word of warning:* it's quite normal that during the array creation process, The elements, such as the lines between the various elements, aren't created as they should be.
+For example, the line between the labels and the rest, which doesn't go all the way to the end.\
 \
 if you encounter any bugs, please report them on my #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main/0.1.0")[#underline(stroke: blue)[GitHub]].
 
@@ -46,21 +46,21 @@ if you encounter any bugs, please report them on my #link("https://github.com/Le
 #pagebreak()
 == 2.2 The content parameter
 
-the content parameter must be an array which must itself contain arrays, as many as there are different labels.
+The content parameter must be an array which must itself contain arrays, as many as there are different labels.
 
 So each of these sub-arrays is equivalent to a line, so there are two cases to distinguish, whether the line corresponds to a sign table or a variation table.
 
 === 2.2.1 Sign table :
 
-now we call this kind arrays : a sign array\
+Now we call this kind arrays : a sign array\
 our sign array must be contain as many as there are elements in your domain parameter minus one.
 
 ==== 2.2.1.1 A cassical sign array
-a sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else like content, you can.
+A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else like content, you can.
 
 
 *Example :* \
-a normal sign table :
+A normal sign table :
 
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -76,7 +76,7 @@ a normal sign table :
         content: (($+$, $-$, $+$),),
       )
     ```,
-    scale(x: 80%)[
+    scale(x: 80%, y: 80%)[
       #tabvar(
         init: (
           variable: $t$,
@@ -109,7 +109,7 @@ but if want you can do that :
         ),
       )
     ```,
-    scale(x: 65%)[
+    scale(x: 65%, y: 65%)[
       #tabvar(
         init: (
           variable: $t$,
@@ -121,11 +121,11 @@ but if want you can do that :
     ],
   )
 ]
-but I not realy sur about the utility of that\
+But I not realy sur about the utility of that\
 (note : on the second example the table is squeezed with the scale function)
 
 ==== 2.2.1.2 Custom separation bar
-for all signs except the first, instead of putting the sign directly, you can put a couple, whose first component defines the type of bar just before it. \
+For all signs except the first, instead of putting the sign directly, you can put a couple, whose first component defines the type of bar just before it. \
 And there are 3 different types of bar :
 - with the ```"|"``` key, you make a simple bar
 - with the ```"0"``` key, you make a bar with a 0 on the center
@@ -154,7 +154,7 @@ And there are 3 different types of bar :
         ),
       )
     ```,
-    scale(x: 80%)[
+    scale(x: 80%, y: 80%)[
       #tabvar(
         init: (
           variable: $t$,
@@ -166,7 +166,7 @@ And there are 3 different types of bar :
     ],
   )
 ]
-*Note :* the ``` lign-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
+*Note :* The ``` lign-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
 \
 If you want a double lign at the start, you could, as we have just seen, with the `"||"` type on the very first sign\
 and at the end, you could add this element `||` at the end of sign array
@@ -208,7 +208,7 @@ and at the end, you could add this element `||` at the end of sign array
 ]
 
 ==== 2.2.1.3 Same sign for more than one value of the variable
-for this, is pretty easy, instead of putting the sign directly, you can put a empty couple
+For this, is pretty easy, instead of putting the sign directly, you can put a empty couple
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -232,7 +232,7 @@ for this, is pretty easy, instead of putting the sign directly, you can put a em
         ),
       )
     ```,
-    scale(x: 80%)[
+    scale(x: 80%, y: 80%)[
       #tabvar(
         lign-0: true,
         init: (
@@ -250,14 +250,14 @@ for this, is pretty easy, instead of putting the sign directly, you can put a em
 
 === 2.2.2 Variation table
 
-as for sign array, we'll call them variation array \
+As for sign array, we'll call them variation array \
 our sign array must be contain as many as there are elements in your domain parameter.
 
 ==== 2.2.2.1 A classical variation array
 
-an variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
+An variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
 \
-the position can be :```typ top, center``` or ```typ bottom```, but no other type of alignment
+The position can be :```typ top, center``` or ```typ bottom```, but no other type of alignment
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -285,7 +285,7 @@ the position can be :```typ top, center``` or ```typ bottom```, but no other
     ```,
     move(
       dx: -45pt,
-      scale(x: 80%)[
+      scale(x: 80%, y: 80%)[
         #tabvar(
           lign-0: true,
           init: (
@@ -309,11 +309,11 @@ the position can be :```typ top, center``` or ```typ bottom```, but no other
 
 ==== 2.2.2.2 Undefines values
 
-if your function have certain values undefines like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
+If your function have certain values undefines like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
 
-#sym.star for each values of domain except the start and the end
+#sym.star For each values of domain except the start and the end
 
-the array of one value should look like at ```typ (pos1, pos2, "||", content1, content2)```\
+The array of one value should look like at ```typ (pos1, pos2, "||", content1, content2)```\
 where :
 - pos1 and 2 is ```typ top, center, bottom ``` and pos1 is for the placement of content1 similary for pos2
 - ```"||"``` is to precise the value is undefine
@@ -345,7 +345,7 @@ where :
     ```,
     move(
       dx: -20pt,
-      scale(x: 90%)[
+      scale(x: 90%, y: 90%)[
         #tabvar(
           lign-0: true,
           init: (
@@ -366,12 +366,12 @@ where :
   )
 ]
 
-if ```typ pos1``` and ```typ pos2``` is same, you can just fill in one instead of two, \
-in the same way if ```typ content1``` and ```typ content2``` is same, you can also enter just one
+If ```typ pos1``` and ```typ pos2``` is same, you can just fill in one instead of two, \
+In the same way if ```typ content1``` and ```typ content2``` is same, you can also enter just one
 
 *Example :*
 
-instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,$0$) ```
+Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,$0$) ```
 
 #rect(fill: luma(95%), radius: 10pt, width: 17.5cm)[
   #grid(
@@ -399,7 +399,7 @@ instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
     ```,
     move(
       dx: -50pt,
-      scale(x: 70%)[
+      scale(x: 70%, y: 70%)[
         #tabvar(
           lign-0: true,
           init: (
@@ -422,10 +422,10 @@ instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
   )
 ]
 
-#sym.star for the first and the end values
+#sym.star For the first and the end values
 
-it a basic array but with ``` "||"``` this parameter at the array’s center\
-for example ``` (top, "||", $3$)```
+It a basic array but with ``` "||"``` this parameter at the array’s center\
+For example ``` (top, "||", $3$)```
 
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -451,7 +451,7 @@ for example ``` (top, "||", $3$)```
     ```,
     move(
       dx: -20pt,
-      scale(x: 90%)[
+      scale(x: 90%, y: 90%)[
         #tabvar(
           lign-0: true,
           init: (
@@ -472,6 +472,6 @@ for example ``` (top, "||", $3$)```
   )
 ]
 
-==== 2.2.2.3 to skip a value
+==== 2.2.2.3 To skip a value
 
 

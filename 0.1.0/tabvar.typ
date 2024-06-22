@@ -57,7 +57,7 @@
   }
 }
 
-///render a variation table and sign table of your functions
+///Render a variation table and sign table of your functions
 ///
 /// - init (dictionary): initialitation of the table \
 ///  - in "variable", is an content wich contain the table’s variable (like $x$ or $t$)
