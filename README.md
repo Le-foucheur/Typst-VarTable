@@ -46,7 +46,7 @@ Turn this :
   ),
 )
 ```
-In to this
+Into this
 
 ![trigonometric function](./exemples/trigonometricFunction.png)
 
