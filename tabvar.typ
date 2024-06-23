@@ -81,7 +81,7 @@
 /// ```
 ///
 /// - arrow (string): the style of the arrow\
-/// you can use all diffrents kind of "string" arrow of the package fletcher, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
+/// you can use all diffrents kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
 /// *Optional*
 ///
 /// - content (array): the content of the table \
