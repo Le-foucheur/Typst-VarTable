@@ -64,7 +64,7 @@
 ///  - in "label", you have to put array of 2 arguments that contain in first position the lign’s label and in second position, if the lign is a variation table or a sign table with this following keys : "Variation" and "Sign"
 /// *Example :* for a variation table of a function f, you should write : \
 /// ```
-/// init(
+/// init: (
 ///   variable: $x$,
 ///   label: (
 ///     ([sign of $f$], "Sign"), //<- the first lign is a sign table
@@ -81,18 +81,22 @@
 /// ```
 ///
 /// - arrow (string): the style of the arrow\
-/// you can use all diffrents kind of "string" arrow of the package fletcher, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])
+/// you can use all diffrents kind of "string" arrow of the package fletcher, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
+/// *Optional*
 ///
 /// - content (array): the content of the table \
 /// see bellow for more details
 ///
 /// - stroke (lenght, color, gradient): the table’s color and thickness \
-/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
+/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
+/// *Optional*
 ///
 /// - stroke-arrow (lenght, color, gradient): the arrow’s color and thickness \
-/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
+/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
+/// *Optional*
 ///
-/// - lign-0 (bool): if you want 0 on lign betwen the sign
+/// - lign-0 (bool): if you want 0 on lign betwen the sign\
+/// *Optional*
 #let tabvar(
   init: (
     "variable": [],
@@ -100,11 +104,11 @@
   ),
   domain: (),
   arrow: "->",
-  content: ((),),
   stroke: 1pt + black,
   stroke-arrow: 0.6pt + black,
   lign-0: false,
   _debug: false,
+  content: ((),),
 ) = {
 
   // auxiliary function
