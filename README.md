@@ -75,3 +75,9 @@ Into this
 )
 ```
 ![hyperbolic function](./exemples/hyperbolicFuntion.png)
+
+# known issues
+
+- if you put too wide an element for the last value of a variation table, this can create a space between the edge of the table and the lines separating the lines of the table
+
+![](./exemples/bug1.png)
