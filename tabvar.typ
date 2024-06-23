@@ -80,23 +80,25 @@
 /// domain: ($0$, $1$, $2$, $3$)
 /// ```
 ///
-/// - arrow (string): the style of the arrow\
+/// - arrow (string): *Optional*\
+/// the style of the arrow\
 /// you can use all diffrents kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
-/// *Optional*
+///
 ///
 /// - content (array): the content of the table \
 /// see bellow for more details
 ///
-/// - stroke (lenght, color, gradient): the table’s color and thickness \
+/// - stroke (lenght, color, gradient): *Optional*\
+/// the table’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
-/// *Optional*
 ///
-/// - stroke-arrow (lenght, color, gradient): the arrow’s color and thickness \
-/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
-/// *Optional*
 ///
-/// - lign-0 (bool): if you want 0 on lign betwen the sign\
-/// *Optional*
+/// - stroke-arrow (lenght, color, gradient): *Optional*\
+/// the arrow’s color and thickness \
+/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
+///
+/// - lign-0 (bool): *Optional*\
+/// if you want 0 on lign betwen the sign
 #let tabvar(
   init: (
     "variable": [],
