@@ -45,15 +45,21 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 
 #pagebreak()
 == 2.2 - The content parameter
+The content parameter must be an array with one element per line (per label)\
 
-The content parameter must be an array which must itself contain arrays, as many as there are different labels.
+Each element is itself an array with one element per column, with a different format for either sign or variation rows\
 
-So each of these sub-arrays is equivalent to a line, so there are two cases to distinguish, whether the line corresponds to a sign table or a variation table.
+=== 2.2.1 - Sign rows format
+Should contain as much element as the domain less one (one per interval) + one optional end bar style element\
 
-=== 2.2.1 - Sign table :
+Each element is in etheir of these form (can be mixed on a same line):\
 
-Now we call this kind arrays : a sign array\
-Our sign array must be contain as many as there are elements in your domain parameter minus one.
+() -- Empty : extend previous cell\
+body -- Simple body such as ```$+$``` or ```$-$```\
+(body, bar style) -- to specify an optional style for the **previous** bar, with one of ```"|"``` (simple bar), ```"||"``` (double bar) or ```"0"``` (bar with a zero)\
+NB: the lign-0 parametter change the default bar style from "|"\
+
+the optional last element is ```"||"```\
 
 ==== 2.2.1.1 - A cassical sign array
 A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else, you can.
@@ -109,16 +115,19 @@ but if you want, you can do that :
         ),
       )
     ```,
-    scale(x: 65%, y: 65%)[
-      #tabvar(
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
-        domain: ($2$, $4$, $6$, $8$),
-        content: (("hello world", $-$, $ 3 / 2 $),),
-      )
-    ],
+    move(
+      dx: -35pt,
+      scale(x: 80%, y: 80%)[
+        #tabvar(
+          init: (
+            variable: $t$,
+            label: (([sign], "Sign"),),
+          ),
+          domain: ($2$, $4$, $6$, $8$),
+          content: (("hello world", $-$, $ 3 / 2 $),),
+        )
+      ],
+    ),
   )
 ]
 But I'm not realy sure about the utility of that\
@@ -129,7 +138,7 @@ For all signs except the first, instead of putting the sign directly, you can pu
 And there are 3 different types of bar :
 - with the ```"|"``` key, you make a simple bar
 - with the ```"0"``` key, you make a bar with a 0 on the center
-- with the ```"||"``` key, you make a double bar, like for the undefines values
+- with the ```"||"``` key, you make a double bar, like for the undefined values
 
 *Example :*
 
@@ -210,6 +219,8 @@ and at the end, you could add this element `||` at the end of sign array
 ==== 2.2.1.3 - Same sign for more than one value of the variable
 For this, it is pretty easy, instead of putting the sign directly, you can put a empty couple
 
+#pagebreak()
+
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -246,12 +257,18 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
   )
 ]
 
-#pagebreak()
-
 === 2.2.2 - Variation table
 
-As for sign array, we'll call them variation array \
-Our sign array must be contain as many as there are elements in your domain parameter.
+Should contain as much élément as the domain\
+Each element is in etheir of these forms :\
+
+```()``` to extent previous arrow\
+
+```(position,body)``` with position being one of top, center or bottom\
+
+```(pos1, pos2,"||",body1,body2)``` to put in 2 value separated by an undefined (double bar)\
+
+```(pos,"||",body)``` short for ```(pos,pos,"||",body,body)``` (see previous format)\
 
 ==== 2.2.2.1 - A classical variation array
 
@@ -307,9 +324,9 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
   )
 ]
 
-==== 2.2.2.2 - Undefines values
+==== 2.2.2.2 - Undefined values
 
-If your function have certain values undefines like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
+If your function have certain values undefined like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
 
 #sym.star For each values of domain except the start and the end.
 
@@ -418,6 +435,8 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
   )
 ]
 
+#pagebreak()
+
 #sym.star For the first and the end values
 
 It a basic array but with ``` "||"``` this parameter at the array’s center\
@@ -466,7 +485,7 @@ For example ``` (top, "||", $3$)```
   )
 ]
 
-==== 2.2.2.3 - To skip a value
+==== 2.2.2.3 - Skip a value
 
 When you want to use several functions in the same table, you will probably want to skip some values,
 to do this, as with sign arrays, you create an empty array
@@ -515,62 +534,69 @@ to do this, as with sign arrays, you create an empty array
   )
 ]
 
-= 3 - More complex example
+#pagebreak()
+
+= 3 - More complex examples
 
 There is a little bundle of want you can do
 
 == 3.1 - #link("https://en.wikipedia.org/wiki/Gamma_function")[#underline(stroke: blue)[#sym.Gamma function]] on $[0;  +oo]$
 Where it takes a minimum on $[0;+oo[$ for $x = alpha$
-#rect(fill: luma(95%), radius: 10pt, width: 18.2cm)[
-  #grid(
-    columns: (10cm, 7cm),
-    column-gutter: 0pt,
-    align: horizon,
-    ```typ
-      #tabvar(
-          init: (
-            variable: $t$,
-            label: (
-              ([sign of #sym.Gamma], "Sign"),
-              ([variation of #sym.Gamma], "Variation"),
-            ),
-          ),
-          domain: ($0$, $ alpha $, $ +oo $),
-          content: (
-            ($-$, $+$),
-            (
-              (top, "||", $+oo$),
-              (bottom, $Gamma(alpha)$),
-              (top, $+oo$),
-            ),
-          ),
-        )
-    ```,
-    move(
-      dx: -20pt,
-      scale(x: 90%, y: 90%)[
+
+#align(center)[
+  #rect(fill: luma(95%), radius: 10pt, width: 19cm)[
+    #grid(
+      columns: (10cm, 7cm),
+      column-gutter: 0pt,
+      align: horizon + left,
+      [Code :] + ```typ
         #tabvar(
-          init: (
-            variable: $t$,
-            label: (
-              ([sign of #sym.Gamma’], "Sign"),
-              ([variation of #sym.Gamma], "Variation"),
+            init: (
+              variable: $t$,
+              label: (
+                ([sign of #sym.Gamma], "Sign"),
+                ([variation of #sym.Gamma], "Variation"),
+              ),
             ),
-          ),
-          domain: ($0$, $ alpha $, $ +oo $),
-          content: (
-            ($-$, $+$),
-            (
-              (top, "||", $+oo$),
-              (bottom, $Gamma(alpha)$),
-              (top, $+oo$),
+            domain: ($0$, $ alpha $, $ +oo $),
+            content: (
+              ($-$, $+$),
+              (
+                (top, "||", $+oo$),
+                (bottom, $Gamma(alpha)$),
+                (top, $+oo$),
+              ),
             ),
-          ),
-        )
-      ],
-    ),
-  )
+          )
+      ```,
+      [Result :] + move(
+        dx: -20pt,
+        scale(x: 90%, y: 90%)[
+          #tabvar(
+            init: (
+              variable: $t$,
+              label: (
+                ([sign of #sym.Gamma’], "Sign"),
+                ([variation of #sym.Gamma], "Variation"),
+              ),
+            ),
+            domain: ($0$, $ alpha $, $ +oo $),
+            content: (
+              ($-$, $+$),
+              (
+                (top, "||", $+oo$),
+                (bottom, $Gamma(alpha)$),
+                (top, $+oo$),
+              ),
+            ),
+          )
+        ],
+      ),
+    )
+  ]
 ]
+
+#pagebreak()
 
 == 3.2 - A Rational function
 Take $f(x) = (4x^2 + 12x + 29)/(4(x^2 + 3x + 2))$\
@@ -579,7 +605,8 @@ So we have $f’(x) = (-2x -3)/(16(x^2 + 3x + 2)^2)$\
 
 And finaly, we get :
 
-#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
+
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   Code :
   ```typ
     #tabvar(
@@ -604,7 +631,7 @@ And finaly, we get :
       )
   ```
 
-  ──────────────────────────────────────────────
+  ─────────────────────────────────────────
   Result :
 
   #align(center)[
@@ -631,95 +658,103 @@ And finaly, we get :
   ]
 ]
 
+
+#pagebreak()
 == 3.3 #link("https://en.wikipedia.org/wiki/Hyperbolic_functions")[#underline(stroke: blue)[Hyperbolic function]]
 
-#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
-  Code :
-  ```typ
-    #tabvar(
-      arrow: "|-harpoon",
-      stroke-arrow: gradient.linear(..color.map.rainbow),
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of $cosh$], "Sign"),
-          ([variation of $cosh$], "Variation"),
-          ([sign of $sinh$ and $tanh$], "Sign"),
-          ([variation of $sinh$], "Variation"),
-          ([variation of $tanh$], "Variation"),
-        ),
-      ),
-      domain: ($ -oo $, $ 0 $, $ +oo $),
-      content: (
-        ($-$, $+$),
-        (
-          (top, $+oo$),
-          (bottom, $1$),
-          (top, $+oo$),
-        ),
-        ($+$, ()),
-        (
-          (bottom, $-oo$),
-          (),
-          (top, $+oo$),
-        ),
-        (
-          (bottom, $1$),
-          (),
-          (top, $-1$),
-        ),
-      ),
-    )
-  ```
-]
+#align(center)[
+  #rect(fill: luma(95%), radius: 10pt, width: 20cm)[
+    #grid(
+      columns: 2,
+      align: left,
+      [Code :] + ```typ
+        #tabvar(
+          arrow: "|-harpoon",
+          stroke-arrow: gradient.linear(..color.map.rainbow),
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of $cosh$], "Sign"),
+              ([variation of $cosh$], "Variation"),
+              ([sign of $sinh$ and $tanh$], "Sign"),
+              ([variation of $sinh$], "Variation"),
+              ([variation of $tanh$], "Variation"),
+            ),
+          ),
+          domain: ($ -oo $, $ 0 $, $ +oo $),
+          content: (
+            ($-$, $+$),
+            (
+              (top, $+oo$),
+              (bottom, $1$),
+              (top, $+oo$),
+            ),
+            ($+$, ()),
+            (
+              (bottom, $-oo$),
+              (),
+              (top, $+oo$),
+            ),
+            (
+              (bottom, $1$),
+              (),
+              (top, $-1$),
+            ),
+          ),
+        )
+      ```,
+      [
+        Result :
 
-#rect(fill: luma(95%), radius: 10pt, width: 13cm)[
-  Result :
-
-  #align(center)[
-    #tabvar(
-      arrow: "|-harpoon",
-      stroke-arrow: gradient.linear(..color.map.rainbow),
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of $cosh$], "Sign"),
-          ([variation of $cosh$], "Variation"),
-          ([sign of $sinh$ and $tanh$], "Sign"),
-          ([variation of $sinh$], "Variation"),
-          ([variation of $tanh$], "Variation"),
-        ),
-      ),
-      domain: ($ -oo $, $ 0 $, $ +oo $),
-      content: (
-        ($-$, $+$),
-        (
-          (top, $+oo$),
-          (bottom, $1$),
-          (top, $+oo$),
-        ),
-        ($+$, ()),
-        (
-          (bottom, $-oo$),
-          (),
-          (top, $+oo$),
-        ),
-        (
-          (bottom, $1$),
-          (),
-          (top, $-1$),
-        ),
-      ),
+        #align(center)[
+          #tabvar(
+            arrow: "|-harpoon",
+            stroke-arrow: gradient.linear(..color.map.rainbow),
+            init: (
+              variable: $t$,
+              label: (
+                ([sign of $cosh$], "Sign"),
+                ([variation of $cosh$], "Variation"),
+                ([sign of $sinh$ and $tanh$], "Sign"),
+                ([variation of $sinh$], "Variation"),
+                ([variation of $tanh$], "Variation"),
+              ),
+            ),
+            domain: ($ -oo $, $ 0 $, $ +oo $),
+            content: (
+              ($-$, $+$),
+              (
+                (top, $+oo$),
+                (bottom, $1$),
+                (top, $+oo$),
+              ),
+              ($+$, ()),
+              (
+                (bottom, $-oo$),
+                (),
+                (top, $+oo$),
+              ),
+              (
+                (bottom, $1$),
+                (),
+                (top, $-1$),
+              ),
+            ),
+          )
+        ]
+      ],
     )
   ]
 ]
 
+#pagebreak()
+
 == 3.3 A weird table for a simple polynom function
 Take $g(t) = t^2 - t^3$\
 So, we have $g’(t) = 2t - 3t^2$\
-And, it have local extrema for $x = 0$ and $x = 2/3$
+And has local extrema for $x = 0$ and $x = 2/3$
 
-#rect(fill: luma(95%), radius: 10pt, width: 18.3cm)[
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   Code :
   ```typ
     #tabvar(
@@ -747,7 +782,7 @@ And, it have local extrema for $x = 0$ and $x = 2/3$
     )
   ```
 
-  ──────────────────────────────────────────────
+  ─────────────────────────────────────────
   Result :
 
   #align(center)[
