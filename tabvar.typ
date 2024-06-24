@@ -60,8 +60,8 @@
 ///Render a variation table and sign table of your functions
 ///
 /// - init (dictionary): initialitation of the table \
-///  - in "variable", is an content wich contain the table’s variable (like $x$ or $t$)
-///  - in "label", you have to put array of 2 arguments that contain in first position the lign’s label and in second position, if the lign is a variation table or a sign table with this following keys : "Variation" and "Sign"
+///  - in variable, is an content wich contain the table’s variable (like $x$ or $t$)
+///  - in label, you have to put array of 2 arguments that contain in first position the lign’s label and in second position, if the lign is a variation table or a sign table with this following keys : "Variation" and "Sign"
 /// *Example :* for a variation table of a function f, you should write : \
 /// ```
 /// init: (
