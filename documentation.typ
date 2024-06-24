@@ -177,8 +177,7 @@ And there are 3 different types of bar :
 ]
 *Note :* The ``` lign-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
 \
-If you want a double lign at the start, you could, as we have just seen, with the `"||"` type on the very first sign\
-and at the end, you could add this element `||` at the end of sign array
+If you want a double lign at the start, you could, as we have just seen, with the `"||"` type on the very first sign and at the end, you could add this element `||` at the end of sign array
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
@@ -259,10 +258,10 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
 
 === 2.2.2 - Variation table
 
-Should contain as much élément as the domain\
+Should contain as much element as the domain\
 Each element is in etheir of these forms :\
 
-```()``` to extent previous arrow\
+```()``` to extend previous arrow\
 
 ```(position,body)``` with position being one of top, center or bottom\
 
