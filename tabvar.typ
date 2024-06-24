@@ -1,6 +1,7 @@
 #import "@preview/fletcher:0.4.5": *
 #let signe = "Sign"
 #let variation = "Variation"
+#let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
 
 // les deux prochaine fonctions son pour connaitre le nombre d’éléments à skip
 #let prochainNonVideSigne(x, i) = {
@@ -112,10 +113,6 @@
   _debug: false,
   content: ((),),
 ) = {
-
-  // auxiliary function
-  let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
-
   //start of function
   context {
     diagram(
