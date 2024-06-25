@@ -44,6 +44,7 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 )
 
 #pagebreak()
+
 == 2.2 - The content parameter
 The content parameter must be an array with one element per line (per label)\
 
@@ -54,15 +55,15 @@ Should contain as much element as the domain less one (one per interval) + one o
 
 Each element is in etheir of these form (can be mixed on a same line):\
 
-() -- Empty : extend previous cell\
-body -- Simple body such as ```$+$``` or ```$-$```\
-(body, bar style) -- to specify an optional style for the **previous** bar, with one of ```"|"``` (simple bar), ```"||"``` (double bar) or ```"0"``` (bar with a zero)\
-NB: the lign-0 parametter change the default bar style from "|"\
+`()` -- Empty : extend previous cell\
+`body` -- Simple body such as ```typ $+$``` or ```typ $-$```\
+`(body, bar_style)` -- to specify an optional style for the *previous* bar, with one of ```"|"``` (simple bar), ```"||"``` (double bar) or ```"0"``` (bar with a zero)\
+NB: the `line-0` parameter change the default bar style to ```"|"``` \
 
-the optional last element is ```"||"```\
+The optional last element is ```"||"```\
 
-==== 2.2.1.1 - A cassical sign array
-A sign array must be just contain content like ```$+$``` or ```$-$```, but if you want put anything else, you can.
+==== 2.2.1.1 - A classical sign array
+A sign array can just contain content like ```typ $+$``` or ```typ $-$```, but you can put anything else.
 
 
 *Example :* \
@@ -94,7 +95,7 @@ A normal sign table :
     ],
   )
 ]
-but if you want, you can do that :
+More complex usage :
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (7cm, 7cm),
@@ -108,7 +109,7 @@ but if you want, you can do that :
         domain: ($2$, $4$, $6$, $8$),
         content: (
           (
-            "hello world",
+            "Hello world !",
             $-$,
             $3/2$
           ),
@@ -124,21 +125,20 @@ but if you want, you can do that :
             label: (([sign], "Sign"),),
           ),
           domain: ($2$, $4$, $6$, $8$),
-          content: (("hello world", $-$, $ 3 / 2 $),),
+          content: (("Hello world !", $-$, $ 3 / 2 $),),
         )
       ],
     ),
   )
 ]
-But I'm not realy sure about the utility of that\
-(note : on the second example the table is squeezed with the scale function)
+*Note :* on the second example the table is squeezed with the scale function)
 
 ==== 2.2.1.2 - Custom separation bar
-For all signs except the first, instead of putting the sign directly, you can put a couple, whose first component defines the type of bar just before it. \
-And there are 3 different types of bar :
-- with the ```"|"``` key, you make a simple bar
-- with the ```"0"``` key, you make a bar with a 0 on the center
-- with the ```"||"``` key, you make a double bar, like for the undefined values
+For all signs except the first one, instead of putting the sign directly, you can put a couple, whose first element defines the previous bar's type. \
+There are 3 differents types of bar :
+- ```"|"``` : a simple bar
+- ```"0"``` : a bar with a 0 on the center
+- ```"||"``` : a double bar, like for the undefined values
 
 *Example :*
 
@@ -175,9 +175,9 @@ And there are 3 different types of bar :
     ],
   )
 ]
-*Note :* The ``` lign-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
+*Note :* The ``` line-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
 \
-If you want a double lign at the start, you could, as we have just seen, with the `"||"` type on the very first sign and at the end, you could add this element `||` at the end of sign array
+If you want a double line at the start, you could, as we have just seen, with the `"||"` type on the very first sign and at the end, you could add this element `||` at the end of sign array
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
@@ -186,7 +186,7 @@ If you want a double lign at the start, you could, as we have just seen, with th
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
+        line-0: true,
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -203,7 +203,7 @@ If you want a double lign at the start, you could, as we have just seen, with th
     ```,
     scale(x: 80%)[
       #tabvar(
-        lign-0: true,
+        line-0: true,
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -216,7 +216,7 @@ If you want a double lign at the start, you could, as we have just seen, with th
 ]
 
 ==== 2.2.1.3 - Same sign for more than one value of the variable
-For this, it is pretty easy, instead of putting the sign directly, you can put a empty couple
+For this, it is pretty easy, instead of putting the sign directly, you can put an empty couple
 
 #pagebreak()
 
@@ -227,7 +227,7 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
+        line-0: true,
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -244,7 +244,7 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
     ```,
     scale(x: 80%, y: 80%)[
       #tabvar(
-        lign-0: true,
+        line-0: true,
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -258,22 +258,18 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
 
 === 2.2.2 - Variation table
 
-Should contain as much element as the domain\
-Each element is in etheir of these forms :\
-
-```()``` to extend previous arrow\
-
-```(position,body)``` with position being one of top, center or bottom\
-
-```(pos1, pos2,"||",body1,body2)``` to put in 2 value separated by an undefined (double bar)\
-
-```(pos,"||",body)``` short for ```(pos,pos,"||",body,body)``` (see previous format)\
+Should contains as much elements as the domain \
+Each element is in etheir of these forms :
+- ```()``` to extend the previous arrow
+- ```(position,body)``` with position being one of top, center or bottom
+- ```(pos1, pos2, "||", body1, body2)``` to put in 2 value separated by an undefined value (double bar)
+- ```(pos, "||", body)``` shorthand for ```(pos, pos, "||", body, body)``` (see previous format)
 
 ==== 2.2.2.1 - A classical variation array
 
-An variation array must be contain couple with in first position, the position; and in second position, whatever you want as long as it's of the content type.\
+A variation array must contain couple with in first position, the element position, and in second position, whatever you want as long as it's of the content type.\
 \
-The position can be :```typ top, center``` or ```typ bottom```, but no other type of alignment
+The position can be ```typ top, center``` or ```typ bottom```, but no other type of alignment
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -283,7 +279,7 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
     align: horizon,
     ```typ
       #tabvar(
-        lign-0: true,
+        line-0: true,
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -303,7 +299,7 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
       dx: -45pt,
       scale(x: 80%, y: 80%)[
         #tabvar(
-          lign-0: true,
+          line-0: true,
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -325,7 +321,7 @@ The position can be :```typ top, center``` or ```typ bottom```, but no other
 
 ==== 2.2.2.2 - Undefined values
 
-If your function have certain values undefined like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double lign to mean it undefine, and you can!\
+If your function is not defined on some values like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double line meaning that the function is undefined on this value, and you can ! \
 
 #sym.star For each values of domain except the start and the end.
 
@@ -757,7 +753,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
   Code :
   ```typ
     #tabvar(
-      lign-0: true,
+      line-0: true,
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
@@ -786,7 +782,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
 
   #align(center)[
     #tabvar(
-      lign-0: true,
+      line-0: true,
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
