@@ -63,7 +63,7 @@ NB: the `line-0` parameter change the default bar style to ```"|"``` \
 The optional last element is ```"||"```\
 
 ==== 2.2.1.1 - A classical sign array
-A sign array can just contain content like ```typ $+$``` or ```typ $-$```, but you can put anything else.
+A sign array must contain content like ```typ $+$``` or ```typ $-$```, but you can put anything else.
 
 
 *Example :* \
