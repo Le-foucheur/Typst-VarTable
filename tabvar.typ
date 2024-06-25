@@ -58,18 +58,18 @@
   }
 }
 
-///Render a variation table and sign table of your functions
+/// Render a variation table and sign table of your functions
 ///
 /// - init (dictionary): initialitation of the table \
-///  - in variable, is an content wich contain the table’s variable (like $x$ or $t$)
-///  - in label, you have to put array of 2 arguments that contain in first position the lign’s label and in second position, if the lign is a variation table or a sign table with this following keys : "Variation" and "Sign"
-/// *Example :* for a variation table of a function f, you should write : \
-/// ```
+///  - `variable` is a content block which contains the table’s variable name (like $x$ or $t$)
+///  - `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign"
+/// *Example :* for a variation table of a function $f$, you should write : \
+/// ```typst
 /// init: (
 ///   variable: $x$,
 ///   label: (
-///     ([sign of $f$], "Sign"), //<- the first lign is a sign table
-///     ([variation of $f$], "Variation") //<- the second lign is a variation table
+///     ([sign of $f$], "Sign"), // the first line is a sign table
+///     ([variation of $f$], "Variation") // the second line is a variation table
 ///   )
 /// )
 /// ```
@@ -77,20 +77,20 @@
 /// - domain (array): values taken by the variable \
 /// for example if your funtion changes sign or reaches a max/min for $x in {0,1,2,3}$ \
 /// you should write this :
-/// ```
+/// ```typst
 /// domain: ($0$, $1$, $2$, $3$)
 /// ```
 ///
 /// - arrow (string): *Optional*\
-/// the style of the arrow\
-/// you can use all diffrents kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
+/// The arrow's style \
+/// you can use all differents kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
 ///
 ///
 /// - content (array): the content of the table \
-/// see bellow for more details
+/// see below for more details
 ///
 /// - stroke (lenght, color, gradient): *Optional*\
-/// the table’s color and thickness \
+/// The table’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
 ///
 ///
@@ -98,8 +98,8 @@
 /// the arrow’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
 ///
-/// - lign-0 (bool): *Optional*\
-/// if you want 0 on lign betwen the sign
+/// - line-0 (bool): *Optional*\
+/// if you want 0 on line betwen different signs
 #let tabvar(
   init: (
     "variable": [],
@@ -109,7 +109,7 @@
   arrow: "->",
   stroke: 1pt + black,
   stroke-arrow: 0.6pt + black,
-  lign-0: false,
+  line-0: false,
   _debug: false,
   content: ((),),
 ) = {
@@ -218,7 +218,7 @@
                 }
               }
               else{ // ligne de séparation par défaut
-                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, if lign-0{$0$})
+                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$})
               }
             },
             if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
