@@ -177,7 +177,7 @@ There are 3 differents types of bar :
 ]
 *Note :* The ``` line-0``` parameter is to default lines to ``` "0"``` type or `"|"` type\
 \
-If you want a double line at the start, you could, as we have just seen, with the `"||"` type on the very first sign and at the end, you could add this element `||` at the end of sign array
+If you want a double line at the start of the table, you can use a double bar `"||"` on the very first sign. If you want it at the end, you can add this element `"||"` at the end of sign array
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
@@ -483,7 +483,7 @@ For example ``` (top, "||", $3$)```
 ==== 2.2.2.3 - Skip a value
 
 When you want to use several functions in the same table, you will probably want to skip some values,
-to do this, as with sign arrays, you create an empty array
+to do this, as with sign arrays, you must create an empty array
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -533,7 +533,7 @@ to do this, as with sign arrays, you create an empty array
 
 = 3 - More complex examples
 
-There is a little bundle of want you can do
+Here is a little bundle of what you can do with the package.
 
 == 3.1 - #link("https://en.wikipedia.org/wiki/Gamma_function")[#underline(stroke: blue)[#sym.Gamma function]] on $[0;  +oo]$
 Where it takes a minimum on $[0;+oo[$ for $x = alpha$
@@ -744,7 +744,7 @@ And finaly, we get :
 
 #pagebreak()
 
-== 3.3 A weird table for a simple polynom function
+== 3.3 A weird table for a simple polynomial function
 Take $g(t) = t^2 - t^3$\
 So, we have $g’(t) = 2t - 3t^2$\
 And has local extrema for $x = 0$ and $x = 2/3$
