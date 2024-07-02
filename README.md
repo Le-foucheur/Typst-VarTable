@@ -26,7 +26,7 @@ Turn this :
     ),
   ),
   interval: ($0$, $ pi / 2 $, $ pi $, $ (2pi) / 3 $, $ 2 pi $),
-  content: (
+  domain: (
     ($-$, (), $+$, ()),
     (
       (top, $1$),
@@ -63,7 +63,7 @@ Into this
       ([variation of $f$], "Variation"),
     ),
   ),
-  interval: ($ -oo $, $ 0 $, $ +oo $),
+  domain: ($ -oo $, $ 0 $, $ +oo $),
   content: (
       ($+$, ("||", $+$)),
     (
