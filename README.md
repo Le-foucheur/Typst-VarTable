@@ -25,8 +25,8 @@ Turn this :
       ([variation of sin], "Variation"),
     ),
   ),
-  interval: ($0$, $ pi / 2 $, $ pi $, $ (2pi) / 3 $, $ 2 pi $),
-  domain: (
+  domain: ($0$, $ pi / 2 $, $ pi $, $ (2pi) / 3 $, $ 2 pi $),
+  content: (
     ($-$, (), $+$, ()),
     (
       (top, $1$),
