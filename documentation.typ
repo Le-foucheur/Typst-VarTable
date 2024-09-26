@@ -125,7 +125,7 @@ More complex usage :
             label: (([sign], "Sign"),),
           ),
           domain: ($2$, $4$, $6$, $8$),
-          content: (("Hello world !", $-$, $ 3 / 2 $),),
+          content: (("Hello world !", $-$, $3 / 2$),),
         )
       ],
     ),
@@ -169,7 +169,7 @@ There are 3 differents types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$, $ 10 $),
+        domain: ($2$, $4$, $6$, $8$, $10$),
         content: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
@@ -310,7 +310,7 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
               (top, $3$),
               (bottom, $0$),
               (center, $1$),
-              (top, $ 4 $),
+              (top, $4$),
             ),
           ),
         )
@@ -553,7 +553,7 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
                 ([variation of #sym.Gamma], "Variation"),
               ),
             ),
-            domain: ($0$, $ alpha $, $ +oo $),
+            domain: ($0$, $alpha$, $+oo$),
             content: (
               ($-$, $+$),
               (
@@ -575,7 +575,7 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
                 ([variation of #sym.Gamma], "Variation"),
               ),
             ),
-            domain: ($0$, $ alpha $, $ +oo $),
+            domain: ($0$, $alpha$, $+oo$),
             content: (
               ($-$, $+$),
               (
@@ -612,7 +612,7 @@ And finaly, we get :
             ([variation of $f$], "Variation"),
           ),
         ),
-        domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+        domain: ($-oo$, $-2$, $-3 / 2$, $-1$, $+oo$),
         content: (
           ($+$, ("||", $+$), $-$, ("||", $-$)),
           (
@@ -638,7 +638,7 @@ And finaly, we get :
           ([variation of $f$], "Variation"),
         ),
       ),
-      domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+      domain: ($-oo$, $-2$, $-3 / 2$, $-1$, $+oo$),
       content: (
         ($+$, ("||", $+$), $-$, ("||", $-$)),
         (
@@ -676,7 +676,7 @@ And finaly, we get :
               ([variation of $tanh$], "Variation"),
             ),
           ),
-          domain: ($ -oo $, $ 0 $, $ +oo $),
+          domain: ($-oo$, $0$, $+oo$),
           content: (
             ($-$, $+$),
             (
@@ -715,7 +715,7 @@ And finaly, we get :
                 ([variation of $tanh$], "Variation"),
               ),
             ),
-            domain: ($ -oo $, $ 0 $, $ +oo $),
+            domain: ($-oo$, $0$, $+oo$),
             content: (
               ($-$, $+$),
               (
@@ -764,13 +764,13 @@ And has local extrema for $x = 0$ and $x = 2/3$
           ([variation of $g$], "Variation"),
         ),
       ),
-      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+      domain: ($-oo$, $0$, $2 / 3$, $+oo$),
       content: (
         ($-$, ("|", $+$), $-$),
         (
           (top, $+oo$),
           (bottom, $0$),
-          (center, $ 4 / 27 $),
+          (center, $4 / 27$),
           (bottom, $-oo$),
         ),
       ),
@@ -793,13 +793,13 @@ And has local extrema for $x = 0$ and $x = 2/3$
           ([variation of $g$], "Variation"),
         ),
       ),
-      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+      domain: ($-oo$, $0$, $ 2 / 3 $, $+oo$),
       content: (
         ($-$, ("|", $+$), $-$),
         (
           (top, $+oo$),
           (bottom, $0$),
-          (center, $ 4 / 27 $),
+          (center, $4 / 27$),
           (bottom, $-oo$),
         ),
       ),
