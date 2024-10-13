@@ -3,7 +3,7 @@
 #let variation = "Variation"
 #let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
 
-// les deux prochaine fonctions son pour connaitre le nombre d’éléments à skip
+// les deux prochaine fonctions sont pour connaitre le nombre d’éléments à skip
 #let prochainNonVideSigne(x, i) = {
   let k = 0
   let j = i + 1
@@ -34,7 +34,7 @@
   } else if x.first() == bottom {
     node((domain.len() - 1 / 3, 3 + (j) * 3 - 0.12), x.last())
   }
-  // pour géré le cas de l’indèfinie
+  // pour gérer le cas de l’indéfinie
   if x.at(1) == "||" {
     edge(
       (
@@ -75,7 +75,7 @@
 /// ```
 ///
 /// - domain (array): values taken by the variable \
-/// for example if your funtion changes sign or reaches a max/min for $x in {0,1,2,3}$ \
+/// for example if your funtions changes sign or reaches a max/min for $x in {0,1,2,3}$ \
 /// you should write this :
 /// ```typst
 /// domain: ($0$, $1$, $2$, $3$)
@@ -83,7 +83,7 @@
 ///
 /// - arrow (string): *Optional*\
 /// The arrow's style \
-/// you can use all differents kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
+/// you can use all different kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
 ///
 ///
 /// - content (array): the content of the table \
@@ -132,7 +132,7 @@
           (domain.len()+0.12,0.87 + if init.at("label").first().last() == signe{0.1}),
           stroke: stroke
         ),
-        edge(  // ligne de séparation des label, des varations
+        edge(  // ligne de séparation des label, des varation
           (0.36,-6),
           (0.36,init.at("label").len()*3 + 5),
           stroke: stroke
