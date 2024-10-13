@@ -100,6 +100,11 @@
 ///
 /// - line-0 (bool): *Optional*\
 /// if you want 0 on line betwen different signs
+/// 
+/// - marks-line (string): *Optional*\
+/// if you want to change the style of all separator lines between signs\
+///
+/// Warning: this will only change the default lines, the ||, | or 0 lines will not be changed. 
 #let tabvar(
   init: (
     "variable": [],
@@ -109,8 +114,9 @@
   arrow: "->",
   stroke: 1pt + black,
   stroke-arrow: 0.6pt + black,
-  line-0: false,
   _debug: false,
+  line-0: false,
+  marks-line: "-",
   content: ((),),
 ) = {
   //start of function
@@ -213,12 +219,12 @@
                     (i+2/3- 0.02 * calc.sqrt(stroke.thickness.pt()) ,1+(j)*3),
                     (i+2/3- 0.02 * calc.sqrt(stroke.thickness.pt()) ,3+(j)*3 + if j == init.at("label").len()-1{5.5}),
                     label-sep: -7pt,
-                    stroke: stroke.thickness/2 + stroke.paint
+                    stroke: stroke.thickness/2 + stroke.paint,
                   )
                 }
               }
               else{ // ligne de séparation par défaut
-                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$})
+                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$}, marks: marks-line)
               }
             },
             if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content

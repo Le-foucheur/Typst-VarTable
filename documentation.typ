@@ -134,11 +134,59 @@ More complex usage :
 *Note :* on the second example the table is squeezed with the scale function)
 
 ==== 2.2.1.2 - Custom separation bar
+
+===== 2.2.1.2.1 style of bar
+
+you can modify the style of the bars (note that this modifies all the default ones, not the others, see 2.2.1.2.2).
+
+the bar style is passed as a string, like “-” for a plain bar or “..” for dotted lines,
+I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher's documentation])on marks to find out what can be done.
+
+*Example*
+
+#rect(fill: luma(95%), radius: 10pt, width: 15cm)[
+  #grid(
+    columns: (7cm, 7cm),
+    align: horizon,
+    ```typ
+      #tabvar(
+        marks-line: "--",
+        init: (
+          variable: $t$,
+          label: (([sign], "Sign"),),
+        ),
+        domain: ($2$, $4$, $6$,),
+        content: (
+          ($+$, $-$),
+        ),
+      )
+    ```,
+    scale(x: 80%, y: 80%)[
+      #tabvar(
+        marks-line: "--",
+        init: (
+          variable: $t$,
+          label: (([sign], "Sign"),),
+        ),
+        domain: ($2$, $4$, $6$,),
+        content: (
+          ($+$, $-$),
+        ),
+      )
+    ],
+  )
+]
+
+PS: yes, technically these bars are arrows for fletcher but shhh, keep it to yourself to make tables that don't make sense.
+
+===== 2.2.1.2.2 type of bar
 For all signs except the first one, instead of putting the sign directly, you can put a couple, whose first element defines the previous bar's type. \
 There are 3 differents types of bar :
 - ```"|"``` : a simple bar
 - ```"0"``` : a bar with a 0 on the center
 - ```"||"``` : a double bar, like for the undefined values
+
+NB : the marks-line parameter has no effect on these bars 
 
 *Example :*
 
@@ -218,8 +266,6 @@ If you want a double line at the start of the table, you can use a double bar `"
 ==== 2.2.1.3 - Same sign for more than one value of the variable
 For this, it is pretty easy, instead of putting the sign directly, you can put an empty couple
 
-#pagebreak()
-
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -264,6 +310,8 @@ Each element is in etheir of these forms :
 - ```(position,body)``` with position being one of top, center or bottom
 - ```(pos1, pos2, "||", body1, body2)``` to put in 2 value separated by an undefined value (double bar)
 - ```(pos, "||", body)``` shorthand for ```(pos, pos, "||", body, body)``` (see previous format)
+
+#pagebreak()
 
 ==== 2.2.2.1 - A classical variation array
 
@@ -430,8 +478,6 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
   )
 ]
 
-#pagebreak()
-
 #sym.star For the first and the end values
 
 It a basic array but with ``` "||"``` this parameter at the array’s center\
@@ -479,6 +525,8 @@ For example ``` (top, "||", $3$)```
     ),
   )
 ]
+
+#pagebreak()
 
 ==== 2.2.2.3 - Skip a value
 
@@ -626,7 +674,7 @@ And finaly, we get :
       )
   ```
 
-  ─────────────────────────────────────────
+  ─────────────────────────────────────────────────────────────────
   Result :
 
   #align(center)[
@@ -666,6 +714,7 @@ And finaly, we get :
         #tabvar(
           arrow: "|-harpoon",
           stroke-arrow: gradient.linear(..color.map.rainbow),
+          marks-line: "..",
           init: (
             variable: $t$,
             label: (
@@ -705,6 +754,7 @@ And finaly, we get :
           #tabvar(
             arrow: "|-harpoon",
             stroke-arrow: gradient.linear(..color.map.rainbow),
+            marks-line: "..",
             init: (
               variable: $t$,
               label: (
@@ -757,6 +807,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
+      marks-line: "<-->",
       init: (
         variable: $t$,
         label: (
@@ -777,7 +828,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
     )
   ```
 
-  ─────────────────────────────────────────
+  ─────────────────────────────────────────────────────────────────
   Result :
 
   #align(center)[
@@ -786,6 +837,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
+      marks-line: "<-->",
       init: (
         variable: $t$,
         label: (
