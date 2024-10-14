@@ -140,7 +140,7 @@ More complex usage :
 you can modify the style of the bars (note that this modifies all the default ones, not the others, see 2.2.1.2.2).
 
 the bar style is passed as a string, like “-” for a plain bar or “..” for dotted lines,
-I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher's documentation])on marks to find out what can be done.
+I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher's documentation]) on marks to find out what can be done.
 
 *Example*
 
@@ -186,7 +186,7 @@ There are 3 differents types of bar :
 - ```"0"``` : a bar with a 0 on the center
 - ```"||"``` : a double bar, like for the undefined values
 
-NB : the marks-line parameter has no effect on these bars 
+*NB* : the marks-line parameter has no effect on these bars 
 
 *Example :*
 
