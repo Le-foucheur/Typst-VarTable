@@ -81,3 +81,14 @@ Into this
 - if you put too wide an element for the last value of a variation table, this can create a space between the edge of the table and the lines separating the lines of the table
 
 ![](./examples/bug1.png)
+
+## ·change log·
+
+#### 0.1.2 :
+- Support `fletcher 0.5.2`
+
+#### 0.1.1 :
+- added customisation of separator bars between signs
+
+##### 0.1.0 :
+- publishing the package
