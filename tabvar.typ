@@ -1,10 +1,8 @@
 #import "@preview/fletcher:0.5.2": *
-#let signe = "Sign"
-#let variation = "Variation"
 #let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
 
 // les deux prochaine fonctions sont pour connaitre le nombre d’éléments à skip
-#let prochainNonVideSigne(x, i) = {
+#let prochain-non-vide-signe(x, i) = {
   let k = 0
   let j = i + 1
   while j < x.len() and type(x.at(j)) == array and x.at(j).len() == 0 {
@@ -13,7 +11,7 @@
   }
   k
 }
-#let prochainNonVideVar(x, i) = {
+#let prochain-non-vide-var(x, i) = {
   let k = 0
   let j = i + 1
   while j < x.len() and x.at(j).len() == 0 {
@@ -134,8 +132,8 @@
           ),
         ),
         edge( // ligne de séparation x du reste
-          (-0.74,0.87 + if init.at("label").first().last() == signe{0.1}),
-          (domain.len()+0.12,0.87 + if init.at("label").first().last() == signe{0.1}),
+          (-0.74,0.87 + if init.at("label").first().last() == "Sign"{0.1}),
+          (domain.len()+0.12,0.87 + if init.at("label").first().last() == "Sign"{0.1}),
           stroke: stroke
         ),
         edge(  // ligne de séparation des label, des varation
@@ -155,7 +153,7 @@
         },
 
         ..for j in range(init.at("label").len()){(
-          if init.at("label").at(j).last() == signe{( //tableau de signe
+          if init.at("label").at(j).last() == "Sign"{( //tableau de signe
 
             // le cas s’il y a une ligne indèf à la fin
             if content.at(j).len() != domain.len()-1{
@@ -177,16 +175,16 @@
             for i in range(1,domain.len()-1){ //les labels + et -
               if type(content.at(j).at(i))== array and content.at(j).at(i).len() == 0{}
               else if type(content.at(j).at(i))== array and content.at(j).at(i).len() != 0{
-                let decalage = prochainNonVideSigne(content.at(j), i)
+                let decalage = prochain-non-vide-signe(content.at(j), i)
                 node((i + 1.2 + decalage*0.5, 2+(j)*3),content.at(j).at(i).last())
               }
               else{
-                let decalage = prochainNonVideSigne(content.at(j), i)
+                let decalage = prochain-non-vide-signe(content.at(j), i)
                 node((i + 1.2 + decalage*0.5, 2+(j)*3),content.at(j).at(i))
               }
             },
             if type(content.at(j).first()) == array and content.at(j).first().len() != 0 {// premier signe
-              node((1.05 + prochainNonVideSigne(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first().last())
+              node((1.05 + prochain-non-vide-signe(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first().last())
               edge(
                 (0.4 * calc.pow(stroke.thickness.pt(), 1/20), 1+j*3),
                 (0.4 * calc.pow(stroke.thickness.pt(), 1/20), 3+j*3 + if j == init.at("label").len()-1{5.5} ),
@@ -194,7 +192,7 @@
               )
             }
             else {
-              node((1.05 + prochainNonVideSigne(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first())
+              node((1.05 + prochain-non-vide-signe(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first())
             },
 
             // ligne de séparation
@@ -230,7 +228,7 @@
             if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
           )},
 
-          if init.at("label").at(j).last() == variation{( // tableau de variation
+          if init.at("label").at(j).last() == "Variation"{( // tableau de variation
             for i in range(content.at(j).len()-1){
               let proch= 0
               let decalindef = if content.at(j).at(i).len() >= 3 and i != 0 and (content.at(j).at(i).at(2) == "||" or content.at(j).at(i).at(1) == "||"){0.255} else{0}
@@ -331,24 +329,24 @@
 
               // élément a skip
               if content.at(j).at(i+1).len()==0 and content.at(j).at(i).len()!=0 {
-                if content.at(j).at(i+prochainNonVideVar(content.at(j), i)+1).first() == top{
+                if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == top{
                   edge(
                     (i +2/3 + decalindef ,proch),
-                    (i + (prochainNonVideVar(content.at(j), i)+1)+ 1/3 + 0.3  + if prochainNonVideVar(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4),
+                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3  + if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4),
                     arrow, stroke: stroke-arrow
                   )
                 }
-                else if content.at(j).at(i+prochainNonVideVar(content.at(j), i)+1).first() == bottom{
+                else if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == bottom{
                   edge(
                     (i +2/3 + decalindef ,proch),
-                    (i + (prochainNonVideVar(content.at(j), i)+1)+ 1/3 + 0.3 + if prochainNonVideVar(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12),
+                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3 + if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12),
                     arrow, stroke: stroke-arrow
                   )
                 }
-                else if content.at(j).at(i+prochainNonVideVar(content.at(j), i)+1).first() == center{
+                else if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == center{
                   edge(
                     (i +2/3 + decalindef ,proch),
-                    (i + (prochainNonVideVar(content.at(j), i)+1)+ 1/3 + 0.3+ if prochainNonVideVar(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+2 + 0.3),
+                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3+ if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+2 + 0.3),
                     arrow, stroke: stroke-arrow
                   )
                 }
