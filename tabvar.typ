@@ -1,4 +1,4 @@
-#import "@preview/fletcher:0.4.5": *
+#import "@preview/fletcher:0.5.2": *
 #let signe = "Sign"
 #let variation = "Variation"
 #let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
@@ -134,7 +134,7 @@
           ),
         ),
         edge( // ligne de séparation x du reste
-          (-0.86,0.87 + if init.at("label").first().last() == signe{0.1}),
+          (-0.74,0.87 + if init.at("label").first().last() == signe{0.1}),
           (domain.len()+0.12,0.87 + if init.at("label").first().last() == signe{0.1}),
           stroke: stroke
         ),
@@ -203,7 +203,7 @@
               if type(content.at(j).at(i)) == array and content.at(j).at(i).len() == 0{} // pas de ligne de séparation.
               else if type(content.at(j).at(i)) == array and content.at(j).at(i).len() != 0{ // ligne de séparation custom
                 if content.at(j).at(i).first() == "0"{
-                  edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, $0$)
+                  edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -1.75mm, stroke: stroke.thickness/2 + stroke.paint, $0$)
                 }
                 else if content.at(j).at(i).first() == "|"{
                   edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7pt, stroke: stroke.thickness/2 + stroke.paint)
@@ -224,7 +224,7 @@
                 }
               }
               else{ // ligne de séparation par défaut
-                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7.1pt, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$}, marks: marks-line)
+                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -1.75mm, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$}, marks: marks-line)
               }
             },
             if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
@@ -281,7 +281,7 @@
                 //le node qui contient l'élément
                 if content.at(j).at(i).first() == top{
                   node((2/3, 1+(j)*3+0.4), content.at(j).first().last())
-                  proch = 1+(j)*3+0.32
+                  proch = 1+(j)*3+0.4
                 }
                 else if content.at(j).at(i).first() == center{
                   node((2/3, 2+(j)*3+ 0.3), content.at(j).first().last())
@@ -301,7 +301,7 @@
               }
 
               // les nodes contenants les éléments
-              if content.at(j).at(i).len()!=0{
+              if content.at(j).at(i).len()!=0 and (content.at(j).at(i).at(1) != "||" or i != 0) {
                 if content.at(j).at(i).at(if content.at(j).at(i).len()>2 and content.at(j).at(i).at(2) == "||"{1} else{0}) == top{
                   node((i +2/3 + decalindef*1.06, 1+(j)*3+0.4), content.at(j).at(i).last())
                   proch = 1+(j)*3+0.4
@@ -319,13 +319,13 @@
               // les flèches entre les éléments s'il n'y a pas d'élément à skip
               if content.at(j).at(i+1).len()!=0 and content.at(j).at(i).len()!=0{
                 if content.at(j).at(i+1).first() == top{
-                  edge((i +2/3 + decalindef ,proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4), arrow, stroke: stroke-arrow)
+                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4), arrow, stroke: stroke-arrow)
                 }
                 else if content.at(j).at(i+1).first() == bottom{
-                  edge((i +2/3 + decalindef ,proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12), arrow, stroke: stroke-arrow)
+                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12), arrow, stroke: stroke-arrow)
                 }
                 else if content.at(j).at(i+1).first() == center{
-                  edge((i +2/3 + decalindef ,proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+2+ 0.3), arrow, stroke: stroke-arrow)
+                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+2+ 0.3), arrow, stroke: stroke-arrow)
                 }
               }
 
