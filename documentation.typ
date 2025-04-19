@@ -691,7 +691,7 @@ And finaly, we get :
         ($+$, ("||", $+$), $-$, ("||", $-$)),
         (
           (bottom, $1$),
-          (top, bottom, "||", $+oo$, $-oo$),
+          (top, bottom, "||", $ 4$, $1/1/1/1/1/1/1/1/1$),
           (top, $-20$),
           (bottom, top, "||", $-oo$, $+oo$),
           (bottom, $1$),
@@ -752,7 +752,7 @@ And finaly, we get :
 
         #align(center)[
           #tabvar(
-            arrow: "|-harpoon",
+            marks: (end:"hook"),
             stroke-arrow: gradient.linear(..color.map.rainbow),
             marks-line: "..",
             init: (
@@ -835,7 +835,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
     #tabvar(
       
       stroke: 5pt + red,
-      arrow: "X-*-<>",
+      marks: (end: "<>"),
       stroke-arrow: purple + 1.4pt,
       marks-line: "<-->",
       init: (
