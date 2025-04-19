@@ -11,7 +11,7 @@
     ),
   ),
   domain: ($ -oo $, $ 0 $, $ +oo $),
-  content: (
+  contents: (
     ($+$, ("||", $+$)),
     (
       (center, $0$),

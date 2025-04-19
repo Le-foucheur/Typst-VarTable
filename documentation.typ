@@ -45,8 +45,8 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 
 #pagebreak()
 
-== 2.2 - The content parameter
-The content parameter must be an array with one element per line (per label)\
+== 2.2 - The contents parameter
+The contents parameter must be an array with one element per line (per label)\
 
 Each element is itself an array with one element per column, with a different format for either sign or variation rows\
 
@@ -63,7 +63,7 @@ NB: the `line-0` parameter change the default bar style to ```"|"``` \
 The optional last element is ```"||"```\
 
 ==== 2.2.1.1 - A classical sign array
-A sign array must contain content like ```typ $+$``` or ```typ $-$```, but you can put anything else.
+A sign array must contain contents like ```typ $+$``` or ```typ $-$```, but you can put anything else.
 
 
 *Example :* \
@@ -80,7 +80,7 @@ A normal sign table :
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (($+$, $-$, $+$),),
+        contents: (($+$, $-$, $+$),),
       )
     ```,
     scale(x: 80%, y: 80%)[
@@ -90,7 +90,7 @@ A normal sign table :
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (($+$, $-$, $+$),),
+        contents: (($+$, $-$, $+$),),
       )
     ],
   )
@@ -107,7 +107,7 @@ More complex usage :
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
           (
             "Hello world !",
             $-$,
@@ -125,7 +125,7 @@ More complex usage :
             label: (([sign], "Sign"),),
           ),
           domain: ($2$, $4$, $6$, $8$),
-          content: (("Hello world !", $-$, $ 3 / 2 $),),
+          contents: (("Hello world !", $-$, $ 3 / 2 $),),
         )
       ],
     ),
@@ -156,7 +156,7 @@ I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underl
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$,),
-        content: (
+        contents: (
           ($+$, $-$),
         ),
       )
@@ -169,7 +169,7 @@ I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underl
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$,),
-        content: (
+        contents: (
           ($+$, $-$),
         ),
       )
@@ -192,7 +192,7 @@ There are 3 differents types of bar :
 
 #rect(fill: luma(95%), radius: 10pt, width: 18cm)[
   #grid(
-    columns: (7cm, 7cm),
+    columns: (7.3cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
@@ -200,8 +200,8 @@ There are 3 differents types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$),
-        content: (
+        domain: ($2$, $4$, $6$, $8$, $10$),
+        contents: (
           (
             $+$,
             ("|", $-$),
@@ -211,14 +211,14 @@ There are 3 differents types of bar :
         ),
       )
     ```,
-    scale(x: 80%, y: 80%)[
+    scale(x: 60%, y: 80%)[
       #tabvar(
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$, $ 10 $),
-        content: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
+        contents: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
   )
@@ -234,13 +234,13 @@ If you want a double line at the start of the table, you can use a double bar `"
     align: horizon,
     ```typ
       #tabvar(
-        line-0: true,
+        
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
           (
             ("||", $+$),
             $-$,
@@ -251,13 +251,13 @@ If you want a double line at the start of the table, you can use a double bar `"
     ```,
     scale(x: 80%)[
       #tabvar(
-        line-0: true,
+        
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$),
-        content: ((("||", $+$), $-$, "||"),),
+        contents: ((("||", $+$), $-$, "||"),),
       )
     ],
   )
@@ -273,13 +273,13 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
     align: horizon,
     ```typ
       #tabvar(
-        line-0: true,
+        
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
           (
             $+$,
             (),
@@ -290,13 +290,13 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
     ```,
     scale(x: 80%, y: 80%)[
       #tabvar(
-        line-0: true,
+        
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (($+$, (), $-$),),
+        contents: (($+$, (), $-$),),
       )
     ],
   )
@@ -315,7 +315,7 @@ Each element is in etheir of these forms :
 
 ==== 2.2.2.1 - A classical variation array
 
-A variation array must contain couple with in first position, the element position, and in second position, whatever you want as long as it's of the content type.\
+A variation array must contain couple with in first position, the element position, and in second position, whatever you want as long as it's of the contents type.\
 \
 The position can be ```typ top, center``` or ```typ bottom```, but no other type of alignment
 
@@ -327,13 +327,13 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
     align: horizon,
     ```typ
       #tabvar(
-        line-0: true,
+        
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
           (
             (top, $3$),
             (bottom, $0$),
@@ -347,13 +347,13 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
       dx: -45pt,
       scale(x: 80%, y: 80%)[
         #tabvar(
-          line-0: true,
+          
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
           ),
           domain: ($2$, $4$, $6$, $8$),
-          content: (
+          contents: (
             (
               (top, $3$),
               (bottom, $0$),
@@ -373,11 +373,11 @@ If your function is not defined on some values like $f(x) = 1/x$ for $x = 0$, yo
 
 #sym.star For each values of domain except the start and the end.
 
-The array of one value should look like ```typ (pos1, pos2, "||", content1, content2)```\
+The array of one value should look like ```typ (pos1, pos2, "||", contents1, contents2)```\
 where :
-- pos1 and 2 is ```typ top, center, bottom ``` and pos1 is for the placement of content1 similary for pos2
+- pos1 and 2 is ```typ top, center, bottom ``` and pos1 is for the placement of contents1 similary for pos2
 - ```"||"``` is to precise the value is undefine
-- content1 and 2 is type of content and content1 one is for before the double bar and content2 for after
+- contents1 and 2 is type of contents and contents1 one is for before the double bar and contents2 for after
 
 *Example :*
 
@@ -393,7 +393,7 @@ where :
           label: (([variation], "Variation"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
           (
             (top, $3$),
             (bottom, top, "||", $0$, $2$),
@@ -411,7 +411,7 @@ where :
             label: (([variation], "Variation"),),
           ),
           domain: ($2$, $4$, $6$),
-          content: (
+          contents: (
             (
               (top, $3$),
               (bottom, top, "||", $0$, $2$),
@@ -425,7 +425,7 @@ where :
 ]
 
 If ```typ pos1``` and ```typ pos2``` is same, you can just fill in one instead of two, \
-In the same way if ```typ content1``` and ```typ content2``` is same, you can also enter just one
+In the same way if ```typ contents1``` and ```typ contents2``` is same, you can also enter just one
 
 *Example :*
 
@@ -443,7 +443,7 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
           label: (([variation], "Variation"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
             (
               (top, $3$),
               (bottom, "||", $0$, $1$),
@@ -463,7 +463,7 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
             label: (([variation], "Variation"),),
           ),
           domain: ($2$, $4$, $6$, $8$, $9$),
-          content: (
+          contents: (
             (
               (top, $3$),
               (bottom, "||", $0$, $1$),
@@ -495,7 +495,7 @@ For example ``` (top, "||", $3$)```
           label: (([variation], "Variation"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
             (
               (top, "||", $3$),
               (bottom, $1$),
@@ -513,7 +513,7 @@ For example ``` (top, "||", $3$)```
             label: (([variation], "Variation"),),
           ),
           domain: ($2$, $4$, $6$),
-          content: (
+          contents: (
             (
               (top, "||", $3$),
               (bottom, $1$),
@@ -546,7 +546,7 @@ to do this, as with sign arrays, you must create an empty array
           label: (([variation], "Variation"),),
         ),
         domain: ($2$, $4$, $6$, $8$),
-        content: (
+        contents: (
             (
               (top, "||", $3$),
               (),
@@ -564,7 +564,7 @@ to do this, as with sign arrays, you must create an empty array
             label: (([variation], "Variation"),),
           ),
           domain: ($2$, $4$, $6$),
-          content: (
+          contents: (
             (
               (top, "||", $3$),
               (),
@@ -602,7 +602,7 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
               ),
             ),
             domain: ($0$, $ alpha $, $ +oo $),
-            content: (
+            contents: (
               ($-$, $+$),
               (
                 (top, "||", $+oo$),
@@ -624,7 +624,7 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
               ),
             ),
             domain: ($0$, $ alpha $, $ +oo $),
-            content: (
+            contents: (
               ($-$, $+$),
               (
                 (top, "||", $+oo$),
@@ -661,7 +661,7 @@ And finaly, we get :
           ),
         ),
         domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
-        content: (
+        contents: (
           ($+$, ("||", $+$), $-$, ("||", $-$)),
           (
             (bottom, $1$),
@@ -687,7 +687,7 @@ And finaly, we get :
         ),
       ),
       domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
-      content: (
+      contents: (
         ($+$, ("||", $+$), $-$, ("||", $-$)),
         (
           (bottom, $1$),
@@ -726,7 +726,7 @@ And finaly, we get :
             ),
           ),
           domain: ($ -oo $, $ 0 $, $ +oo $),
-          content: (
+          contents: (
             ($-$, $+$),
             (
               (top, $+oo$),
@@ -766,7 +766,7 @@ And finaly, we get :
               ),
             ),
             domain: ($ -oo $, $ 0 $, $ +oo $),
-            content: (
+            contents: (
               ($-$, $+$),
               (
                 (top, $+oo$),
@@ -803,7 +803,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
   Code :
   ```typ
     #tabvar(
-      line-0: true,
+      
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
@@ -816,7 +816,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
         ),
       ),
       domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
-      content: (
+      contents: (
         ($-$, ("|", $+$), $-$),
         (
           (top, $+oo$),
@@ -833,7 +833,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
 
   #align(center)[
     #tabvar(
-      line-0: true,
+      
       stroke: 5pt + red,
       arrow: "X-*-<>",
       stroke-arrow: purple + 1.4pt,
@@ -846,7 +846,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
         ),
       ),
       domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
-      content: (
+      contents: (
         ($-$, ("|", $+$), $-$),
         (
           (top, $+oo$),

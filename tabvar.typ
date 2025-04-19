@@ -1,60 +1,12 @@
-#import "@preview/fletcher:0.5.2": *
-#let bo(x) = table(columns: 2cm, stroke: 0pt)[#table.cell(align: center + horizon)[#x]]
+#import "@preview/cetz:0.3.4"
 
-// les deux prochaine fonctions sont pour connaitre le nombre d’éléments à skip
-#let prochain-non-vide-signe(x, i) = {
-  let k = 0
-  let j = i + 1
-  while j < x.len() and type(x.at(j)) == array and x.at(j).len() == 0 {
-    k += 1
-    j += 1
+#let prochain_signe(tab_signe, j) = {
+  let indice = j + 1
+  while indice < tab_signe.len() and type(tab_signe.at(indice)) == array and tab_signe.at(indice).len() == 0 {
+    indice += 1
   }
-  k
-}
-#let prochain-non-vide-var(x, i) = {
-  let k = 0
-  let j = i + 1
-  while j < x.len() and x.at(j).len() == 0 {
-    k += 1
-    j += 1
-  }
-  k
-}
-// fin des deux fonctions
-
-// pour gérer le dernier élément
-#let lastele(x, domain, j, init, stroke) = {
-  // le placement de l’élément
-  if x.first() == top {
-    node((domain.len() - 1 / 3, 1 + (j) * 3 + 0.4), x.last())
-  } else if x.first() == center {
-    node((domain.len() - 1 / 3, 2 + (j) * 3 + 0.3), x.last())
-  } else if x.first() == bottom {
-    node((domain.len() - 1 / 3, 3 + (j) * 3 - 0.12), x.last())
-  }
-  // pour gérer le cas de l’indéfinie
-  if x.at(1) == "||" {
-    edge(
-      (
-        domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
-        j * 3 + if j == 0 {
-          0.85
-        } + if j == 0 and j == init.at("label").len() - 1 {
-          -0.05
-        } + if j == 0 and init.at("label").len() == 1 {
-          0.05
-        },
-      ),
-      (
-        domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1 / 2),
-        j * 3 + 4 + if j == init.at("label").len() - 1 {
-          4
-        },
-      ),
-      stroke: stroke.thickness / 2 + stroke.paint,
-    )
-  }
-}
+  indice
+} 
 
 /// Render a variation table and sign table of your functions
 ///
@@ -84,7 +36,7 @@
 /// you can use all different kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
 ///
 ///
-/// - content (array): the content of the table \
+/// - contents (array): the content of the table \
 /// see below for more details
 ///
 /// - stroke (lenght, color, gradient): *Optional*\
@@ -95,9 +47,6 @@
 /// - stroke-arrow (lenght, color, gradient): *Optional*\
 /// the arrow’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
-///
-/// - line-0 (bool): *Optional*\
-/// if you want 0 on line betwen different signs
 /// 
 /// - marks-line (string): *Optional*\
 /// if you want to change the style of all separator lines between signs\
@@ -112,251 +61,357 @@
   arrow: "->",
   stroke: 1pt + black,
   stroke-arrow: 0.6pt + black,
-  _debug: false,
-  line-0: false,
   marks-line: "-",
-  content: ((),),
+  contents: ((),),
 ) = {
   //start of function
   context {
-    diagram(
-        spacing: ((4/3)*1cm, 1.3pt),
-        cell-size: 0pt,
-        debug: _debug,
-        node((0,0), stroke: stroke,enclose:  (//contour du tableau
-          ..for i in range(domain.len() + 1){
-              for j in range(-2 ,init.at("label").len()*3 +2){
-                ((i,j),)
-              }
-            }
-          ),
-        ),
-        edge( // ligne de séparation x du reste
-          (-0.74,0.87 + if init.at("label").first().last() == "Sign"{0.1}),
-          (domain.len()+0.12,0.87 + if init.at("label").first().last() == "Sign"{0.1}),
-          stroke: stroke
-        ),
-        edge(  // ligne de séparation des label, des varation
-          (0.36,-6),
-          (0.36,init.at("label").len()*3 + 5),
-          stroke: stroke
-        ),
-        node((-0.19,-1), (init.at("variable")), width: 2cm), // affichage de la variable
+    cetz.canvas({
+      import cetz.draw: *
 
-        for i in range(domain.len()-1){ // affichage de l’domainle
-          node((i+2/3, -1), domain.at(i), width: (2/3)*1cm)
-        },
-        node((domain.len()-1/3,-1), domain.at(domain.len()-1), width: (2/3)*1cm),// affichage du dernier élément de l’domaine
+      //grid((0,0), (15,-20), step: 1) 
 
-        ..for j in range(init.at("label").len()){(// affichage des label
-          node((-0.19,2+j*3), bo(init.at("label").at(j).first()), height: calc.max(measure(bo(init.at("label").at(j).first())).height, 45pt)),)
-        },
+      //Début des problèmes
 
-        ..for j in range(init.at("label").len()){(
-          if init.at("label").at(j).last() == "Sign"{( //tableau de signe
+      //Pour la conversion 1unit = 10,65mm
 
-            // le cas s’il y a une ligne indèf à la fin
-            if content.at(j).len() != domain.len()-1{
-              edge(
-                (
-                  domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
-                  j * 3 + 1
-                ),
-                (
-                  domain.len() + 0.137 - 0.067 * calc.pow(stroke.thickness.pt(), 1/2),
-                  j * 3 + 4 + if j == init.at("label").len() - 1 {
-                    4.5
-                  },
-                ),
-                stroke: stroke.thickness / 2 + stroke.paint,
-              )
-            },
-
-            for i in range(1,domain.len()-1){ //les labels + et -
-              if type(content.at(j).at(i))== array and content.at(j).at(i).len() == 0{}
-              else if type(content.at(j).at(i))== array and content.at(j).at(i).len() != 0{
-                let decalage = prochain-non-vide-signe(content.at(j), i)
-                node((i + 1.2 + decalage*0.5, 2+(j)*3),content.at(j).at(i).last())
-              }
-              else{
-                let decalage = prochain-non-vide-signe(content.at(j), i)
-                node((i + 1.2 + decalage*0.5, 2+(j)*3),content.at(j).at(i))
-              }
-            },
-            if type(content.at(j).first()) == array and content.at(j).first().len() != 0 {// premier signe
-              node((1.05 + prochain-non-vide-signe(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first().last())
-              edge(
-                (0.4 * calc.pow(stroke.thickness.pt(), 1/20), 1+j*3),
-                (0.4 * calc.pow(stroke.thickness.pt(), 1/20), 3+j*3 + if j == init.at("label").len()-1{5.5} ),
-                stroke: stroke.thickness/2 + stroke.paint,
-              )
-            }
-            else {
-              node((1.05 + prochain-non-vide-signe(content.at(j), 0)*0.6, 2+(j)*3),content.at(j).first())
-            },
-
-            // ligne de séparation
-            for i in range(1,domain.len()-1){
-
-              if type(content.at(j).at(i)) == array and content.at(j).at(i).len() == 0{} // pas de ligne de séparation.
-              else if type(content.at(j).at(i)) == array and content.at(j).at(i).len() != 0{ // ligne de séparation custom
-                if content.at(j).at(i).first() == "0"{
-                  edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -1.75mm, stroke: stroke.thickness/2 + stroke.paint, $0$)
-                }
-                else if content.at(j).at(i).first() == "|"{
-                  edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -7pt, stroke: stroke.thickness/2 + stroke.paint)
-                }
-                else if content.at(j).at(i).first() == "||"{
-                  edge(
-                    (i+2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()) ,1+(j)*3),
-                    (i+2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()) ,3+(j)*3 + if j == init.at("label").len()-1{5.5}),
-                    label-sep: -7pt,
-                    stroke: stroke.thickness/2 + stroke.paint
-                  )
-                  edge(
-                    (i+2/3- 0.02 * calc.sqrt(stroke.thickness.pt()) ,1+(j)*3),
-                    (i+2/3- 0.02 * calc.sqrt(stroke.thickness.pt()) ,3+(j)*3 + if j == init.at("label").len()-1{5.5}),
-                    label-sep: -7pt,
-                    stroke: stroke.thickness/2 + stroke.paint,
-                  )
-                }
-              }
-              else{ // ligne de séparation par défaut
-                edge((i+2/3, 1+(j)*3), (i+2/3,3+(j)*3 + if j == init.at("label").len()-1{5.5}),label-sep: -1.75mm, stroke: stroke.thickness/2 + stroke.paint, if line-0{$0$}, marks: marks-line)
-              }
-            },
-            if j != init.at("label").len()-1{edge((-0.74,3+(j)*3), (domain.len()+0.122, 3+(j)*3), stroke: stroke)} // ligne sous les tableaux de content
-          )},
-
-          if init.at("label").at(j).last() == "Variation"{( // tableau de variation
-            for i in range(content.at(j).len()-1){
-              let proch= 0
-              let decalindef = if content.at(j).at(i).len() >= 3 and i != 0 and (content.at(j).at(i).at(2) == "||" or content.at(j).at(i).at(1) == "||"){0.255} else{0}
-              let edgeprochindef = if content.at(j).at(i+1).len() >= 3 and (content.at(j).at(i+1).at(2) == "||" or content.at(j).at(i+1).at(1) == "||"){0.3} else{0}
-              let prochainIndef = if content.at(j).at(i).len() >= 3 and i != 0 and (content.at(j).at(i).at(2) == "||" or content.at(j).at(i).at(1) == "||"){
-                if content.at(j).at(i).first() == top{1}
-                else if content.at(j).at(i).first() == center{1.75}
-                else if content.at(j).at(i).first() == bottom{2.5}
-              }
-
-              if content.at(j).at(i).len()>2 and i != 0 and content.at(j).at(i).at(2) == "||"{ // cas de l'ajout d'une ligne indéfine
-
-                node((i +2/3 - decalindef*1.06, prochainIndef +(j)*3+ 0.4), content.at(j).at(i).at(3))
-
-                //la double ligne de l'indéfine
-                edge(
-                  (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4 + if j == init.at("label").len()-1{4}),
-                  stroke: stroke.thickness/2 + stroke.paint
-                )
-                edge(
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+4 + if j == init.at("label").len()-1{4}),
-                  stroke: stroke.thickness/2 + stroke.paint
-                )
-              }
-
-              if content.at(j).at(i).len()>2 and i != 0 and content.at(j).at(i).at(1) == "||"{ // cas de l'ajout d'une ligne indéfine s’il y a 1 seul alignement
-
-                node((i +2/3 - decalindef*1.06, prochainIndef +(j)*3+ 0.4), content.at(j).at(i).at(2))
-
-                //la double ligne de l'indéfine
-                edge(
-                  (i +2/3 -0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j + if j == 0{0.9} + if j == 0 and 1 == init.at("label").len() {-0.03}),
-                  (i +2/3 - 0.02 * calc.sqrt(stroke.thickness.pt()) ,3*j+4 + if j == init.at("label").len()-1{4}),
-                  stroke: stroke.thickness/2 + stroke.paint
-                )
-                edge(
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.03}),
-                  (i +2/3 + 0.02 * calc.sqrt(stroke.thickness.pt()),3*j+4 + if j == init.at("label").len()-1{4}),
-                  stroke: stroke.thickness/2 + stroke.paint
-                )
-              }
-
-              //traite le premier cas s'il est non défine
-              else if content.at(j).at(i).len()>2 and content.at(j).at(i).at(1) == "||"{
-
-                //le node qui contient l'élément
-                if content.at(j).at(i).first() == top{
-                  node((2/3, 1+(j)*3+0.4), content.at(j).first().last())
-                  proch = 1+(j)*3+0.4
-                }
-                else if content.at(j).at(i).first() == center{
-                  node((2/3, 2+(j)*3+ 0.3), content.at(j).first().last())
-                  proch = 2+(j)*3+ 0.3
-                }
-                else if content.at(j).at(i).first() == bottom{
-                  node((2/3, 3+(j)*3-0.12), content.at(j).first().last())
-                  proch = 3+(j)*3-0.12
-                }
-
-                // la ligne de l'indéfine
-                edge(
-                  (0.4 * calc.pow(stroke.thickness.pt(), 1/20) ,3*j + if j == 0{0.9} + if j == 0 and j == init.at("label").len() - 1 {-0.01}),
-                  (0.4 * calc.pow(stroke.thickness.pt(), 1/20) ,3*j+4 + if j == init.at("label").len() - 1 {4}),
-                  stroke: stroke.thickness/2 + stroke.paint
-                )
-              }
-
-              // les nodes contenants les éléments
-              if content.at(j).at(i).len()!=0 and (content.at(j).at(i).at(1) != "||" or i != 0) {
-                if content.at(j).at(i).at(if content.at(j).at(i).len()>2 and content.at(j).at(i).at(2) == "||"{1} else{0}) == top{
-                  node((i +2/3 + decalindef*1.06, 1+(j)*3+0.4), content.at(j).at(i).last())
-                  proch = 1+(j)*3+0.4
-                }
-                else if content.at(j).at(i).at(if content.at(j).at(i).len()>2 and content.at(j).at(i).at(2) == "||"{1} else{0}) == center{
-                  node((i +2/3 + decalindef*1.06, 2+(j)*3+ 0.3), content.at(j).at(i).last())
-                  proch = 2+(j)*3+ 0.3
-                }
-                else if content.at(j).at(i).at(if content.at(j).at(i).len()>2 and content.at(j).at(i).at(2) == "||"{1} else{0}) == bottom{
-                  node((i +2/3 + decalindef*1.06, 3+(j)*3-0.12), content.at(j).at(i).last())
-                  proch = 3+(j)*3-0.12
-                }
-              }
-
-              // les flèches entre les éléments s'il n'y a pas d'élément à skip
-              if content.at(j).at(i+1).len()!=0 and content.at(j).at(i).len()!=0{
-                if content.at(j).at(i+1).first() == top{
-                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4), arrow, stroke: stroke-arrow)
-                }
-                else if content.at(j).at(i+1).first() == bottom{
-                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12), arrow, stroke: stroke-arrow)
-                }
-                else if content.at(j).at(i+1).first() == center{
-                  edge((i +2/3 + decalindef, proch),(i+5/3 + if i+2 != content.at(j).len(){- edgeprochindef} ,3*(j)+2+ 0.3), arrow, stroke: stroke-arrow)
-                }
-              }
-
-              // élément a skip
-              if content.at(j).at(i+1).len()==0 and content.at(j).at(i).len()!=0 {
-                if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == top{
-                  edge(
-                    (i +2/3 + decalindef ,proch),
-                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3  + if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+1+0.4),
-                    arrow, stroke: stroke-arrow
-                  )
-                }
-                else if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == bottom{
-                  edge(
-                    (i +2/3 + decalindef ,proch),
-                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3 + if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef},3*(j)+3-0.12),
-                    arrow, stroke: stroke-arrow
-                  )
-                }
-                else if content.at(j).at(i+prochain-non-vide-var(content.at(j), i)+1).first() == center{
-                  edge(
-                    (i +2/3 + decalindef ,proch),
-                    (i + (prochain-non-vide-var(content.at(j), i)+1)+ 1/3 + 0.3+ if prochain-non-vide-var(content.at(j), i)+1 != content.at(j).len(){- edgeprochindef} ,3*(j)+2 + 0.3),
-                    arrow, stroke: stroke-arrow
-                  )
-                }
-              }
-            },
-            lastele(content.at(j).last(), domain, j,init , stroke), // pour gérer le dernier élément
-
-            if j  != init.at("label").len()-1{edge((-0.74,3*(j)+4), (domain.len()+0.122, 3*(j)+4), stroke: stroke)} // ligne sous les tableaux de variation
-          )}
-        )}
+      let largeur_permiere_colonne = calc.min( //La largeur de la première colonne
+        3,
+        calc.max(
+          ..for i in range(0, init.label.len()){
+            (measure(init.label.at(i).at(0)).width.mm() / 10.65,)
+          }
+        )
       )
+
+      content((1.5,-0.5), [#init.variable]) // La variable
+
+      let coordX = for i in range(0, domain.len()) {
+        ((0,0),)
+      }
+
+      let decalage_domaine = 3.2 + measure(domain.at(0)).width.mm() / ( 2 * 10.65) // la distance entre les valeurs du domaine puis la largeur du talbeau de signe
+
+      for i in range(0, domain.len() - 1){ //les éléments du domaine
+        coordX.at(i) = (decalage_domaine, measure(domain.at(i)).width.mm() / ( 10.65))
+
+        if i == 0{
+          content(
+            (decalage_domaine, -0.5),
+            box(width: 1pt, align(center, domain.at(i)))
+          )
+
+        } else {
+
+          content(
+            (decalage_domaine, -0.5),
+            box(width: 3 * 10.65mm, align(center, domain.at(i)))
+          )
+        }
+
+        decalage_domaine = decalage_domaine + (coordX.at(i).at(1) + coordX.at(i + 1).at(1))/2 + 3
+        
+      }
+
+      content( // le dernier éléments du domaine
+        (decalage_domaine, -0.5),
+        box(width: 3 * 10.65mm, align(center, domain.at(domain.len() - 1)))
+      )
+      coordX.at(domain.len() - 1) = (decalage_domaine, measure(domain.at(domain.len() - 1)).width.mm() / ( 10.65))
+      
+      decalage_domaine = decalage_domaine + coordX.at(domain.len() - 1).at(1)/2 + 0.2
+
+      let coordY = for i in range(0, init.label.len()) {
+        ((0,0),)
+      }
+
+      let hauteur_total = 1
+      for i in range(0, init.label.len()){ //le texte de la première colonne
+        let hauteur_case = calc.max(
+          1,
+          measure(init.label.at(i).at(0)).height.mm() / 10.65
+        )
+        hauteur_total = hauteur_total + hauteur_case + 1.75
+
+        content(
+          (1.5, (-(2*i+1)*(hauteur_case + 1.75)/2 - 1) ),
+          box(width: largeur_permiere_colonne * 10.64mm, align(center ,init.label.at(i).at(0)))
+        )
+
+        line(
+          (0, (-(i)*(hauteur_case + 1.75) - 1)),
+          (decalage_domaine, -(i)*(hauteur_case + 1.75) - 1),
+        )
+
+        coordY.at(i) = (-(2*i+1)*(hauteur_case + 1.75)/2 - 1, hauteur_case + 1.75)
+      }
+
+      rect( //les countours du tableau
+        (0,0),
+        (decalage_domaine, - hauteur_total),
+      )
+      line( // ligne de séparation entre le texte et les tableaux
+        (3, 0),
+        (3, -hauteur_total),
+      )
+
+      line( // ligne de séparation entre le domaine et les tableaux
+        (0, -1),
+        (decalage_domaine, -1),
+      )
+
+
+      for i in range(0, init.label.len()){
+
+        //Les tableaux de signe
+        
+        if init.label.at(i).at(1) == "Sign"{
+          for j in range(0, contents.at(i).len() - 1) {
+
+            if type(contents.at(i).at(j + 1)) == array and contents.at(i).at(j + 1).len() == 0 { // le signe si le prochain signe est vide
+              let prochain = prochain_signe(contents.at(i), j)
+
+              if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide
+                content( 
+                    (
+                      (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2, 
+                      coordY.at(i).at(0)
+                    ),
+                    box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(j).at(1))
+                  )
+                )
+
+                if j != 0{
+                  if contents.at(i).at(j).at(0) == "||"{
+                    line(
+                      (coordX.at(j).at(0) - 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0) - 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                    line(
+                      (coordX.at(j).at(0) + 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0) + 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                  } else if contents.at(i).at(j).at(0) == "0"{
+                    line(
+                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                      name: "zero"
+                    )
+                    content(
+                      "zero.mid",
+                      $ 0 $
+                    )
+                  } else {
+                    line(
+                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                  }
+                } else if contents.at(i).at(j).first() == "||"{
+                  line(
+                    (3.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                }
+
+              } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
+                // On ne fait rien s'il n'y a pas de signe
+              } else {
+                content(
+                  (
+                    (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2 ,
+                    coordY.at(i).at(0)
+                  ),
+                  box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(j))
+                  )
+                )
+
+                if j != 0 { //Si c'est pas le premier signe
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                }
+              }
+
+            } else {
+              
+              if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // si le signe n'est pas vide
+                content( 
+                    (
+                      (coordX.at(j + 1).at(0) + coordX.at(j).at(0) ) / 2, 
+                      coordY.at(i).at(0)
+                    ),
+                    box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(j).at(1))
+                  )
+                )
+
+                if j != 0 {
+                  if contents.at(i).at(j).at(0) == "||"{
+                    line(
+                      (coordX.at(j).at(0) - 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0) - 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                    line(
+                      (coordX.at(j).at(0) + 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0) + 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                  } else if contents.at(i).at(j).at(0) == "0"{
+                    line(
+                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                      name: "zero"
+                    )
+                    content(
+                      "zero.mid",
+                      $ 0 $
+                    )
+                  } else {
+                    line(
+                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    )
+                  }
+                } else if contents.at(i).at(j).first() == "||"{
+                  line(
+                    (3.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                }
+
+              } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
+                // On ne fait rien s'il n'y a pas de signe
+              } else {
+                content(
+                  (
+                    (coordX.at(j + 1).at(0) + coordX.at(j).at(0) ) / 2 ,
+                    coordY.at(i).at(0)
+                  ),
+                  box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(j))
+                  )
+                )
+
+                if j != 0 {
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                }
+              }
+
+            }
+          }
+
+          //Cas du dernier signe
+
+          if contents.at(i).at(contents.at(i).len() - 1) == "||" { // Si bar indéfinie à la fin
+            line(
+              (decalage_domaine - 0.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+              (decalage_domaine - 0.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+            )
+          } else {
+            let indice = contents.at(i).len()
+            
+            if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() >= 2 { // si le signe n'est pas vide
+                content( 
+                    (
+                      (coordX.at(indice - 1 + 1).at(0) + coordX.at(indice - 1).at(0) ) / 2, 
+                      coordY.at(i).at(0)
+                    ),
+                    box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(indice - 1).at(1))
+                  )
+                )
+
+                if contents.at(i).at(indice - 1).at(0) == "||"{
+                  line(
+                    (coordX.at(indice - 1).at(0) - 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(indice - 1).at(0) - 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                  line(
+                    (coordX.at(indice - 1).at(0) + 0.1, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(indice - 1).at(0) + 0.1, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                } else if contents.at(i).at(indice - 1).at(0) == "0"{
+                  line(
+                    (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    name: "zero"
+                  )
+                  content(
+                    "zero.mid",
+                    $ 0 $
+                  )
+                } else {
+                  line(
+                    (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                }
+
+              } else if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() == 0 {
+                // On ne fait rien s'il n'y a pas de signe
+              } else {
+                content(
+                  (
+                    (coordX.at(indice - 1 + 1).at(0) + coordX.at(indice - 1).at(0) ) / 2 ,
+                    coordY.at(i).at(0)
+                  ),
+                  box(
+                    width: 1pt, 
+                    align(center, contents.at(i).at(indice - 1))
+                  )
+                )
+
+                line(
+                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                )
+              
+              }
+          }
+
+          // Fin tableau de signe
+
+        }
+      }
+
+    })
   }
 }
+
+Voici du texte test pour mettre à l'échelle pour un texte classique
+
+#tabvar(
+  init: (
+    variable: $ x $,
+    label: (
+      ([sign of $f’$ aaaa], "Sign"),
+      ([variation of $f$], "Variation"),
+      ([variation of $f$], "Variation"),
+    ),
+  ),
+  domain: ($ -oo $, $ 0 $, $ 3 $, $ omega $, $ 2 omega $),
+  contents: (
+    ($ + $, (), ("0", $ a $),$ + $),
+    (
+      (center, $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      (center, $ 0 $),
+    ),
+    (
+      (center, $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      (center, $ 0 $),
+    ),
+  ),
+)
