@@ -2,7 +2,7 @@
 
 #set page(width: 30cm, height: 30cm)
 
-#let _prochain-signe(tab_signe, j) = {
+#let _prochain-signe(tab_signe, j) = { // Cherche le prochain élément non vide "()" dans ce sous tableau
   let indice = j + 1
   while indice < tab_signe.len() and type(tab_signe.at(indice)) == array and tab_signe.at(indice).len() == 0 {
     indice += 1
@@ -10,7 +10,7 @@
   indice
 }
 
-#let _prochain-ele(ligne, j) = {
+#let _prochain-ele(ligne, j) = { // Cherche le prochain élément non vide "()" dans ce sous tableau
   let indice = j + 1
   while indice < ligne.len() and ligne.at(indice).len() == 0 {
     indice += 1
@@ -18,7 +18,10 @@
   indice
 }
 
-#let _coord-fleche(i, j, indef, proch_indef, ligne, coordX, coordY) = {
+#let _coord-fleche(i, j, indef, proch_indef, ligne, coordX, coordY) = { // Caclule les points de départ et d’arrivé des flèches 
+
+  // On cherche des flèches qui pointe toujours vers le centre du prochain élément et qui parte du centre de l’élément courant 
+  // De plus on ne veut pas que les flèches soit présente dans une zone réctangulaire autours des éléments, qui dépent de la taille de l’élément
 
   let indice_proch_ele = _prochain-ele(ligne, j)
 
@@ -34,10 +37,10 @@
     else {1}
   )).width.mm() /(10.65)
 
-  h += if j != 0 {0.25} else {0.25}
-  l += if j != 0 {0.25} else {0.25}
-  d += if indice_proch_ele != ligne.len() {0.25} else {0.25}
-  n += if indice_proch_ele != ligne.len() {0.25} else {0.25}
+  h += 0.25
+  l += 0.25
+  d += 0.25
+  n += 0.25
 
   let (x,y) = ( //les coordonées de l'element
     coordX.at(j).at(0)
@@ -73,10 +76,10 @@
     } else {0}
   )
   
-  let (a,b) = ( //les coordonées de l'element
+  let (a,b) = ( //les coordonées du prochain element
     coordX.at(indice_proch_ele).at(0)
-    + if proch_indef and proch_indef != 0 {- d/2 - 0.17} else {0}
-    ,
+    + if proch_indef and proch_indef != 0 {- d/2 - 0.17} else {0},
+
     coordY.at(i).at(0) 
     + if ligne.at(indice_proch_ele).first() == top {
       coordY.at(i).at(1) / 2 - 0.3 - measure(ligne.at(indice_proch_ele).at(
@@ -103,8 +106,8 @@
 
   let coefdir = (b - y) / (a - x)
 
-  let f(t) = coefdir * (t - x) + y
-  let rf(t) = if calc.abs(coefdir) > 0.001 {1/coefdir * (t - y) + x} else {0}
+  let f(t) = coefdir * (t - x) + y // équation de la droite entre les deux points
+  let rf(t) = if calc.abs(coefdir) > 0.001 {1/coefdir * (t - y) + x} else {0} //équation réciproque
 
   let Ppoint = {
     if calc.abs(coefdir) > 0.001 {
@@ -199,7 +202,7 @@
     "variable": [],
     "label": [],
   ),
-  domain: (),
+  domain: (), // the domain of the function
   tab-style: (stroke: 1pt + black, mark: (symbol: none)),
   arrow-mark: (end: "straight"),
   arrow-style: (stroke: black + 1pt),
@@ -219,30 +222,30 @@
 
       //Pour la conversion 1unit = 10,65mm 
 
-      let largeur_permiere_colonne = calc.min( //La largeur de la première colonne
+      let largeur_permiere_colonne = calc.max( //La largeur de la première colonne
         3,
         calc.max(
           ..for i in range(0, init.label.len()){
-            (measure(init.label.at(i).at(0)).width.mm() / 10.65,)
+            (measure(init.label.at(i).at(0)).width.mm() / 10.65 + 1,)
           }
         )
       )
 
-      let hauteur_permiere_col = calc.max(
+      let hauteur_permiere_ligne = calc.max(
         1,
-        measure(init.variable).height.mm() / (10.65) + 1,
+        measure(init.variable).height.mm() / (10.65),
         ..for i in domain {
           (measure(i).height.mm() / (10.65) + 1 ,)
         }
       )
 
-      content((1.5,-hauteur_permiere_col / 2), [#init.variable]) // La variable
+      content(( largeur_permiere_colonne / 2,-hauteur_permiere_ligne / 2), [#init.variable]) // La variable
 
       let coordX = for i in range(0, domain.len()) {
         ((0,0),)
       }
 
-      let decalage_domaine = 3.2 + calc.max( // la distance entre les valeurs du domaine puis la largeur du talbeau de signe
+      let decalage_domaine = largeur_permiere_colonne+0.2 + calc.max( // la distance entre les valeurs du domaine puis la largeur du talbeau de signe
         measure(domain.at(0)).width.mm() / (2 * 10.65),
         ..for i in range(0, contents.len()){
           if init.label.at(i).last() == "Variation" {
@@ -260,7 +263,9 @@
                 if contents.at(j).at(i).len() > 2 {
                   calc.max(
                     measure(contents.at(j).at(i).last()).width.mm() /(10.65),
-                    measure(contents.at(j).at(i).last()).width.mm() /(10.65)
+                    measure(contents.at(j).at(i).at(
+                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                    )).width.mm() /(10.65)
                   )
                 } else if contents.at(j).at(i).len() != 0 {
                   measure(contents.at(j).at(i).last()).width.mm() / (10.65)
@@ -280,7 +285,9 @@
                   if contents.at(j).at(i + 1).len() > 2 {
                     calc.max(
                       measure(contents.at(j).at(i + 1).last()).width.mm() /(10.65),
-                      measure(contents.at(j).at(i + 1).last()).width.mm() /(10.65)
+                      measure(contents.at(j).at(i + 1).at(
+                        if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                      )).width.mm() /(10.65)
                     )
                   } else if contents.at(j).at(i + 1).len() != 0 {
                     measure(contents.at(j).at(i + 1).last()).width.mm() / (10.65)
@@ -294,14 +301,14 @@
 
         if i == 0{
           content(
-            (decalage_domaine, -hauteur_permiere_col / 2),
+            (decalage_domaine, -hauteur_permiere_ligne / 2),
             box(width: 1pt, align(center, domain.at(i)))
           )
 
         } else {
 
           content(
-            (decalage_domaine, -hauteur_permiere_col / 2),
+            (decalage_domaine, -hauteur_permiere_ligne / 2),
             box(width: 3 * 10.65mm, align(center, domain.at(i)))
           )
         }
@@ -311,7 +318,7 @@
       }
 
       content( // le dernier éléments du domaine
-        (decalage_domaine, -hauteur_permiere_col / 2),
+        (decalage_domaine, -hauteur_permiere_ligne / 2),
         box(width: 3 * 10.65mm, align(center, domain.at(domain.len() - 1)))
       )
       coordX.at(domain.len() - 1) = (
@@ -324,7 +331,9 @@
                 if contents.at(j).at(domain.len() - 1).len() > 2 {
                   calc.max(
                     measure(contents.at(j).at(domain.len() - 1).last()).width.mm() /(10.65),
-                    measure(contents.at(j).at(domain.len() - 1).last()).width.mm() /(10.65)
+                    measure(contents.at(j).at(domain.len() - 1).at(
+                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                    )).width.mm() /(10.65)
                   )
                 } else if contents.at(j).at(domain.len() - 1).len() != 0 {
                   measure(contents.at(j).at(domain.len() - 1).last()).width.mm() / (10.65)
@@ -342,39 +351,63 @@
         ((0,0),)
       }
 
-      let hauteur_total = hauteur_permiere_col
-      for i in range(0, init.label.len()){ //le texte de la première colonne
+      let hauteur_total = hauteur_permiere_ligne
+      for i in range(-0, init.label.len()){ //le texte de la première colonne
         let hauteur_case = calc.max(
           1,
-          measure(init.label.at(i).at(0)).height.mm() / 10.65
+          measure(init.label.at(i).at(0)).height.mm() / 10.65,
+          ..for j in range(contents.at(i).len()) {
+            let ele = contents.at(i).at(j)
+            if init.label.at(i).last() == "Sign" {
+              if type(ele) == array and ele.len() > 2 {
+                (measure(ele.last()).height.mm() / 10.65,)
+              } else if  type(ele) != array and ele != "||" {
+                (measure(ele).height.mm() / 10.65,)
+              } else {
+                (1,)
+              }
+            } else if init.label.at(i).last() == "Variation" {
+               let oui = {
+                if contents.at(i).at(j).len() > 2 {
+                  calc.max(
+                    measure(contents.at(i).at(j).last()).height.mm() /(10.65),
+                    measure(contents.at(i).at(j).at(
+                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                    )).height.mm() /(10.65)
+                  )
+                } else if contents.at(i).at(j).len() != 0 {
+                  measure(contents.at(i).at(j).last()).height.mm() / (10.65)
+                } else {0}
+              }
+              (oui,)
+            }
+          }
         )
-        hauteur_total = hauteur_total + hauteur_case + 1.75
+        
 
         content(
-          (1.5, (-(2*i+1)*(hauteur_case + 1.75)/2 - hauteur_permiere_col) ),
+          (largeur_permiere_colonne / 2, - hauteur_total - hauteur_case / 2 - 1.75/2 ),
           box(width: largeur_permiere_colonne * 10.64mm, align(center ,init.label.at(i).at(0)))
         )
 
         line(
-          (0, (-(i)*(hauteur_case + 1.75) - hauteur_permiere_col)),
-          (decalage_domaine, -(i)*(hauteur_case + 1.75) - hauteur_permiere_col),
+          (0, - hauteur_total),
+          (decalage_domaine, - hauteur_total),
         )
 
-        coordY.at(i) = (-(2*i+1)*(hauteur_case + 1.75)/2 - hauteur_permiere_col, hauteur_case + 1.75)
+        coordY.at(i) = (- hauteur_total - hauteur_case / 2 - 1.75/2, hauteur_case + 1.75)
+
+        hauteur_total = hauteur_total + hauteur_case + 1.75
       }
 
       rect( //les countours du tableau
         (0,0),
         (decalage_domaine, - hauteur_total),
+        fill: none
       )
       line( // ligne de séparation entre le texte et les tableaux
-        (3, 0),
-        (3, -hauteur_total),
-      )
-
-      line( // ligne de séparation entre le domaine et les tableaux
-        (0, - hauteur_permiere_col),
-        (decalage_domaine, - hauteur_permiere_col),
+        (largeur_permiere_colonne, 0),
+        (largeur_permiere_colonne, -hauteur_total),
       )
 
       for i in range(0, init.label.len()){ // Début des différents tableaux
@@ -386,7 +419,11 @@
 
             let prochain = _prochain-signe(contents.at(i), j)
 
-            if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide
+            if prochain == j + 1 and contents.at(i).at(prochain) == "||" {
+              prochain = j + 2
+            }
+
+            if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide mais à une bar spécial
               content( 
                   (
                     (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2, 
@@ -755,3 +792,22 @@
     })
   }
 }
+
+#tabvar(
+  init: (
+    variable: $x$,
+    label: (
+      ([sign], "Sign"),
+      ([var], "Variation"),
+    ),
+  ),
+  domain: ($3$, $2$, $1$),
+  contents: (
+    ($+$, "||"),
+    (
+      (top, $3$),
+      (bottom, $2$),
+      (top, $ 1/1/41/1/1/111/1/1/1/1/1/1/1/1/1/1/1/1/1 $),
+    ),
+  ),
+)

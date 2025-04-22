@@ -3,6 +3,7 @@
 #import "../tabvar.typ": tabvar
 
 #tabvar(
+  arrow-mark: (end: ">", start: "|"),
   init: (
     variable: $x$,
     label: (

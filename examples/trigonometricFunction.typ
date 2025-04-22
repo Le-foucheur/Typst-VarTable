@@ -3,6 +3,10 @@
 #import "../tabvar.typ": tabvar
 
 #tabvar(
+  line-style: (stroke: (dash: "dotted")),
+  arrow-mark: (end: ">", start: "hook", stroke: blue),
+  arrow-style: (stroke: red),
+  tab-style: (stroke: lime , fill: gradient.conic(..color.map.rainbow)),
   init: (
     variable: $x$,
     label: (
@@ -14,7 +18,7 @@
   ),
   domain: ($0$, $ pi / 2 $, $ pi $, $ (2pi) / 3 $, $ 2 pi $),
   contents: (
-    ($-$, (), $+$, ()),
+    ($-$, (), ("0",$+$), ()),
     (
       (top, $1$),
       (),
