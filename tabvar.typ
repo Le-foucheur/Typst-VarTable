@@ -200,10 +200,11 @@
     "label": [],
   ),
   domain: (),
-  tab-style: (stroke: 1pt + black),
-  arrow-style: ( stroke: black + 1pt, mark: (end: "straight")),
+  tab-style: (stroke: 1pt + black, mark: (symbol: none)),
+  arrow-mark: (end: "straight"),
+  arrow-style: (stroke: black + 1pt),
   line-0: false,
-  line-style: "-",
+  line-style: (stroke: black + 1pt),
   contents: ((),),
 ) = {
   //start of function
@@ -211,6 +212,8 @@
   context {
     cetz.canvas({
       import cetz.draw: *
+
+      set-style(..tab-style)
 
       //Début des problèmes
 
@@ -396,6 +399,7 @@
               )
 
               if j != 0{
+                set-style(..line-style)
                 if contents.at(i).at(j).at(0) == "||"{
                   line(
                     (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
@@ -427,6 +431,7 @@
                   (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                 )
               }
+              set-style(..tab-style)
 
             } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
               // On ne fait rien s'il n'y a pas de signe
@@ -443,11 +448,13 @@
               )
 
               if j != 0 { //Si c'est pas le premier signe
+                set-style(..line-style)
                 line(
                   (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                   (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                   name: "zero2"
                 )
+                set-style(..tab-style)
                 content(
                   "zero2.mid",
                   if line-0 {$ 0 $} else {[]}
@@ -478,6 +485,7 @@
                   )
                 )
 
+                set-style(..line-style)
                 if contents.at(i).at(indice - 1).at(0) == "||"{
                   line(
                     (coordX.at(indice - 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
@@ -503,6 +511,7 @@
                     (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                   )
                 }
+                set-style(..tab-style)
 
               } else if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() == 0 {
                 // On ne fait rien s'il n'y a pas de signe
@@ -518,10 +527,12 @@
                   )
                 )
 
+                set-style(..line-style)
                 line(
                   (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                   (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                 )
+                set-style(..tab-style)
               
               }
           }
@@ -562,6 +573,7 @@
               set-style(..arrow-style)
               line(
                 c1,c2,
+                mark: arrow-mark
               )
               set-style(..tab-style)
               
@@ -621,7 +633,8 @@
                 let (c1, c2) = _coord-fleche(i, j, true, proch_element.len() > 2, contents.at(i), coordX, coordY)
                 set-style(..arrow-style)
                 line(
-                  c1,c2
+                  c1,c2,
+                  mark: arrow-mark
                 )
                 set-style(..tab-style)
               }
@@ -679,11 +692,13 @@
             
             let (c1,c2) = _coord-fleche(i, 0, true, contents.at(i).at(indice_proch_element).len() > 2, contents.at(i), coordX, coordY)
 
-            set-style(..arrow-style)
-            line(
-              c1,c2,
-            )
-            set-style(..tab-style)
+            {
+              set-style(..arrow-style)
+              line(
+                c1,c2,
+                mark: arrow-mark
+              )
+            }
 
             line(
               (
@@ -716,6 +731,7 @@
             set-style(..arrow-style)
             line(
               c1,c2,
+              mark: arrow-mark
             )
             set-style(..tab-style)
 
@@ -739,39 +755,3 @@
     })
   }
 }
-
-
-#tabvar(
-
-  line-style: "..",
-  init: (
-    variable: $t$,
-    label: (
-      ([sign of $cosh$], "Sign"),
-      ([variation of $cosh$], "Variation"),
-      ([sign of $sinh$ and $tanh$], "Sign"),
-      ([variation of $sinh$], "Variation"),
-      ([variation of $tanh$], "Variation"),
-    ),
-  ),
-  domain: ($ -oo $, $ 0 $, $ +oo $),
-  contents: (
-    ($-$, $+$),
-    (
-      (top, $+oo$),
-      (bottom, $1$),
-      (top, $+oo$),
-    ),
-    ($+$, ()),
-    (
-      (bottom, $-oo$),
-      (),
-      (top, $+oo$),
-    ),
-    (
-      (bottom, $1$),
-      (),
-      (top, $-1$),
-    ),
-  ),
-)
