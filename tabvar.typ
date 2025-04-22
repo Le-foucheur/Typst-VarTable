@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.4"
 
-#set page("a4")
+#set page(width: 30cm, height: 30cm)
 
 #let _prochain-signe(tab_signe, j) = {
   let indice = j + 1
@@ -174,25 +174,23 @@
 /// ```typst
 /// domain: ($0$, $1$, $2$, $3$)
 /// ```
-///
-/// - marks (string): *Optional*\
-/// The arrow's style \
-/// you can use all different kind of "string" arrow of the fletcher package, so I invite you to read the #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher documentation])\
-///
-///
+/// 
 /// - contents (array): the content of the table \
 /// see below for more details
 ///
-/// - stroke (lenght, color, gradient): *Optional*\
+/// - tab-style (lenght, color, gradient): *Optional*\
 /// The table’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
 ///
 ///
-/// - stroke-arrow (lenght, color, gradient): *Optional*\
+/// - arrow-style (style): *Optional*\
 /// the arrow’s color and thickness \
 /// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
 /// 
-/// - marks-line (string): *Optional*\
+/// - line-0 (bool): *Optional*\
+/// if you want to change the default bar sign to a bar with a 0
+/// 
+/// - line-style (string): *Optional*\
 /// if you want to change the style of all separator lines between signs\
 ///
 /// Warning: this will only change the default lines, the ||, | or 0 lines will not be changed. 
@@ -202,22 +200,21 @@
     "label": [],
   ),
   domain: (),
-  marks: (end: "straight"),
-  stroke: 1pt + black,
-  stroke-arrow: 0.6pt + black,
-  marks-line: "-",
+  tab-style: (stroke: 1pt + black),
+  arrow-style: ( stroke: black + 1pt, mark: (end: "straight")),
+  line-0: false,
+  line-style: "-",
   contents: ((),),
 ) = {
   //start of function
+
   context {
     cetz.canvas({
       import cetz.draw: *
 
-      //grid((0,0), (15,-20), step: 1) 
-
       //Début des problèmes
 
-      //Pour la conversion 1unit = 10,65mm
+      //Pour la conversion 1unit = 10,65mm 
 
       let largeur_permiere_colonne = calc.min( //La largeur de la première colonne
         3,
@@ -228,7 +225,15 @@
         )
       )
 
-      content((1.5,-0.5), [#init.variable]) // La variable
+      let hauteur_permiere_col = calc.max(
+        1,
+        measure(init.variable).height.mm() / (10.65) + 1,
+        ..for i in domain {
+          (measure(i).height.mm() / (10.65) + 1 ,)
+        }
+      )
+
+      content((1.5,-hauteur_permiere_col / 2), [#init.variable]) // La variable
 
       let coordX = for i in range(0, domain.len()) {
         ((0,0),)
@@ -286,14 +291,14 @@
 
         if i == 0{
           content(
-            (decalage_domaine, -0.5),
+            (decalage_domaine, -hauteur_permiere_col / 2),
             box(width: 1pt, align(center, domain.at(i)))
           )
 
         } else {
 
           content(
-            (decalage_domaine, -0.5),
+            (decalage_domaine, -hauteur_permiere_col / 2),
             box(width: 3 * 10.65mm, align(center, domain.at(i)))
           )
         }
@@ -303,7 +308,7 @@
       }
 
       content( // le dernier éléments du domaine
-        (decalage_domaine, -0.5),
+        (decalage_domaine, -hauteur_permiere_col / 2),
         box(width: 3 * 10.65mm, align(center, domain.at(domain.len() - 1)))
       )
       coordX.at(domain.len() - 1) = (
@@ -334,7 +339,7 @@
         ((0,0),)
       }
 
-      let hauteur_total = 1
+      let hauteur_total = hauteur_permiere_col
       for i in range(0, init.label.len()){ //le texte de la première colonne
         let hauteur_case = calc.max(
           1,
@@ -343,16 +348,16 @@
         hauteur_total = hauteur_total + hauteur_case + 1.75
 
         content(
-          (1.5, (-(2*i+1)*(hauteur_case + 1.75)/2 - 1) ),
+          (1.5, (-(2*i+1)*(hauteur_case + 1.75)/2 - hauteur_permiere_col) ),
           box(width: largeur_permiere_colonne * 10.64mm, align(center ,init.label.at(i).at(0)))
         )
 
         line(
-          (0, (-(i)*(hauteur_case + 1.75) - 1)),
-          (decalage_domaine, -(i)*(hauteur_case + 1.75) - 1),
+          (0, (-(i)*(hauteur_case + 1.75) - hauteur_permiere_col)),
+          (decalage_domaine, -(i)*(hauteur_case + 1.75) - hauteur_permiere_col),
         )
 
-        coordY.at(i) = (-(2*i+1)*(hauteur_case + 1.75)/2 - 1, hauteur_case + 1.75)
+        coordY.at(i) = (-(2*i+1)*(hauteur_case + 1.75)/2 - hauteur_permiere_col, hauteur_case + 1.75)
       }
 
       rect( //les countours du tableau
@@ -365,156 +370,89 @@
       )
 
       line( // ligne de séparation entre le domaine et les tableaux
-        (0, -1),
-        (decalage_domaine, -1),
+        (0, - hauteur_permiere_col),
+        (decalage_domaine, - hauteur_permiere_col),
       )
 
-      for i in range(0, init.label.len()){
+      for i in range(0, init.label.len()){ // Début des différents tableaux
 
         //Les tableaux de signe
         
         if init.label.at(i).at(1) == "Sign"{
           for j in range(0, contents.at(i).len() - 1) {
 
-            if type(contents.at(i).at(j + 1)) == array and contents.at(i).at(j + 1).len() == 0 { // le signe si le prochain signe est vide
-              let prochain = _prochain-signe(contents.at(i), j)
+            let prochain = _prochain-signe(contents.at(i), j)
 
-              if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide
-                content( 
-                    (
-                      (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2, 
-                      coordY.at(i).at(0)
-                    ),
-                    box(
-                    width: 1pt, 
-                    align(center, contents.at(i).at(j).at(1))
-                  )
-                )
-
-                if j != 0{
-                  if contents.at(i).at(j).at(0) == "||"{
-                    line(
-                      (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                    line(
-                      (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                  } else if contents.at(i).at(j).at(0) == "0"{
-                    line(
-                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                      name: "zero"
-                    )
-                    content(
-                      "zero.mid",
-                      $ 0 $
-                    )
-                  } else {
-                    line(
-                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                  }
-                } else if contents.at(i).at(j).first() == "||"{
-                  line(
-                    (3.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                    (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                  )
-                }
-
-              } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
-                // On ne fait rien s'il n'y a pas de signe
-              } else {
-                content(
+            if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide
+              content( 
                   (
-                    (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2 ,
+                    (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2, 
                     coordY.at(i).at(0)
                   ),
                   box(
-                    width: 1pt, 
-                    align(center, contents.at(i).at(j))
-                  )
+                  width: 1pt, 
+                  align(center, contents.at(i).at(j).at(1))
                 )
+              )
 
-                if j != 0 { //Si c'est pas le premier signe
+              if j != 0{
+                if contents.at(i).at(j).at(0) == "||"{
+                  line(
+                    (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                  line(
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  )
+                } else if contents.at(i).at(j).at(0) == "0" {
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    name: "zero"
+                  )
+                  content(
+                    "zero.mid",
+                    $ 0 $
+                  )
+                } else {
                   line(
                     (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                     (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                   )
                 }
+              } else if contents.at(i).at(j).first() == "||"{
+                line(
+                  (3.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                  (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                )
               }
 
+            } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
+              // On ne fait rien s'il n'y a pas de signe
             } else {
-              
-              if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // si le signe n'est pas vide
-                content( 
-                    (
-                      (coordX.at(j + 1).at(0) + coordX.at(j).at(0) ) / 2, 
-                      coordY.at(i).at(0)
-                    ),
-                    box(
-                    width: 1pt, 
-                    align(center, contents.at(i).at(j).at(1))
-                  )
+              content(
+                (
+                  (coordX.at(prochain).at(0) + coordX.at(j).at(0) ) / 2 ,
+                  coordY.at(i).at(0)
+                ),
+                box(
+                  width: 1pt, 
+                  align(center, contents.at(i).at(j))
                 )
+              )
 
-                if j != 0 {
-                  if contents.at(i).at(j).at(0) == "||"{
-                    line(
-                      (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                    line(
-                      (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                  } else if contents.at(i).at(j).at(0) == "0"{
-                    line(
-                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                      name: "zero"
-                    )
-                    content(
-                      "zero.mid",
-                      $ 0 $
-                    )
-                  } else {
-                    line(
-                      (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                      (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                    )
-                  }
-                } else if contents.at(i).at(j).first() == "||"{
-                  line(
-                    (3.15, coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                    (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                  )
-                }
-
-              } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
-                // On ne fait rien s'il n'y a pas de signe
-              } else {
+              if j != 0 { //Si c'est pas le premier signe
+                line(
+                  (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
+                  (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  name: "zero2"
+                )
                 content(
-                  (
-                    (coordX.at(j + 1).at(0) + coordX.at(j).at(0) ) / 2 ,
-                    coordY.at(i).at(0)
-                  ),
-                  box(
-                    width: 1pt, 
-                    align(center, contents.at(i).at(j))
-                  )
+                  "zero2.mid",
+                  if line-0 {$ 0 $} else {[]}
                 )
-
-                if j != 0 {
-                  line(
-                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
-                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
-                  )
-                }
               }
-
             }
           }
 
@@ -621,13 +559,12 @@
               let indice_proch_ele = _prochain-ele(contents.at(i), j)
               let proch_element = contents.at(i).at(indice_proch_ele)
               let (c1, c2) = _coord-fleche(i, j, false, proch_element.len() > 2, contents.at(i), coordX, coordY)
+              set-style(..arrow-style)
               line(
                 c1,c2,
-                mark: marks
               )
+              set-style(..tab-style)
               
-              
-
             } else if contents.at(i).at(j).len() > 2{ //cas d'une bar indef
 
               line(
@@ -679,16 +616,17 @@
                 element_droite
               )
 
-              if contents.at(i).at(j + 1).len() != 0 { // les flèches entre un éléments sans bar et sont prochain non vide 
+              if contents.at(i).at(j + 1).len() != 0 { // les flèches entre un éléments avec bar et sont prochain non vide 
                 let proch_element = contents.at(i).at(j + 1)
                 let (c1, c2) = _coord-fleche(i, j, true, proch_element.len() > 2, contents.at(i), coordX, coordY)
+                set-style(..arrow-style)
                 line(
-                  c1,c2,
-                  mark: marks
+                  c1,c2
                 )
+                set-style(..tab-style)
               }
             }
-
+ 
           }
 
           // Dernier éléments
@@ -741,10 +679,11 @@
             
             let (c1,c2) = _coord-fleche(i, 0, true, contents.at(i).at(indice_proch_element).len() > 2, contents.at(i), coordX, coordY)
 
+            set-style(..arrow-style)
             line(
               c1,c2,
-              mark: marks
             )
+            set-style(..tab-style)
 
             line(
               (
@@ -774,10 +713,11 @@
 
             let (c1,c2) = _coord-fleche(i, 0, false, contents.at(i).at(indice_proch_element).len() > 2, contents.at(i), coordX, coordY)
 
+            set-style(..arrow-style)
             line(
               c1,c2,
-              mark: marks
             )
+            set-style(..tab-style)
 
             content(
               (
@@ -802,20 +742,36 @@
 
 
 #tabvar(
+
+  line-style: "..",
   init: (
-    variable: $x$,
+    variable: $t$,
     label: (
-      ([sign], "Sign"),
-      ([var], "Variation"),
+      ([sign of $cosh$], "Sign"),
+      ([variation of $cosh$], "Variation"),
+      ([sign of $sinh$ and $tanh$], "Sign"),
+      ([variation of $sinh$], "Variation"),
+      ([variation of $tanh$], "Variation"),
     ),
   ),
-  domain: ($3$, $2$, $1$),
+  domain: ($ -oo $, $ 0 $, $ +oo $),
   contents: (
-    ($+$, $-$),
+    ($-$, $+$),
     (
-      (top, $ "tree"(3) $ + "that is a very big number"),
-      (top, $3$),
-      (bottom, $2$),
+      (top, $+oo$),
+      (bottom, $1$),
+      (top, $+oo$),
+    ),
+    ($+$, ()),
+    (
+      (bottom, $-oo$),
+      (),
+      (top, $+oo$),
+    ),
+    (
+      (bottom, $1$),
+      (),
+      (top, $-1$),
     ),
   ),
 )

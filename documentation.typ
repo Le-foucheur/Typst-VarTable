@@ -163,7 +163,7 @@ I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underl
     ```,
     scale(x: 80%, y: 80%)[
       #tabvar(
-        marks-line: "--",
+        line-style: "--",
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -752,9 +752,8 @@ And finaly, we get :
 
         #align(center)[
           #tabvar(
-            marks: (end:"hook"),
-            stroke-arrow: gradient.linear(..color.map.rainbow),
-            marks-line: "..",
+            arrow-style: (stroke: gradient.linear(..color.map.rainbow), mark: (end: ">")),
+            line-style: "..",
             init: (
               variable: $t$,
               label: (
@@ -806,7 +805,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
       
       stroke: 5pt + red,
       arrow: "X-*-<>",
-      stroke-arrow: purple + 1.4pt,
+      arrow-style: (stroke :purple + 1.4pt),
       marks-line: "<-->",
       init: (
         variable: $t$,
@@ -834,10 +833,9 @@ And has local extrema for $x = 0$ and $x = 2/3$
   #align(center)[
     #tabvar(
       
-      stroke: 5pt + red,
-      marks: (end: "<>"),
-      stroke-arrow: purple + 1.4pt,
-      marks-line: "<-->",
+      tab-style: (stroke: 5pt + red),
+      arrow-style: (stroke :purple + 1.4pt, mark: (symbol: "hook")),
+      line-style: "<-->",
       init: (
         variable: $t$,
         label: (
