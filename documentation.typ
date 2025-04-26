@@ -1,4 +1,4 @@
-#import "@preview/tidy:0.3.0"
+#import "@preview/tidy:0.4.2"
 #import "tabvar.typ": tabvar
 
 #set page(numbering: "1/1")
@@ -7,7 +7,7 @@
 
 #align(center)[
   VarTable is a package to make variation table, in a simple way\
-  This package is build on top of #link("https://github.com/Jollywatt/typst-fletcher")[#underline(stroke: blue)[fletcher]]\
+  This package is build on top of #link("https://github.com/cetz-package/cetz")[#underline(stroke: blue)[Cetz]]\
   (version : 0.1.0)
 ]
 
@@ -30,17 +30,13 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 == 2.1 - general description
 
 #let docs = tidy.parse-module(
-  read("tabvar.typ"),
-  name: "tabvar",
-  scope: (tabvar: tabvar),
-  preamble: "import tabvar: *;",
+  read("tabvar.typ"), name: "tabvar",
 )
-
 #tidy.show-module(
   show-module-name: false,
   show-outline: false,
   omit-private-parameters: true,
-  docs,
+  docs
 )
 
 #pagebreak()
@@ -72,6 +68,7 @@ A normal sign table :
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (7cm, 7cm),
+    column-gutter: -12mm,
     align: horizon,
     ```typ
       #tabvar(
@@ -83,7 +80,7 @@ A normal sign table :
         contents: (($+$, $-$, $+$),),
       )
     ```,
-    scale(x: 80%, y: 80%)[
+    scale(x: 70%, y: 80%)[
       #tabvar(
         init: (
           variable: $t$,
@@ -102,29 +99,29 @@ More complex usage :
     align: horizon,
     ```typ
       #tabvar(
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
-        domain: ($2$, $4$, $6$, $8$),
-        contents: (
-          (
-            "Hello world !",
-            $-$,
-            $3/2$
-          ),
-        ),
-      )
-    ```,
-    move(
-      dx: -35pt,
-      scale(x: 80%, y: 80%)[
-        #tabvar(
           init: (
             variable: $t$,
             label: (([sign], "Sign"),),
           ),
           domain: ($2$, $4$, $6$, $8$),
+          contents: (
+            (
+              "Hello world !", 
+              $-$, 
+              $ 3 / 2 $
+            )
+          ),
+        )
+    ```,
+    move(
+      dx: -10mm,
+      scale(x: 67%, y: 80%)[
+        #tabvar(
+          init: (
+            variable: $t$,
+            label: (([sign], "Sign"),),
+          ),
+          domain: ($ 2 $, $4$, $6$, $8$),
           contents: (("Hello world !", $-$, $ 3 / 2 $),),
         )
       ],
@@ -139,18 +136,22 @@ More complex usage :
 
 you can modify the style of the bars (note that this modifies all the default ones, not the others, see 2.2.1.2.2).
 
-the bar style is passed as a string, like “-” for a plain bar or “..” for dotted lines,
-I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underline(stroke: blue)[fletcher's documentation]) on marks to find out what can be done.
+the style of the bar is a dictionary, of the type “style” defined by Cetz as said earlier.\
+To make it simple if you want to modify only the stroke of the bar, you just have to put `stroke: your stroke` in brackets.\
+For more complex applications, please refer to the Cetz manual.
 
 *Example*
 
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
   #grid(
-    columns: (7cm, 7cm),
+    column-gutter: -12mm,
+    columns: (7.9cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
-        marks-line: "--",
+        line-style: (
+          stroke: (paint: red, dash: "dashed")
+        ),
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -161,14 +162,14 @@ I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underl
         ),
       )
     ```,
-    scale(x: 80%, y: 80%)[
+    scale(x: 68%, y: 80%)[
       #tabvar(
-
+        line-style: (stroke: (paint: red, dash: "dashed")),
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$,),
+        domain: ($ 2 $, $4$, $6$,),
         contents: (
           ($+$, $-$),
         ),
@@ -176,8 +177,6 @@ I invite you to read #link("https://github.com/Jollywatt/typst-fletcher", underl
     ],
   )
 ]
-
-PS: yes, technically these bars are arrows for fletcher but shhh, keep it to yourself to make tables that don't make sense.
 
 ===== 2.2.1.2.2 type of bar
 For all signs except the first one, instead of putting the sign directly, you can put a couple, whose first element defines the previous bar's type. \
@@ -192,6 +191,7 @@ There are 3 differents types of bar :
 
 #rect(fill: luma(95%), radius: 10pt, width: 18cm)[
   #grid(
+    column-gutter: -12mm,
     columns: (7.3cm, 7cm),
     align: horizon,
     ```typ
@@ -217,7 +217,7 @@ There are 3 differents types of bar :
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$, $ 10 $),
+        domain: ($ 2 $, $4$, $6$, $8$, $ 10 $),
         contents: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
@@ -230,6 +230,7 @@ If you want a double line at the start of the table, you can use a double bar `"
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
   #grid(
+    column-gutter: -12mm,
     columns: (7cm, 7cm),
     align: horizon,
     ```typ
@@ -251,12 +252,11 @@ If you want a double line at the start of the table, you can use a double bar `"
     ```,
     scale(x: 80%)[
       #tabvar(
-        
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$),
+        domain: ($ 2 $, $4$, $6$),
         contents: ((("||", $+$), $-$, "||"),),
       )
     ],
@@ -269,38 +269,39 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
+    column-gutter: -16.5mm,
     columns: (7cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
-        
+        line-0: true,
         init: (
           variable: $t$,
-          label: (([sign], "Sign"),),
+          label: (
+            ([sign], "Sign"),
+          ),
         ),
         domain: ($2$, $4$, $6$, $8$),
         contents: (
-          (
-            $+$,
-            (),
-            $-$
-          ),
+          ($+$, (), $-$),
         ),
       )
     ```,
-    scale(x: 80%, y: 80%)[
+    scale(x: 75%, y: 80%)[
       #tabvar(
-        
+        line-0: true,
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
         ),
-        domain: ($2$, $4$, $6$, $8$),
+        domain: ($ 2 $, $4$, $6$, $8$),
         contents: (($+$, (), $-$),),
       )
     ],
   )
 ]
+
+#pagebreak()
 
 === 2.2.2 - Variation table
 
@@ -308,10 +309,8 @@ Should contains as much elements as the domain \
 Each element is in etheir of these forms :
 - ```()``` to extend the previous arrow
 - ```(position,body)``` with position being one of top, center or bottom
-- ```(pos1, pos2, "||", body1, body2)``` to put in 2 value separated by an undefined value (double bar)
+- ```(pos1, pos2, "||", body1, body2)``` to put in 2 value separated by an undefined value (double bar)
 - ```(pos, "||", body)``` shorthand for ```(pos, pos, "||", body, body)``` (see previous format)
-
-#pagebreak()
 
 ==== 2.2.2.1 - A classical variation array
 
@@ -344,15 +343,15 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
       )
     ```,
     move(
-      dx: -45pt,
-      scale(x: 80%, y: 80%)[
+      dx: -22mm,
+      scale(x: 60%, y: 80%)[
         #tabvar(
           
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
           ),
-          domain: ($2$, $4$, $6$, $8$),
+          domain: ($ 2 $, $4$, $6$, $8$),
           contents: (
             (
               (top, $3$),
@@ -384,7 +383,7 @@ where :
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
-    column-gutter: 0pt,
+    column-gutter: 0mm,
     align: horizon,
     ```typ
       #tabvar(
@@ -403,8 +402,8 @@ where :
       )
     ```,
     move(
-      dx: -20pt,
-      scale(x: 90%, y: 90%)[
+      dx: -16mm,
+      scale(x: 80%, y: 80%)[
         #tabvar(
           init: (
             variable: $t$,
@@ -442,7 +441,7 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
           variable: $t$,
           label: (([variation], "Variation"),),
         ),
-        domain: ($2$, $4$, $6$, $8$),
+        domain: ($ 2 $, $4$, $6$, $8$),
         contents: (
             (
               (top, $3$),
@@ -455,14 +454,14 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
       )
     ```,
     move(
-      dx: -50pt,
-      scale(x: 70%, y: 70%)[
+      dx: -25mm,
+      scale(x: 55%, y: 70%)[
         #tabvar(
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
           ),
-          domain: ($2$, $4$, $6$, $8$, $9$),
+          domain: ($ 2 $, $4$, $6$, $8$, $9$),
           contents: (
             (
               (top, $3$),
@@ -505,8 +504,8 @@ For example ``` (top, "||", $3$)```
       )
     ```,
     move(
-      dx: -20pt,
-      scale(x: 90%, y: 90%)[
+      dx: -16mm,
+      scale(x: 80%, y: 80%)[
         #tabvar(
           init: (
             variable: $t$,
@@ -526,7 +525,6 @@ For example ``` (top, "||", $3$)```
   )
 ]
 
-#pagebreak()
 
 ==== 2.2.2.3 - Skip a value
 
@@ -541,25 +539,26 @@ to do this, as with sign arrays, you must create an empty array
     align: horizon,
     ```typ
       #tabvar(
+        arrow-mark: (end: ">", stroke: red),
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
         ),
-        domain: ($2$, $4$, $6$, $8$),
+        domain: ($2$, $4$, $6$),
         contents: (
-            (
-              (top, "||", $3$),
-              (),
-              (bottom, $2$),
-            ),
+          (
+            (top, "||", $3$),
+            (),
+            (bottom, $2$),
+          ),
         ),
       )
     ```,
     move(
-      dx: -20pt,
-      scale(x: 90%, y: 90%)[
+      dx: -16mm,
+      scale(x: 81%, y: 81%)[
         #tabvar(
-          arrow-mark: (stroke: red),
+          arrow-mark: (end: ">", stroke: red),
           init: (
             variable: $t$,
             label: (([variation], "Variation"),),
@@ -589,52 +588,44 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
 
 #align(center)[
   #rect(fill: luma(95%), radius: 10pt, width: 19cm)[
-    #grid(
-      columns: (10cm, 7cm),
-      column-gutter: 0pt,
-      align: horizon + left,
-      [Code :] + ```typ
-        #tabvar(
-            init: (
-              variable: $t$,
-              label: (
-                ([sign of #sym.Gamma], "Sign"),
-                ([variation of #sym.Gamma], "Variation"),
-              ),
-            ),
-            domain: ($0$, $ alpha $, $ +oo $),
-            contents: (
-              ($-$, $+$),
-              (
-                (top, "||", $+oo$),
-                (bottom, $Gamma(alpha)$),
-                (top, $+oo$),
-              ),
-            ),
-          )
-      ```,
-      [Result :] + move(
-        dx: -20pt,
-        scale(x: 90%, y: 90%)[
-          #tabvar(
-            init: (
-              variable: $t$,
-              label: (
-                ([sign of #sym.Gamma’], "Sign"),
-                ([variation of #sym.Gamma], "Variation"),
-              ),
-            ),
-            domain: ($0$, $ alpha $, $ +oo $),
-            contents: (
-              ($-$, $+$),
-              (
-                (top, "||", $+oo$),
-                (bottom, $Gamma(alpha)$),
-                (top, $+oo$),
-              ),
-            ),
-          )
-        ],
+    #align(left)[
+    ```typ
+      #tabvar(
+        init: (
+          variable: $t$,
+          label: (
+            ([sign of #sym.Gamma], "Sign"),
+            ([variation of #sym.Gamma], "Variation"),
+          ),
+        ),
+        domain: ($0$, $ alpha $, $ +oo $),
+        contents: (
+          ($-$, $+$),
+          (
+            (top, "||", $+oo$),
+            (bottom, $Gamma(alpha)$),
+            (top, $+oo$),
+          ),
+        ),
+      )
+    ```]
+    ─────────────────────────────────────────────────────────────────────
+    #tabvar(
+      init: (
+        variable: $t$,
+        label: (
+          ([sign of #sym.Gamma’], "Sign"),
+          ([variation of #sym.Gamma], "Variation"),
+        ),
+      ),
+      domain: ($0$, $ alpha $, $ +oo $),
+      contents: (
+        ($-$, $+$),
+        (
+          (top, "||", $+oo$),
+          (bottom, $Gamma(alpha)$),
+          (top, $+oo$),
+        ),
       ),
     )
   ]
@@ -650,10 +641,39 @@ So we have $f’(x) = (-2x -3)/(16(x^2 + 3x + 2)^2)$\
 And finaly, we get :
 
 
-#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
-  Code :
-  ```typ
-    #tabvar(
+#align(center)[
+  #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+    Code :
+    #align(left)[
+    ```typ
+      #tabvar(
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of $f’$], "Sign"),
+              ([variation of $f$], "Variation"),
+            ),
+          ),
+          domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+          contents: (
+            ($+$, ("||", $+$), $-$, ("||", $-$)),
+            (
+              (bottom, $1$),
+              (top, bottom, "||", $+oo$, $-oo$),
+              (top, $-20$),
+              (bottom, top, "||", $-oo$, $+oo$),
+              (bottom, $1$),
+            ),
+          ),
+        )
+    ```]
+
+    ────────────────────────────────────────────────────────────
+    Result :
+
+
+    #scale(x:80%, y:80%)[
+      #tabvar(
         init: (
           variable: $t$,
           label: (
@@ -666,42 +686,16 @@ And finaly, we get :
           ($+$, ("||", $+$), $-$, ("||", $-$)),
           (
             (bottom, $1$),
-            (top, bottom, "||", $+oo$, $-oo$),
+            (top, bottom, "||", $ 4$, $1/1/1/1/1/1/1/1/1$),
             (top, $-20$),
             (bottom, top, "||", $-oo$, $+oo$),
             (bottom, $1$),
           ),
         ),
       )
-  ```
-
-  ─────────────────────────────────────────────────────────────────
-  Result :
-
-  #align(center)[
-    #tabvar(
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of $f’$], "Sign"),
-          ([variation of $f$], "Variation"),
-        ),
-      ),
-      domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
-      contents: (
-        ($+$, ("||", $+$), $-$, ("||", $-$)),
-        (
-          (bottom, $1$),
-          (top, bottom, "||", $ 4$, $1/1/1/1/1/1/1/1/1$),
-          (top, $-20$),
-          (bottom, top, "||", $-oo$, $+oo$),
-          (bottom, $1$),
-        ),
-      ),
-    )
+    ]
   ]
 ]
-
 
 #pagebreak()
 == 3.3 #link("https://en.wikipedia.org/wiki/Hyperbolic_functions")[#underline(stroke: blue)[Hyperbolic function]]
@@ -799,61 +793,68 @@ Take $g(t) = t^2 - t^3$\
 So, we have $g’(t) = 2t - 3t^2$\
 And has local extrema for $x = 0$ and $x = 2/3$
 
-#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
-  Code :
-  ```typ
-    #tabvar(
+#align(center)[
+  #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+    Code :
+    #align(left)[
+      ```typ
+        #tabvar(
+          
+          stroke: 5pt + red,
+          arrow: "X-*-<>",
+          arrow-style: (stroke :purple + 1.4pt),
+          marks-line: "<-->",
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of $g’$], "Sign"),
+              ([variation of $g$], "Variation"),
+            ),
+          ),
+          domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+          contents: (
+            ($-$, ("|", $+$), $-$),
+            (
+              (top, $+oo$),
+              (bottom, $0$),
+              (center, $ 4 / 27 $),
+              (bottom, $-oo$),
+            ),
+          ),
+        )
+      ```
+    ]
+
+    ────────────────────────────────────────────────────────────
+    Result :
+
+    #align(center)[
       
-      stroke: 5pt + red,
-      arrow: "X-*-<>",
-      arrow-style: (stroke :purple + 1.4pt),
-      marks-line: "<-->",
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of $g’$], "Sign"),
-          ([variation of $g$], "Variation"),
-        ),
-      ),
-      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
-      contents: (
-        ($-$, ("|", $+$), $-$),
-        (
-          (top, $+oo$),
-          (bottom, $0$),
-          (center, $ 4 / 27 $),
-          (bottom, $-oo$),
-        ),
-      ),
-    )
-  ```
+      #tabvar(
+        line-0: true,
+        table-style: (stroke: 10pt + red),
+        arrow-style: (stroke :purple + 1.4pt, mark: (symbol: "hook")),
+        line-style: (stroke: orange),
 
-  ─────────────────────────────────────────────────────────────────
-  Result :
-
-  #align(center)[
-    #tabvar(
-      
-      tab-style: (stroke: 5pt + red),
-      arrow-style: (stroke :purple + 1.4pt, mark: (symbol: "hook")),
-
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of $g’$], "Sign"),
-          ([variation of $g$], "Variation"),
+        init: (
+          variable: $t$,
+          label: (
+            ([sign of $g’$], "Sign"),
+            ([variation of $g$], "Variation"),
+          ),
         ),
-      ),
-      domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
-      contents: (
-        ($-$, ("|", $+$), $-$),
-        (
-          (top, $+oo$),
-          (bottom, $0$),
-          (center, $ 4 / 27 $),
-          (bottom, $-oo$),
+        domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
+        contents: (
+          ($-$, ("|", $+$), $-$),
+          (
+            (top, $+oo$),
+            (bottom, $0$),
+            (center, $ 4 / 27 $),
+            (bottom, $-oo$),
+          ),
         ),
-      ),
-    )
+      )
+    ]
   ]
 ]
+

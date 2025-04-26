@@ -3,10 +3,6 @@
 #import "../tabvar.typ": tabvar
 
 #tabvar(
-  line-style: (stroke: (dash: "dotted")),
-  arrow-mark: (end: ">", start: "hook", stroke: blue),
-  arrow-style: (stroke: red),
-  tab-style: (stroke: lime , fill: gradient.conic(..color.map.rainbow)),
   init: (
     variable: $x$,
     label: (

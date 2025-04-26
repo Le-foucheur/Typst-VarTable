@@ -1,7 +1,5 @@
 #import "@preview/cetz:0.3.4"
 
-#set page(width: 30cm, height: 30cm)
-
 #let _prochain-signe(tab_signe, j) = { // Cherche le prochain élément non vide "()" dans ce sous tableau
   let indice = j + 1
   while indice < tab_signe.len() and type(tab_signe.at(indice)) == array and tab_signe.at(indice).len() == 0 {
@@ -155,60 +153,62 @@
 
 }
 
-/// Render a variation table and sign table of your functions
-///
-/// - init (dictionary): initialitation of the table \
-///  - `variable` is a content block which contains the table’s variable name (like $x$ or $t$)
-///  - `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign"
-/// *Example :* for a variation table of a function $f$, you should write : \
-/// ```typst
-/// init: (
-///   variable: $x$,
-///   label: (
-///     ([sign of $f$], "Sign"), // the first line is a sign table
-///     ([variation of $f$], "Variation") // the second line is a variation table
-///   )
-/// )
-/// ```
-///
-/// - domain (array): values taken by the variable \
-/// for example if your funtions changes sign or reaches a max/min for $x in {0,1,2,3}$ \
-/// you should write this :
-/// ```typst
-/// domain: ($0$, $1$, $2$, $3$)
-/// ```
-/// 
-/// - contents (array): the content of the table \
-/// see below for more details
-///
-/// - tab-style (lenght, color, gradient): *Optional*\
-/// The table’s color and thickness \
-/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others\
-///
-///
-/// - arrow-style (style): *Optional*\
-/// the arrow’s color and thickness \
-/// *Caution :* this stroke can take only lenght, color or gradient types but none of the others
-/// 
-/// - line-0 (bool): *Optional*\
-/// if you want to change the default bar sign to a bar with a 0
-/// 
-/// - line-style (string): *Optional*\
-/// if you want to change the style of all separator lines between signs\
-///
-/// Warning: this will only change the default lines, the ||, | or 0 lines will not be changed. 
+/// Return a variation table
 #let tabvar(
+  /// initialitation of the table \
+  ///  - `variable` is a content block which contains the table’s variable name (like $x$ or $t$)
+  ///  - `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign"
+  /// *Example :* for a variation table of a function $f$, you should write : \
+  /// ```typst
+  /// init: (
+  ///   variable: $x$,
+  ///   label: (
+  ///     ([sign of $f$], "Sign"), // the first line is a sign table
+  ///     ([variation of $f$], "Variation") // the second line is a variation table
+  ///   )
+  /// )
+  /// ``` -> dictionary
   init: (
     "variable": [],
     "label": [],
   ),
-  domain: (), // the domain of the function
-  tab-style: (stroke: 1pt + black, mark: (symbol: none)),
-  arrow-mark: (end: "straight"),
-  arrow-style: (stroke: black + 1pt),
-  line-0: false,
-  line-style: (stroke: black + 1pt),
+  
+  /// values taken by the variable \
+  /// for example if your funtions changes sign or reaches a max/min for $x in {0,1,2,3}$ \
+  /// you should write this :
+  /// ```typst
+  /// domain: ($0$, $1$, $2$, $3$)
+  /// ``` -> array
+  domain: (),
+
+  /// the content of the table \
+  /// see below for more details -> array
   contents: ((),),
+
+  /// *Optional*\
+  /// The style of the table,\ 
+  /// the style type is defined by Cetz, 
+  /// so I invite you to have a look at the #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[Cetz manual]]. \
+  /// *Caution :* if you haven't entered the mark symbol as none, all lines in the table will have an arrowhead. -> style
+  table-style: (stroke: 1pt + black, mark: (symbol: none)),
+
+  /// the style of the arrowhead, the type of which is defined by Cetz -> mark
+  arrow-mark: (end: "straight"),
+
+  /// *Optional*\
+  ///  the style of the arrow, as for the `table-style` parameter\
+  /// *Caution :* the `mark` section is overwrite by the `arrow-mark` -> style
+  arrow-style: (stroke: black + 1pt),
+
+  ///  *Optional*\
+  /// if you want to change the default bar sign to a bar with a 0 -> bool
+  line-0: false,
+
+  /// *Optional*\
+  /// if you want to change the style of all separator lines between signs\
+  ///
+  /// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed. -> style
+  line-style: (stroke: black + 1pt)
 ) = {
   //start of function
 
@@ -216,7 +216,7 @@
     cetz.canvas({
       import cetz.draw: *
 
-      set-style(..tab-style)
+      set-style(..table-style)
 
       //Début des problèmes
 
@@ -286,8 +286,8 @@
                     calc.max(
                       measure(contents.at(j).at(i + 1).last()).width.mm() /(10.65),
                       measure(contents.at(j).at(i + 1).at(
-                        if contents.at(j).at(i).at(1) == "||"{2} else {3}
-                      )).width.mm() /(10.65)
+                        if contents.at(j).at(i + 1).at(1) == "||"{2} else {3}
+                      )).width.mm() /(10.65) 
                     )
                   } else if contents.at(j).at(i + 1).len() != 0 {
                     measure(contents.at(j).at(i + 1).last()).width.mm() / (10.65)
@@ -332,7 +332,7 @@
                   calc.max(
                     measure(contents.at(j).at(domain.len() - 1).last()).width.mm() /(10.65),
                     measure(contents.at(j).at(domain.len() - 1).at(
-                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                      if contents.at(j).at(domain.len() - 1).at(1) == "||"{2} else {3}
                     )).width.mm() /(10.65)
                   )
                 } else if contents.at(j).at(domain.len() - 1).len() != 0 {
@@ -372,7 +372,7 @@
                   calc.max(
                     measure(contents.at(i).at(j).last()).height.mm() /(10.65),
                     measure(contents.at(i).at(j).at(
-                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                      if contents.at(i).at(j).at(1) == "||"{2} else {3}
                     )).height.mm() /(10.65)
                   )
                 } else if contents.at(i).at(j).len() != 0 {
@@ -420,7 +420,7 @@
             let prochain = _prochain-signe(contents.at(i), j)
 
             if prochain == j + 1 and contents.at(i).at(prochain) == "||" {
-              prochain = j + 2
+              prochain = j + 1
             }
 
             if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 { // le signe si le signe n'est pas vide mais à une bar spécial
@@ -460,6 +460,11 @@
                   line(
                     (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                     (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    name: "zero3"
+                  )
+                  content(
+                  "zero3.mid",
+                  if line-0 {$ 0 $} else {[]}
                   )
                 }
               } else if contents.at(i).at(j).first() == "||"{
@@ -468,7 +473,7 @@
                   (3.15, coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                 )
               }
-              set-style(..tab-style)
+              set-style(..table-style)
 
             } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
               // On ne fait rien s'il n'y a pas de signe
@@ -491,11 +496,11 @@
                   (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
                   name: "zero2"
                 )
-                set-style(..tab-style)
                 content(
                   "zero2.mid",
                   if line-0 {$ 0 $} else {[]}
                 )
+                set-style(..table-style)
               }
             }
           }
@@ -546,9 +551,14 @@
                   line(
                     (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                     (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                    name: "zero2",
                   )
+                  content(
+                  "zero2.mid",
+                  if line-0 {$ 0 $} else {[]}
+                )
                 }
-                set-style(..tab-style)
+                set-style(..table-style)
 
               } else if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() == 0 {
                 // On ne fait rien s'il n'y a pas de signe
@@ -568,8 +578,13 @@
                 line(
                   (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1)/2),
                   (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1)/2),
+                  name: "zero3"
                 )
-                set-style(..tab-style)
+                content(
+                  "zero3.mid",
+                  if line-0 {$ 0 $} else {[]}
+                )
+                set-style(..table-style)
               
               }
           }
@@ -612,7 +627,7 @@
                 c1,c2,
                 mark: arrow-mark
               )
-              set-style(..tab-style)
+              set-style(..table-style)
               
             } else if contents.at(i).at(j).len() > 2{ //cas d'une bar indef
 
@@ -673,7 +688,7 @@
                   c1,c2,
                   mark: arrow-mark
                 )
-                set-style(..tab-style)
+                set-style(..table-style)
               }
             }
  
@@ -770,7 +785,7 @@
               c1,c2,
               mark: arrow-mark
             )
-            set-style(..tab-style)
+            set-style(..table-style)
 
             content(
               (
@@ -792,3 +807,12 @@
     })
   }
 }
+
+#tabvar(
+  init: (
+    variable: $t$,
+    label: (([sign], "Sign"),),
+  ),
+  domain: ($2$, $4$, $6$),
+  contents: ((("||", $+$), $-$, "||"),),
+)
