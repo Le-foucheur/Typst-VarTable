@@ -208,7 +208,19 @@
   /// if you want to change the style of all separator lines between signs\
   ///
   /// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed. -> style
-  line-style: (stroke: black + 1pt)
+  line-style: (stroke: black + 1pt),
+
+  /// *Optional*\
+  /// change the width of the first column -> length
+  first-column-width: none,
+
+  /// *Optional*\
+  /// change the height of the first line -> height
+  first-line-height: none,
+
+  /// *Optional*\
+  /// change the distance betwen two elements
+  element-distance: none,
 ) = {
   //start of function
 
@@ -221,23 +233,32 @@
       //Début des problèmes
 
       //Pour la conversion 1unit = 10,65mm 
+      let largeur_permiere_colonne = 0
+      if first-column-width == none {
+        largeur_permiere_colonne = calc.max( //La largeur de la première colonne
+          3,
+          calc.max(
+            ..for i in range(0, init.label.len()){
+              (measure(init.label.at(i).at(0)).width.mm() / 10.65 + 1,)
+            }
+          )
+        )
+      } else {
+        largeur_permiere_colonne = first-column-width.mm() /10.65
+      }
 
-      let largeur_permiere_colonne = calc.max( //La largeur de la première colonne
-        3,
-        calc.max(
-          ..for i in range(0, init.label.len()){
-            (measure(init.label.at(i).at(0)).width.mm() / 10.65 + 1,)
+      let hauteur_permiere_ligne = 0
+      if first-line-height == none {
+        hauteur_permiere_ligne = calc.max(
+          1,
+          measure(init.variable).height.mm() / (10.65),
+          ..for i in domain {
+            (measure(i).height.mm() / (10.65) + 1 ,)
           }
         )
-      )
-
-      let hauteur_permiere_ligne = calc.max(
-        1,
-        measure(init.variable).height.mm() / (10.65),
-        ..for i in domain {
-          (measure(i).height.mm() / (10.65) + 1 ,)
-        }
-      )
+      } else {
+        hauteur_permiere_ligne = first-line-height.mm() /10.65
+      }
 
       content(( largeur_permiere_colonne / 2,-hauteur_permiere_ligne / 2), [#init.variable]) // La variable
 
@@ -245,8 +266,19 @@
         ((0,0),)
       }
 
+      let distance_elements = 3
+      if element-distance != none {
+        distance_elements = element-distance.mm()/ 10.65
+      }
+
       let decalage_domaine = largeur_permiere_colonne+0.2 + calc.max( // la distance entre les valeurs du domaine puis la largeur du talbeau de signe
-        measure(domain.at(0)).width.mm() / (2 * 10.65),
+        measure(
+          if type(domain.at(0)) == array {
+            domain.at(0).first()
+          } else {
+            domain.at(0)
+          }
+        ).width.mm() / (2 * 10.65),
         ..for i in range(0, contents.len()){
           if init.label.at(i).last() == "Variation" {
             (measure(contents.at(i).at(0).last()).width.mm() / (2 * 10.65),)
@@ -256,29 +288,39 @@
 
       for i in range(0, domain.len() - 1){ //les éléments du domaine
         coordX.at(i) = (decalage_domaine, calc.max(
-          measure(domain.at(i)).width.mm() / ( 10.65),
-          ..for j in range(0, contents.len()){
-            if init.label.at(j).last() == "Variation" {
-              let oui = {
-                if contents.at(j).at(i).len() > 2 {
-                  calc.max(
-                    measure(contents.at(j).at(i).last()).width.mm() /(10.65),
-                    measure(contents.at(j).at(i).at(
-                      if contents.at(j).at(i).at(1) == "||"{2} else {3}
-                    )).width.mm() /(10.65)
-                  )
-                } else if contents.at(j).at(i).len() != 0 {
-                  measure(contents.at(j).at(i).last()).width.mm() / (10.65)
-                } else {0}
-              }
-              (oui,)
-            } else {(0,)}
-          }
-        ))
+            if type(domain.at(i)) == array {
+              measure(domain.at(i).first()).width.mm() / 10.65
+            }
+            else {
+              measure(domain.at(i)).width.mm() / (10.65)
+            },
+            ..for j in range(0, contents.len()){
+              if init.label.at(j).last() == "Variation" {
+                let oui = {
+                  if contents.at(j).at(i).len() > 2 {
+                    calc.max(
+                      measure(contents.at(j).at(i).last()).width.mm() /(10.65),
+                      measure(contents.at(j).at(i).at(
+                        if contents.at(j).at(i).at(1) == "||"{2} else {3}
+                      )).width.mm() /(10.65) 
+                    )
+                  } else if contents.at(j).at(i).len() != 0 {
+                    measure(contents.at(j).at(i).last()).width.mm() / (10.65)
+                  } else {0}
+                }
+                (oui,)
+              } else {(0,)}
+            }
+          ))
 
         let prochX1 = {
           calc.max(
-            measure(domain.at(i + 1)).width.mm() / (10.65),
+            if type(domain.at(i+1)) == array {
+              measure(domain.at(i + 1).first()).width.mm() / 10.65
+            }
+            else {
+              measure(domain.at(i + 1)).width.mm() / (10.65)
+            },
             ..for j in range(0, contents.len()){
               if init.label.at(j).last() == "Variation" {
                 let oui = {
@@ -302,18 +344,38 @@
         if i == 0{
           content(
             (decalage_domaine, -hauteur_permiere_ligne / 2),
-            box(width: 1pt, align(center, domain.at(i)))
+            box(
+              width: 3 * 10.65mm, 
+              align(
+                center, 
+                if type(domain.at(i)) == array {
+                  domain.at(i).first()
+                } else {
+                  domain.at(i)
+                }
+              )
+            )
           )
 
         } else {
 
           content(
             (decalage_domaine, -hauteur_permiere_ligne / 2),
-            box(width: 3 * 10.65mm, align(center, domain.at(i)))
+            box(
+              width: 3 * 10.65mm, 
+              align(
+                center, 
+                if type(domain.at(i)) == array {
+                  domain.at(i).first()
+                } else {
+                  domain.at(i)
+                }
+              )
+            )
           )
         }
 
-        decalage_domaine = decalage_domaine + (coordX.at(i).at(1))/2 + 3 + prochX1 / 2
+        decalage_domaine = decalage_domaine + (coordX.at(i).at(1))/2 + prochX1 / 2 + if type(domain.at(i)) != array {distance_elements} else {domain.at(i).last().mm() / 10.65}
         
       }
 
@@ -353,36 +415,42 @@
 
       let hauteur_total = hauteur_permiere_ligne
       for i in range(-0, init.label.len()){ //le texte de la première colonne
-        let hauteur_case = calc.max(
-          1,
-          measure(init.label.at(i).at(0)).height.mm() / 10.65,
-          ..for j in range(contents.at(i).len()) {
-            let ele = contents.at(i).at(j)
-            if init.label.at(i).last() == "Sign" {
-              if type(ele) == array and ele.len() > 2 {
-                (measure(ele.last()).height.mm() / 10.65,)
-              } else if  type(ele) != array and ele != "||" {
-                (measure(ele).height.mm() / 10.65,)
-              } else {
-                (1,)
+        let hauteur_case = {
+          if init.label.at(i).len() > 2 {
+            init.label.at(i).at(1).mm() / 10.65 -1.75
+          } else {
+            calc.max(
+              1,
+              measure(init.label.at(i).at(0)).height.mm() / 10.65,
+              ..for j in range(contents.at(i).len()) {
+                let ele = contents.at(i).at(j)
+                if init.label.at(i).last() == "Sign" {
+                  if type(ele) == array and ele.len() > 2 {
+                    (measure(ele.last()).height.mm() / 10.65,)
+                  } else if  type(ele) != array and ele != "||" {
+                    (measure(ele).height.mm() / 10.65,)
+                  } else {
+                    (1,)
+                  }
+                } else if init.label.at(i).last() == "Variation" {
+                  let oui = {
+                    if contents.at(i).at(j).len() > 2 {
+                      calc.max(
+                        measure(contents.at(i).at(j).last()).height.mm() /(10.65),
+                        measure(contents.at(i).at(j).at(
+                          if contents.at(i).at(j).at(1) == "||"{2} else {3}
+                        )).height.mm() /(10.65)
+                      )
+                    } else if contents.at(i).at(j).len() != 0 {
+                      measure(contents.at(i).at(j).last()).height.mm() / (10.65)
+                    } else {0}
+                  }
+                  (oui,)
+                }
               }
-            } else if init.label.at(i).last() == "Variation" {
-               let oui = {
-                if contents.at(i).at(j).len() > 2 {
-                  calc.max(
-                    measure(contents.at(i).at(j).last()).height.mm() /(10.65),
-                    measure(contents.at(i).at(j).at(
-                      if contents.at(i).at(j).at(1) == "||"{2} else {3}
-                    )).height.mm() /(10.65)
-                  )
-                } else if contents.at(i).at(j).len() != 0 {
-                  measure(contents.at(i).at(j).last()).height.mm() / (10.65)
-                } else {0}
-              }
-              (oui,)
-            }
+            )
           }
-        )
+        }
         
 
         content(
@@ -414,7 +482,7 @@
 
         //Les tableaux de signe
         
-        if init.label.at(i).at(1) == "Sign"{
+        if init.label.at(i).last() == "Sign"{
           for j in range(0, contents.at(i).len() - 1) {
 
             let prochain = _prochain-signe(contents.at(i), j)
@@ -809,10 +877,24 @@
 }
 
 #tabvar(
+  first-column-width: 1cm,
+  first-line-height: 2cm,
+  element-distance: 2cm,
+  arrow-mark: (end: ">", start: "|"),
   init: (
-    variable: $t$,
-    label: (([sign], "Sign"),),
+    variable: $x$,
+    label: (
+      ([sign of $f’$], 3cm ,"Sign"),
+      ([variation of $f$], 20mm , "Variation"),
+    ),
   ),
-  domain: ($2$, $4$, $6$),
-  contents: ((("||", $+$), $-$, "||"),),
+  domain: (($ -oo $, 3cm), ( $ 0 $, 10cm), $ +oo $),
+  contents: (
+    ($+$, ("||", $+$)),
+    (
+      (center, $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      (center, $ 0 $),
+    ),
+  ),
 )
