@@ -415,8 +415,10 @@
               align(
                 center,
                 if type(domain.at(i)) == array {
+                  show math.equation.where(block: false): math.equation.with(block: true)
                   domain.at(i).first()
                 } else {
+                  show math.equation.where(block: false): math.equation.with(block: true)
                   domain.at(i)
                 },
               ),
@@ -435,7 +437,16 @@
       content(
         // le dernier éléments du domaine
         (decalage_domaine, -hauteur_permiere_ligne / 2),
-        box(width: 3 * 10.65mm, align(center, domain.at(domain.len() - 1))),
+        box(
+          width: 3 * 10.65mm,
+          align(
+            center,
+            {
+              show math.equation.where(block: false): math.equation.with(block: true)
+              domain.at(domain.len() - 1)
+            },
+          ),
+        ),
       )
       coordX.at(domain.len() - 1) = (
         decalage_domaine,
@@ -560,7 +571,13 @@
                 ),
                 box(
                   width: 1pt,
-                  align(center, contents.at(i).at(j).at(1)),
+                  align(
+                    center,
+                    {
+                      show math.equation.where(block: false): math.equation.with(block: true)
+                      contents.at(i).at(j).at(1)
+                    },
+                  ),
                 ),
               )
 
@@ -619,7 +636,13 @@
                 ),
                 box(
                   width: 1pt,
-                  align(center, contents.at(i).at(j)),
+                  align(
+                    center,
+                    {
+                      show math.equation.where(block: false): math.equation.with(block: true)
+                      contents.at(i).at(j)
+                    },
+                  ),
                 ),
               )
 
@@ -984,11 +1007,6 @@
 }
 
 #tabvar(
-  first-column-width: 1cm,
-  element-distance: 2cm,
-  arrow-mark: (end: ">", start: "|"),
-  line-style: (stroke: (dash: "dashed")),
-  line-0: true,
   init: (
     var: $x$,
     label: (
@@ -996,9 +1014,9 @@
       ([variation of $f$], 20mm, "v"),
     ),
   ),
-  domain: (($ -oo $, 3cm), ($ 0 $, 10cm), $ +oo $, $ 3 $),
+  domain: ($ -oo $, ($ 0 $, 10cm), $ +oo $, $ 3 $),
   contents: (
-    ($+$, ("||", $ + $), $ - $),
+    ($+$, ("||", $+$), $ - $),
     (
       (center, $0$),
       (bottom, top, "||", $ -oo $, $ +oo $),
