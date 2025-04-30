@@ -78,7 +78,12 @@ Into this
 
 ## ·change log·
 
-#### 0.2.0
+#### 0:2:1 :
+- change "Variation" into "v"
+- change "Sign" into "s"
+- bug fix
+
+#### 0.2.0 :
 - **Require :** typst version >= 0.13.0
 - Now bluid on `Cetz 0.3.4` insted of fletcher
 - rename stroke to table-style and now take the Cetz style type
