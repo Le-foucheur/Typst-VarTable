@@ -1,4 +1,5 @@
 #import "@preview/cetz:0.3.4"
+#set page(paper: "a1")
 
 #let _prochain-signe(tab_signe, j) = {
   // Cherche le prochain élément non vide "()" dans ce sous tableau
@@ -197,9 +198,9 @@
 
 /// Return a variation table
 #let tabvar(
-  /// initialitation of the table \
-  ///  - `variable` is a content block which contains the table’s variable name (like $x$ or $t$)
-  ///  - `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign"
+  /// variable is a content block which contains the table’s variable name (like $x$ or $t$) -> string
+  variable: [],
+  /// `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign" \
   /// *Example :* for a variation table of a function $f$, you should write : \
   /// ```typst
   /// init: (
@@ -209,11 +210,8 @@
   ///     ([variation of $f$], "Variation") // the second line is a variation table
   ///   )
   /// )
-  /// ``` -> dictionary
-  init: (
-    "var": [],
-    "label": [],
-  ),
+  /// ``` -> string
+  label: [],
   /// values taken by the variable \
   /// for example if your funtions changes sign or reaches a max/min for $x in {0,1,2,3}$ \
   /// you should write this :
@@ -244,6 +242,13 @@
   ///
   /// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed. -> style
   line-style: (stroke: black + 1pt),
+  ///
+  hachurage-style: tiling(size: (30pt, 30pt))[
+
+    #place(line(start: (0%, 100%), end: (100%, 0%), stroke: 2pt))
+    #place(line(start: (-100%, 100%), end: (100%, -100%), stroke: 2pt))
+    #place(line(start: (0%, 200%), end: (200%, 0%), stroke: 2pt))
+  ],
   /// *Optional*\
   /// change the width of the first column -> length
   first-column-width: none,
@@ -270,8 +275,8 @@
         largeur_permiere_colonne = calc.max(
           //La largeur de la première colonne
           3,
-          calc.max(..for i in range(0, init.label.len()) {
-            (measure(init.label.at(i).at(0)).width.mm() / 10.65 + 1,)
+          calc.max(..for i in range(0, label.len()) {
+            (measure(label.at(i).at(0)).width.mm() / 10.65 + 1,)
           }),
         )
       } else {
@@ -282,7 +287,7 @@
       if first-line-height == none {
         hauteur_permiere_ligne = calc.max(
           1,
-          measure(init.var).height.mm() / 10.65,
+          measure(variable).height.mm() / 10.65,
           ..for i in domain {
             (
               measure(if type(i) == array {
@@ -301,7 +306,7 @@
         hauteur_permiere_ligne = first-line-height.mm() / 10.65
       }
 
-      content((largeur_permiere_colonne / 2, -hauteur_permiere_ligne / 2), [#init.var]) // La variable
+      content((largeur_permiere_colonne / 2, -hauteur_permiere_ligne / 2), [#variable]) // La variable
 
       let coordX = for i in range(0, domain.len()) {
         ((0, 0),)
@@ -326,7 +331,7 @@
               .mm()
               / (2 * 10.65),
             ..for i in range(0, contents.len()) {
-              if init.label.at(i).last() == "v" {
+              if label.at(i).last() == "v" {
                 (measure(contents.at(i).at(0).last()).width.mm() / (2 * 10.65),)
               } else { (0,) }
             },
@@ -344,7 +349,7 @@
               measure(domain.at(i)).width.mm() / 10.65
             },
             ..for j in range(0, contents.len()) {
-              if init.label.at(j).last() == "v" {
+              if label.at(j).last() == "v" {
                 let oui = {
                   if contents.at(j).at(i).len() > 2 {
                     calc.max(
@@ -372,7 +377,7 @@
               measure(domain.at(i + 1)).width.mm() / 10.65
             },
             ..for j in range(0, contents.len()) {
-              if init.label.at(j).last() == "v" {
+              if label.at(j).last() == "v" {
                 let oui = {
                   if contents.at(j).at(i + 1).len() > 2 {
                     calc.max(
@@ -443,33 +448,28 @@
             center,
             {
               show math.equation.where(block: false): math.equation.with(block: true)
-              domain.at(domain.len() - 1)
+              domain.at(-1)
             },
           ),
         ),
       )
-      coordX.at(domain.len() - 1) = (
+      coordX.at(-1) = (
         decalage_domaine,
         calc.max(
-          measure(domain.at(domain.len() - 1)).width.mm() / 10.65,
+          measure(domain.at(-1)).width.mm() / 10.65,
           ..for j in range(0, contents.len()) {
-            if init.label.at(j).last() == "v" {
+            if label.at(j).last() == "v" {
               let oui = {
-                if contents.at(j).at(domain.len() - 1).len() > 2 {
+                if contents.at(j).at(-1).len() > 2 {
                   calc.max(
-                    measure(contents.at(j).at(domain.len() - 1).last()).width.mm() / 10.65,
-                    measure(
-                      contents
-                        .at(j)
-                        .at(domain.len() - 1)
-                        .at(if contents.at(j).at(domain.len() - 1).at(1) == "||" { 2 } else { 3 }),
-                    )
+                    measure(contents.at(j).at(-1).last()).width.mm() / 10.65,
+                    measure(contents.at(j).at(-1).at(if contents.at(j).at(-1).at(1) == "||" { 2 } else { 3 }))
                       .width
                       .mm()
                       / 10.65,
                   )
-                } else if contents.at(j).at(domain.len() - 1).len() != 0 {
-                  measure(contents.at(j).at(domain.len() - 1).last()).width.mm() / 10.65
+                } else if contents.at(j).at(-1).len() != 0 {
+                  measure(contents.at(j).at(-1).last()).width.mm() / 10.65
                 } else { 0 }
               }
               (oui,)
@@ -478,25 +478,25 @@
         ),
       )
 
-      decalage_domaine = decalage_domaine + coordX.at(domain.len() - 1).at(1) / 2 + 0.2
+      decalage_domaine = decalage_domaine + coordX.at(-1).at(1) / 2 + 0.2
 
-      let coordY = for i in range(0, init.label.len()) {
+      let coordY = for i in range(0, label.len()) {
         ((0, 0),)
       }
 
       let hauteur_total = hauteur_permiere_ligne
-      for i in range(-0, init.label.len()) {
+      for i in range(-0, label.len()) {
         //le texte de la première colonne
         let hauteur_case = {
-          if init.label.at(i).len() > 2 {
-            init.label.at(i).at(1).mm() / 10.65 - 1.75
+          if label.at(i).len() > 2 {
+            label.at(i).at(1).mm() / 10.65 - 1.75
           } else {
             calc.max(
               1,
-              measure(init.label.at(i).at(0)).height.mm() / 10.65,
+              measure(label.at(i).at(0)).height.mm() / 10.65,
               ..for j in range(contents.at(i).len()) {
                 let ele = contents.at(i).at(j)
-                if init.label.at(i).last() == "s" {
+                if label.at(i).last() == "s" {
                   if type(ele) == array and ele.len() > 2 {
                     (measure(ele.last()).height.mm() / 10.65,)
                   } else if type(ele) != array and ele != "||" {
@@ -504,7 +504,7 @@
                   } else {
                     (1,)
                   }
-                } else if init.label.at(i).last() == "v" {
+                } else if label.at(i).last() == "v" {
                   let oui = {
                     if contents.at(i).at(j).len() > 2 {
                       calc.max(
@@ -528,7 +528,7 @@
 
         content(
           (largeur_permiere_colonne / 2, -hauteur_total - hauteur_case / 2 - 1.75 / 2),
-          box(width: largeur_permiere_colonne * 10.64mm, align(center, init.label.at(i).at(0))),
+          box(width: largeur_permiere_colonne * 10.64mm, align(center, label.at(i).at(0))),
         )
 
         line(
@@ -553,12 +553,12 @@
         (largeur_permiere_colonne, -hauteur_total),
       )
 
-      for i in range(0, init.label.len()) {
+      for i in range(0, label.len()) {
         // Début des différents tableaux
 
         //Les tableaux de signe
 
-        if init.label.at(i).last() == "s" {
+        if label.at(i).last() == "s" {
           for j in range(0, contents.at(i).len() - 1) {
             let prochain = _prochain-signe(contents.at(i), j)
 
@@ -629,127 +629,260 @@
             } else if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() == 0 {
               // On ne fait rien s'il n'y a pas de signe
             } else {
-              content(
-                (
-                  (coordX.at(prochain).at(0) + coordX.at(j).at(0)) / 2,
-                  coordY.at(i).at(0),
-                ),
-                box(
-                  width: 1pt,
-                  align(
-                    center,
-                    {
-                      show math.equation.where(block: false): math.equation.with(block: true)
-                      contents.at(i).at(j)
-                    },
+              if contents.at(i).at(j) == "h" {
+                rect(
+                  (
+                    if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
-                ),
-              )
+                  (
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+              } else if contents.at(i).at(j) == "|h" {
+                rect(
+                  (
+                    if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) + 0.07 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+                if j != 0 {
+                  line(
+                    (
+                      coordX.at(j).at(0) - 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(j).at(0) - 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
+              } else if contents.at(i).at(j) == "h|" {
+                rect(
+                  (
+                    if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
 
-              if j != 0 {
-                //Si c'est pas le premier signe
-                set-style(..line-style)
                 line(
-                  (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                  name: "zero2",
+                  (
+                    coordX.at(prochain).at(0) + 0.07,
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    coordX.at(prochain).at(0) + 0.07,
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
                 )
+              } else if contents.at(i).at(j) == "|h|" {
+                rect(
+                  (
+                    if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) + 0.07 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+                if prochain != contents.at(i).len() {
+                  line(
+                    (
+                      coordX.at(prochain).at(0) + 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(prochain).at(0) + 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
+                if j != 0 {
+                  line(
+                    (
+                      coordX.at(j).at(0) - 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(j).at(0) - 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
+              } else {
                 content(
-                  "zero2.mid",
-                  if line-0 { $ 0 $ } else { [] },
+                  (
+                    (coordX.at(prochain).at(0) + coordX.at(j).at(0)) / 2,
+                    coordY.at(i).at(0),
+                  ),
+                  box(
+                    width: 1pt,
+                    align(
+                      center,
+                      {
+                        show math.equation.where(block: false): math.equation.with(block: true)
+                        contents.at(i).at(j)
+                      },
+                    ),
+                  ),
                 )
-                set-style(..table-style)
+
+                if (
+                  j != 0
+                    and not (
+                      contents.at(i).at(j - 1) == "h"
+                        or contents.at(i).at(j - 1) == "|h"
+                        or contents.at(i).at(j - 1) == "h|"
+                        or contents.at(i).at(j - 1) == "|h|"
+                    )
+                ) {
+                  //Si c'est pas le premier signe
+                  set-style(..line-style)
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                    name: "zero2",
+                  )
+                  content(
+                    "zero2.mid",
+                    if line-0 { $ 0 $ } else { [] },
+                  )
+                  set-style(..table-style)
+                }
               }
             }
           }
 
           //Cas du dernier signe
 
-          if contents.at(i).at(contents.at(i).len() - 1) == "||" {
+          if contents.at(i).at(-1) == "||" {
             // Si bar indéfinie à la fin
             line(
               (decalage_domaine - 0.15, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
               (decalage_domaine - 0.15, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
             )
           } else {
-            let indice = contents.at(i).len()
-
-            if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() >= 2 {
-              // si le signe n'est pas vide
-              content(
-                (
-                  (coordX.at(indice - 1 + 1).at(0) + coordX.at(indice - 1).at(0)) / 2,
-                  coordY.at(i).at(0),
-                ),
-                box(
-                  width: 1pt,
-                  align(center, contents.at(i).at(indice - 1).at(1)),
-                ),
-              )
-
-              set-style(..line-style)
-              if contents.at(i).at(indice - 1).at(0) == "||" {
-                set-style(..table-style)
-                line(
-                  (coordX.at(indice - 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(indice - 1).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
-                line(
-                  (coordX.at(indice - 1).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(indice - 1).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
-              } else if contents.at(i).at(indice - 1).at(0) == "0" {
-                line(
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                  name: "zero",
-                )
-                content(
-                  "zero.mid",
-                  $ 0 $,
-                )
-              } else if contents.at(i).at(indice - 1).at(0) == "|" {
-                line(
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
-              } else {
-                line(
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                  name: "zero2",
-                )
-                content(
-                  "zero2.mid",
-                  if line-0 { $ 0 $ } else { [] },
-                )
-              }
-              set-style(..table-style)
-            } else if type(contents.at(i).at(indice - 1)) == array and contents.at(i).at(indice - 1).len() == 0 {
+            if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() == 0 {
               // On ne fait rien s'il n'y a pas de signe
             } else {
-              content(
-                (
-                  (coordX.at(indice - 1 + 1).at(0) + coordX.at(indice - 1).at(0)) / 2,
-                  coordY.at(i).at(0),
-                ),
-                box(
-                  width: 1pt,
-                  align(center, contents.at(i).at(indice - 1)),
-                ),
-              )
+              if contents.at(i).at(-1) == "h" {
+                rect(
+                  (
+                    if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    decalage_domaine,
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+              } else if contents.at(i).at(-1) == "|h" {
+                rect(
+                  (
+                    if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) + 0.07 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    decalage_domaine,
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+                if contents.at(i).len() - 1 != 0 {
+                  line(
+                    (
+                      coordX.at(-2).at(0) - 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(-2).at(0) - 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
+              } else if contents.at(i).at(-1) == "h|" {
+                rect(
+                  (
+                    if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    decalage_domaine,
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+              } else if contents.at(i).at(-1) == "|h|" {
+                rect(
+                  (
+                    if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) + 0.07 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    decalage_domaine,
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                  fill: hachurage-style,
+                )
+                if contents.at(i).len() - 1 != 0 {
+                  line(
+                    (
+                      coordX.at(-2).at(0) - 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(-2).at(0) - 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
+              } else {
+                content(
+                  (
+                    (coordX.at(-2).at(0) + coordX.at(-1).at(0)) / 2,
+                    coordY.at(i).at(0),
+                  ),
+                  box(
+                    width: 1pt,
+                    align(center, contents.at(i).at(-1)),
+                  ),
+                )
 
-              set-style(..line-style)
-              line(
-                (coordX.at(indice - 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                (coordX.at(indice - 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                name: "zero3",
-              )
-              content(
-                "zero3.mid",
-                if line-0 { $ 0 $ } else { [] },
-              )
-              set-style(..table-style)
+                if (
+                  contents.at(i).at(-2) != "h"
+                    and contents.at(i).at(-2) != "|h"
+                    and contents.at(i).at(-2) != "h|"
+                    and contents.at(i).at(-2) != "|h|"
+                ) {
+                  set-style(..line-style)
+                  line(
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                    name: "zero3",
+                  )
+                  content(
+                    "zero3.mid",
+                    if line-0 { $ 0 $ } else { [] },
+                  )
+                  set-style(..table-style)
+                }
+              }
             }
           }
 
@@ -758,7 +891,7 @@
 
         // Tableau de variation
 
-        if init.label.at(i).last() == "v" {
+        if label.at(i).last() == "v" {
           for j in range(1, domain.len() - 1) {
             if contents.at(i).at(j).len() == 2 {
               let element = contents.at(i).at(j).last()
@@ -863,8 +996,7 @@
           }
 
           // Dernier éléments
-          let indice_der_ele = contents.at(i).len() - 1
-          let der_ele = contents.at(i).at(indice_der_ele)
+          let der_ele = contents.at(i).at(-1)
           if der_ele.len() > 2 {
             //Si il y a une bar indef
             line(
@@ -880,19 +1012,15 @@
 
             content(
               (
-                coordX.at(indice_der_ele).at(0) - 0.17,
+                coordX.at(-1).at(0) - 0.17,
                 coordY.at(i).at(0)
-                  + if contents.at(i).at(indice_der_ele).first() == top {
+                  + if contents.at(i).at(-1).first() == top {
                     (
-                      coordY.at(i).at(1) / 2
-                        - 0.3
-                        - measure(contents.at(i).at(indice_der_ele).last()).height.mm() / (2 * 10.65)
+                      coordY.at(i).at(1) / 2 - 0.3 - measure(contents.at(i).at(-1).last()).height.mm() / (2 * 10.65)
                     )
-                  } else if contents.at(i).at(indice_der_ele).first() == bottom {
+                  } else if contents.at(i).at(-1).first() == bottom {
                     (
-                      -coordY.at(i).at(1) / 2
-                        + 0.3
-                        + measure(contents.at(i).at(indice_der_ele).last()).height.mm() / (2 * 10.65)
+                      -coordY.at(i).at(1) / 2 + 0.3 + measure(contents.at(i).at(-1).last()).height.mm() / (2 * 10.65)
                     )
                   } else { 0 },
               ),
@@ -901,19 +1029,15 @@
           } else {
             content(
               (
-                coordX.at(indice_der_ele).at(0),
+                coordX.at(-1).at(0),
                 coordY.at(i).at(0)
-                  + if contents.at(i).at(indice_der_ele).first() == top {
+                  + if contents.at(i).at(-1).first() == top {
                     (
-                      coordY.at(i).at(1) / 2
-                        - 0.3
-                        - measure(contents.at(i).at(indice_der_ele).last()).height.mm() / (2 * 10.65)
+                      coordY.at(i).at(1) / 2 - 0.3 - measure(contents.at(i).at(-1).last()).height.mm() / (2 * 10.65)
                     )
-                  } else if contents.at(i).at(indice_der_ele).first() == bottom {
+                  } else if contents.at(i).at(-1).first() == bottom {
                     (
-                      -coordY.at(i).at(1) / 2
-                        + 0.3
-                        + measure(contents.at(i).at(indice_der_ele).last()).height.mm() / (2 * 10.65)
+                      -coordY.at(i).at(1) / 2 + 0.3 + measure(contents.at(i).at(-1).last()).height.mm() / (2 * 10.65)
                     )
                   } else { 0 },
               ),
@@ -1007,21 +1131,20 @@
 }
 
 #tabvar(
-  init: (
-    var: $x$,
-    label: (
-      ([sign of $f’$], 3cm, "s"),
-      ([variation of $f$], 20mm, "v"),
-    ),
+  variable: $x$,
+  label: (
+    ([sign of $f’$], 3cm, "s"),
+    ([variation of $f$], 20mm, "v"),
   ),
-  domain: ($ -oo $, ($ 0 $, 10cm), $ +oo $, $ 3 $),
+  domain: ($ -oo $, $o$, $3$, $4$, $5$),
   contents: (
-    ($+$, ("||", $+$), $ - $),
+    ("h|", "|h", $4$, $5$),
     (
       (center, $0$),
       (bottom, top, "||", $ -oo $, $ +oo $),
-      (center, $ 0 $),
-      (top, $ -oo $),
+      (bottom, $ 9 $),
+      (center, $5$),
+      (top, $4$),
     ),
   ),
 )

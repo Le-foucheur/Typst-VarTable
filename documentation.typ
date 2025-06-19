@@ -30,13 +30,14 @@ If you encounter any bugs, please report them on my #link("https://github.com/Le
 == 2.1 - general description
 
 #let docs = tidy.parse-module(
-  read("tabvar.typ"), name: "tabvar",
+  read("tabvar.typ"),
+  name: "tabvar",
 )
 #tidy.show-module(
   show-module-name: false,
   show-outline: false,
   omit-private-parameters: true,
-  docs
+  docs,
 )
 
 #pagebreak()
@@ -82,10 +83,8 @@ A normal sign table :
     ```,
     scale(x: 70%, y: 80%)[
       #tabvar(
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
+        variable: $t$,
+        label: (([sign], "Sign"),),
         domain: ($2$, $4$, $6$, $8$),
         contents: (($+$, $-$, $+$),),
       )
@@ -106,8 +105,8 @@ More complex usage :
           domain: ($2$, $4$, $6$, $8$),
           contents: (
             (
-              "Hello world !", 
-              $-$, 
+              "Hello world !",
+              $-$,
               $ 3 / 2 $
             )
           ),
@@ -117,10 +116,8 @@ More complex usage :
       dx: -10mm,
       scale(x: 67%, y: 80%)[
         #tabvar(
-          init: (
-            variable: $t$,
-            label: (([sign], "Sign"),),
-          ),
+          variable: $t$,
+          label: (([sign], "Sign"),),
           domain: ($ 2 $, $4$, $6$, $8$),
           contents: (("Hello world !", $-$, $ 3 / 2 $),),
         )
@@ -165,11 +162,9 @@ For more complex applications, please refer to the Cetz manual.
     scale(x: 68%, y: 80%)[
       #tabvar(
         line-style: (stroke: (paint: red, dash: "dashed")),
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
-        domain: ($ 2 $, $4$, $6$,),
+        variable: $t$,
+        label: (([sign], "Sign"),),
+        domain: ($ 2 $, $4$, $6$),
         contents: (
           ($+$, $-$),
         ),
@@ -185,7 +180,7 @@ There are 3 differents types of bar :
 - ```"0"``` : a bar with a 0 on the center
 - ```"||"``` : a double bar, like for the undefined values
 
-*NB* : the marks-line parameter has no effect on these bars 
+*NB* : the marks-line parameter has no effect on these bars
 
 *Example :*
 
@@ -213,10 +208,8 @@ There are 3 differents types of bar :
     ```,
     scale(x: 60%, y: 80%)[
       #tabvar(
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
+        variable: $t$,
+        label: (([sign], "Sign"),),
         domain: ($ 2 $, $4$, $6$, $8$, $ 10 $),
         contents: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
@@ -235,7 +228,7 @@ If you want a double line at the start of the table, you can use a double bar `"
     align: horizon,
     ```typ
       #tabvar(
-        
+
         init: (
           variable: $t$,
           label: (([sign], "Sign"),),
@@ -252,10 +245,8 @@ If you want a double line at the start of the table, you can use a double bar `"
     ```,
     scale(x: 80%)[
       #tabvar(
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
+        variable: $t$,
+        label: (([sign], "Sign"),),
         domain: ($ 2 $, $4$, $6$),
         contents: ((("||", $+$), $-$, "||"),),
       )
@@ -290,10 +281,8 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
     scale(x: 75%, y: 80%)[
       #tabvar(
         line-0: true,
-        init: (
-          variable: $t$,
-          label: (([sign], "Sign"),),
-        ),
+        variable: $t$,
+        label: (([sign], "Sign"),),
         domain: ($ 2 $, $4$, $6$, $8$),
         contents: (($+$, (), $-$),),
       )
@@ -326,7 +315,7 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
     align: horizon,
     ```typ
       #tabvar(
-        
+
         init: (
           variable: $t$,
           label: (([variation], "Variation"),),
@@ -346,11 +335,8 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
       dx: -22mm,
       scale(x: 60%, y: 80%)[
         #tabvar(
-          
-          init: (
-            variable: $t$,
-            label: (([variation], "Variation"),),
-          ),
+          variable: $t$,
+          label: (([variation], "Variation"),),
           domain: ($ 2 $, $4$, $6$, $8$),
           contents: (
             (
@@ -368,7 +354,7 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
 
 ==== 2.2.2.2 - Undefined values
 
-If your function is not defined on some values like $f(x) = 1/x$ for $x = 0$, you certainly want to put a double line meaning that the function is undefined on this value, and you can ! \
+If your function is not defined on some values like $f(x) = 1 / x$ for $x = 0$, you certainly want to put a double line meaning that the function is undefined on this value, and you can ! \
 
 #sym.star For each values of domain except the start and the end.
 
@@ -405,10 +391,8 @@ where :
       dx: -16mm,
       scale(x: 80%, y: 80%)[
         #tabvar(
-          init: (
-            variable: $t$,
-            label: (([variation], "Variation"),),
-          ),
+          variable: $t$,
+          label: (([variation], "Variation"),),
           domain: ($2$, $4$, $6$),
           contents: (
             (
@@ -457,10 +441,8 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
       dx: -25mm,
       scale(x: 55%, y: 70%)[
         #tabvar(
-          init: (
-            variable: $t$,
-            label: (([variation], "Variation"),),
-          ),
+          variable: $t$,
+          label: (([variation], "Variation"),),
           domain: ($ 2 $, $4$, $6$, $8$, $9$),
           contents: (
             (
@@ -507,10 +489,8 @@ For example ``` (top, "||", $3$)```
       dx: -16mm,
       scale(x: 80%, y: 80%)[
         #tabvar(
-          init: (
-            variable: $t$,
-            label: (([variation], "Variation"),),
-          ),
+          variable: $t$,
+          label: (([variation], "Variation"),),
           domain: ($2$, $4$, $6$),
           contents: (
             (
@@ -559,10 +539,8 @@ to do this, as with sign arrays, you must create an empty array
       scale(x: 81%, y: 81%)[
         #tabvar(
           arrow-mark: (end: ">", stroke: red),
-          init: (
-            variable: $t$,
-            label: (([variation], "Variation"),),
-          ),
+          variable: $t$,
+          label: (([variation], "Variation"),),
           domain: ($2$, $4$, $6$),
           contents: (
             (
@@ -583,40 +561,38 @@ to do this, as with sign arrays, you must create an empty array
 
 Here is a little bundle of what you can do with the package.
 
-== 3.1 - #link("https://en.wikipedia.org/wiki/Gamma_function")[#underline(stroke: blue)[#sym.Gamma function]] on $[0;  +oo]$
+== 3.1 - #link("https://en.wikipedia.org/wiki/Gamma_function")[#underline(stroke: blue)[#sym.Gamma function]] on $[0; +oo]$
 Where it takes a minimum on $[0;+oo[$ for $x = alpha$
 
 #align(center)[
   #rect(fill: luma(95%), radius: 10pt, width: 19cm)[
     #align(left)[
-    ```typ
-      #tabvar(
-        init: (
-          variable: $t$,
-          label: (
-            ([sign of #sym.Gamma], "Sign"),
-            ([variation of #sym.Gamma], "Variation"),
+      ```typ
+        #tabvar(
+          init: (
+            variable: $t$,
+            label: (
+              ([sign of #sym.Gamma], "Sign"),
+              ([variation of #sym.Gamma], "Variation"),
+            ),
           ),
-        ),
-        domain: ($0$, $ alpha $, $ +oo $),
-        contents: (
-          ($-$, $+$),
-          (
-            (top, "||", $+oo$),
-            (bottom, $Gamma(alpha)$),
-            (top, $+oo$),
+          domain: ($0$, $ alpha $, $ +oo $),
+          contents: (
+            ($-$, $+$),
+            (
+              (top, "||", $+oo$),
+              (bottom, $Gamma(alpha)$),
+              (top, $+oo$),
+            ),
           ),
-        ),
-      )
-    ```]
+        )
+      ```]
     ─────────────────────────────────────────────────────────────────────
     #tabvar(
-      init: (
-        variable: $t$,
-        label: (
-          ([sign of #sym.Gamma’], "Sign"),
-          ([variation of #sym.Gamma], "Variation"),
-        ),
+      variable: $t$,
+      label: (
+        ([sign of #sym.Gamma’], "Sign"),
+        ([variation of #sym.Gamma], "Variation"),
       ),
       domain: ($0$, $ alpha $, $ +oo $),
       contents: (
@@ -634,9 +610,9 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
 #pagebreak()
 
 == 3.2 - A Rational function
-Take $f(x) = (4x^2 + 12x + 29)/(4(x^2 + 3x + 2))$\
+Take $f(x) = (4x^2 + 12x + 29) / (4(x^2 + 3x + 2))$\
 
-So we have $f’(x) = (-2x -3)/(16(x^2 + 3x + 2)^2)$\
+So we have $f’(x) = (-2x -3) / (16(x^2 + 3x + 2)^2)$\
 
 And finaly, we get :
 
@@ -645,48 +621,46 @@ And finaly, we get :
   #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
     Code :
     #align(left)[
-    ```typ
-      #tabvar(
-          init: (
-            variable: $t$,
-            label: (
-              ([sign of $f’$], "Sign"),
-              ([variation of $f$], "Variation"),
+      ```typ
+        #tabvar(
+            init: (
+              variable: $t$,
+              label: (
+                ([sign of $f’$], "Sign"),
+                ([variation of $f$], "Variation"),
+              ),
             ),
-          ),
-          domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
-          contents: (
-            ($+$, ("||", $+$), $-$, ("||", $-$)),
-            (
-              (bottom, $1$),
-              (top, bottom, "||", $+oo$, $-oo$),
-              (top, $-20$),
-              (bottom, top, "||", $-oo$, $+oo$),
-              (bottom, $1$),
+            domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
+            contents: (
+              ($+$, ("||", $+$), $-$, ("||", $-$)),
+              (
+                (bottom, $1$),
+                (top, bottom, "||", $+oo$, $-oo$),
+                (top, $-20$),
+                (bottom, top, "||", $-oo$, $+oo$),
+                (bottom, $1$),
+              ),
             ),
-          ),
-        )
-    ```]
+          )
+      ```]
 
     ────────────────────────────────────────────────────────────
     Result :
 
 
-    #scale(x:80%, y:80%)[
+    #scale(x: 80%, y: 80%)[
       #tabvar(
-        init: (
-          variable: $t$,
-          label: (
-            ([sign of $f’$], "Sign"),
-            ([variation of $f$], "Variation"),
-          ),
+        variable: $t$,
+        label: (
+          ([sign of $f’$], "Sign"),
+          ([variation of $f$], "Variation"),
         ),
         domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
         contents: (
           ($+$, ("||", $+$), $-$, ("||", $-$)),
           (
             (bottom, $1$),
-            (top, bottom, "||", $ 4$, $1/1/1/1/1/1/1/1/1$),
+            (top, bottom, "||", $4$, $1 / 1 / 1 / 1 / 1 / 1 / 1 / 1 / 1$),
             (top, $-20$),
             (bottom, top, "||", $-oo$, $+oo$),
             (bottom, $1$),
@@ -705,50 +679,12 @@ And finaly, we get :
     #grid(
       columns: 2,
       align: left,
-      [Code :] + ```typ
-        #tabvar(
-          arrow: "|-harpoon",
-          stroke-arrow: gradient.linear(..color.map.rainbow),
-          marks-line: "..",
-          init: (
-            variable: $t$,
-            label: (
-              ([sign of $cosh$], "Sign"),
-              ([variation of $cosh$], "Variation"),
-              ([sign of $sinh$ and $tanh$], "Sign"),
-              ([variation of $sinh$], "Variation"),
-              ([variation of $tanh$], "Variation"),
-            ),
-          ),
-          domain: ($ -oo $, $ 0 $, $ +oo $),
-          contents: (
-            ($-$, $+$),
-            (
-              (top, $+oo$),
-              (bottom, $1$),
-              (top, $+oo$),
-            ),
-            ($+$, ()),
-            (
-              (bottom, $-oo$),
-              (),
-              (top, $+oo$),
-            ),
-            (
-              (bottom, $1$),
-              (),
-              (top, $-1$),
-            ),
-          ),
-        )
-      ```,
-      [
-        Result :
-
-        #align(center)[
+      [Code :]
+        + ```typ
           #tabvar(
-            arrow-style: (stroke: gradient.linear(..color.map.rainbow), mark: (end: ">")),
-
+            arrow: "|-harpoon",
+            stroke-arrow: gradient.linear(..color.map.rainbow),
+            marks-line: "..",
             init: (
               variable: $t$,
               label: (
@@ -758,6 +694,43 @@ And finaly, we get :
                 ([variation of $sinh$], "Variation"),
                 ([variation of $tanh$], "Variation"),
               ),
+            ),
+            domain: ($ -oo $, $ 0 $, $ +oo $),
+            contents: (
+              ($-$, $+$),
+              (
+                (top, $+oo$),
+                (bottom, $1$),
+                (top, $+oo$),
+              ),
+              ($+$, ()),
+              (
+                (bottom, $-oo$),
+                (),
+                (top, $+oo$),
+              ),
+              (
+                (bottom, $1$),
+                (),
+                (top, $-1$),
+              ),
+            ),
+          )
+        ```,
+      [
+        Result :
+
+        #align(center)[
+          #tabvar(
+            arrow-style: (stroke: gradient.linear(..color.map.rainbow), mark: (end: ">")),
+
+            variable: $t$,
+            label: (
+              ([sign of $cosh$], "Sign"),
+              ([variation of $cosh$], "Variation"),
+              ([sign of $sinh$ and $tanh$], "Sign"),
+              ([variation of $sinh$], "Variation"),
+              ([variation of $tanh$], "Variation"),
             ),
             domain: ($ -oo $, $ 0 $, $ +oo $),
             contents: (
@@ -791,7 +764,7 @@ And finaly, we get :
 == 3.3 A weird table for a simple polynomial function
 Take $g(t) = t^2 - t^3$\
 So, we have $g’(t) = 2t - 3t^2$\
-And has local extrema for $x = 0$ and $x = 2/3$
+And has local extrema for $x = 0$ and $x = 2 / 3$
 
 #align(center)[
   #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -799,7 +772,7 @@ And has local extrema for $x = 0$ and $x = 2/3$
     #align(left)[
       ```typ
         #tabvar(
-          
+
           stroke: 5pt + red,
           arrow: "X-*-<>",
           arrow-style: (stroke :purple + 1.4pt),
@@ -829,19 +802,17 @@ And has local extrema for $x = 0$ and $x = 2/3$
     Result :
 
     #align(center)[
-      
+
       #tabvar(
         line-0: true,
         table-style: (stroke: 10pt + red),
-        arrow-style: (stroke :purple + 1.4pt, mark: (symbol: "hook")),
+        arrow-style: (stroke: purple + 1.4pt, mark: (symbol: "hook")),
         line-style: (stroke: orange),
 
-        init: (
-          variable: $t$,
-          label: (
-            ([sign of $g’$], "Sign"),
-            ([variation of $g$], "Variation"),
-          ),
+        variable: $t$,
+        label: (
+          ([sign of $g’$], "Sign"),
+          ([variation of $g$], "Variation"),
         ),
         domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
         contents: (
