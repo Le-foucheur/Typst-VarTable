@@ -112,17 +112,14 @@ More complex usage :
           ),
         )
     ```,
-    move(
-      dx: -10mm,
-      scale(x: 67%, y: 80%)[
-        #tabvar(
-          variable: $t$,
-          label: (([sign], "Sign"),),
-          domain: ($ 2 $, $4$, $6$, $8$),
-          contents: (("Hello world !", $-$, $ 3 / 2 $),),
-        )
-      ],
-    ),
+    move(dx: -10mm, scale(x: 67%, y: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([sign], "Sign"),),
+        domain: ($ 2 $, $4$, $6$, $8$),
+        contents: (("Hello world !", $-$, $ 3 / 2 $),),
+      )
+    ]),
   )
 ]
 *Note :* on the second example the table is squeezed with the scale function)
@@ -331,24 +328,21 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
         ),
       )
     ```,
-    move(
-      dx: -22mm,
-      scale(x: 60%, y: 80%)[
-        #tabvar(
-          variable: $t$,
-          label: (([variation], "Variation"),),
-          domain: ($ 2 $, $4$, $6$, $8$),
-          contents: (
-            (
-              (top, $3$),
-              (bottom, $0$),
-              (center, $1$),
-              (top, $ 4 $),
-            ),
+    move(dx: -22mm, scale(x: 60%, y: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "Variation"),),
+        domain: ($ 2 $, $4$, $6$, $8$),
+        contents: (
+          (
+            (top, $3$),
+            (bottom, $0$),
+            (center, $1$),
+            (top, $ 4 $),
           ),
-        )
-      ],
-    ),
+        ),
+      )
+    ]),
   )
 ]
 
@@ -387,23 +381,20 @@ where :
         ),
       )
     ```,
-    move(
-      dx: -16mm,
-      scale(x: 80%, y: 80%)[
-        #tabvar(
-          variable: $t$,
-          label: (([variation], "Variation"),),
-          domain: ($2$, $4$, $6$),
-          contents: (
-            (
-              (top, $3$),
-              (bottom, top, "||", $0$, $2$),
-              (bottom, $1$),
-            ),
+    move(dx: -16mm, scale(x: 80%, y: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "Variation"),),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $3$),
+            (bottom, top, "||", $0$, $2$),
+            (bottom, $1$),
           ),
-        )
-      ],
-    ),
+        ),
+      )
+    ]),
   )
 ]
 
@@ -437,25 +428,22 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
         ),
       )
     ```,
-    move(
-      dx: -25mm,
-      scale(x: 55%, y: 70%)[
-        #tabvar(
-          variable: $t$,
-          label: (([variation], "Variation"),),
-          domain: ($ 2 $, $4$, $6$, $8$, $9$),
-          contents: (
-            (
-              (top, $3$),
-              (bottom, "||", $0$, $1$),
-              (top, center, "||", $2$),
-              (top, "||", $3$),
-              (bottom, $1$),
-            ),
+    move(dx: -25mm, scale(x: 55%, y: 70%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "Variation"),),
+        domain: ($ 2 $, $4$, $6$, $8$, $9$),
+        contents: (
+          (
+            (top, $3$),
+            (bottom, "||", $0$, $1$),
+            (top, center, "||", $2$),
+            (top, "||", $3$),
+            (bottom, $1$),
           ),
-        )
-      ],
-    ),
+        ),
+      )
+    ]),
   )
 ]
 
@@ -485,23 +473,20 @@ For example ``` (top, "||", $3$)```
         ),
       )
     ```,
-    move(
-      dx: -16mm,
-      scale(x: 80%, y: 80%)[
-        #tabvar(
-          variable: $t$,
-          label: (([variation], "Variation"),),
-          domain: ($2$, $4$, $6$),
-          contents: (
-            (
-              (top, "||", $3$),
-              (bottom, $1$),
-              (top, "||", $2$),
-            ),
+    move(dx: -16mm, scale(x: 80%, y: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "Variation"),),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, "||", $3$),
+            (bottom, $1$),
+            (top, "||", $2$),
           ),
-        )
-      ],
-    ),
+        ),
+      )
+    ]),
   )
 ]
 
@@ -534,24 +519,21 @@ to do this, as with sign arrays, you must create an empty array
         ),
       )
     ```,
-    move(
-      dx: -16mm,
-      scale(x: 81%, y: 81%)[
-        #tabvar(
-          arrow-mark: (end: ">", stroke: red),
-          variable: $t$,
-          label: (([variation], "Variation"),),
-          domain: ($2$, $4$, $6$),
-          contents: (
-            (
-              (top, "||", $3$),
-              (),
-              (bottom, $2$),
-            ),
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        arrow-mark: (end: ">", stroke: red),
+        variable: $t$,
+        label: (([variation], "Variation"),),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, "||", $3$),
+            (),
+            (bottom, $2$),
           ),
-        )
-      ],
-    ),
+        ),
+      )
+    ]),
   )
 ]
 

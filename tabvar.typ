@@ -115,7 +115,18 @@
               .mm()
               / (2 * 10.65)
         )
-      } else if ligne.at(j).at(if indef { if ligne.at(j).at(1) == "||" { 0 } else { 1 } } else { 0 }) == bottom {
+      } else if ligne
+        .at(j)
+        .at(if indef {
+          if (
+            ligne.at(j).at(1) == "||"
+              or ligne.at(j).at(1) == "h"
+              or ligne.at(j).at(1) == "|h"
+              or ligne.at(j).at(1) == "H"
+              or ligne.at(j).at(1) == "H|"
+          ) { 0 } else { 1 }
+        } else { 0 })
+        == bottom {
         (
           -coordY.at(i).at(1) / 2
             + 0.3
@@ -1460,15 +1471,15 @@
 )
 
 #tabvar(
-  // first-column-width: 1.5cm,
-  // first-line-height: 1cm,
-  // element-distance: 2cm,
-  // arrow-mark: (end: "stealth",fill:red),//, start: "|"
-  // table-style:(stroke:(paint:blue)),
-  // line-style:(stroke:(paint:blue,dash:"dashed")),
-  // arrow-style:(stroke:(paint:blue)),
+  first-column-width: 1.5cm,
+  first-line-height: 1cm,
+  element-distance: 2cm,
+  arrow-mark: (end: "stealth", fill: red), //, start: "|"
+  table-style: (stroke: (paint: blue)),
+  line-style: (stroke: (paint: blue, dash: "dashed")),
+  arrow-style: (stroke: (paint: blue)),
   nocadre: true,
-  // variable: $t$,
+  variable: $t$,
   label: (
     ([$f’(x)$], .8cm, "s"),
     ([$f$], 25mm, "v"),
@@ -1485,8 +1496,8 @@
       ("", $ 2/7/15 $),
     ),
     (
-      ("", $0$),
-      (bottom, top, "||", $ -oo $, $ +oo $),
+      "h",
+      (bottom, "H|", $ +oo $),
       // ("t", $8$),
       ("", $ 2/7/15 $),
     ),
@@ -1494,9 +1505,8 @@
   values: (("arrow10.25%", $beta$, $0$, "l"), ("arrow21.50%", $5$, $0$, "f"), red),
   add: {
     cetz.draw.circle("domain1", radius: 6pt)
-    cetz.draw.polygon("variation21g", 4, angle: 45deg, radius: .6, stroke: blue)
+    cetz.draw.polygon("variation21", 4, angle: 45deg, radius: .6, stroke: blue)
     cetz.draw.line("line-betwen-table-nb1.mid", "line-betwen-label-table.end", stroke: red)
     cetz.draw.line("cadre.mid", "cadre.0", stroke: red)
   },
 )
-
