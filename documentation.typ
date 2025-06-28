@@ -84,7 +84,7 @@ A normal sign table :
     scale(x: 70%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($2$, $4$, $6$, $8$),
         contents: (($+$, $-$, $+$),),
       )
@@ -115,7 +115,7 @@ More complex usage :
     move(dx: -10mm, scale(x: 67%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$, $8$),
         contents: (("Hello world !", $-$, $ 3 / 2 $),),
       )
@@ -160,7 +160,7 @@ For more complex applications, please refer to the Cetz manual.
       #tabvar(
         line-style: (stroke: (paint: red, dash: "dashed")),
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$),
         contents: (
           ($+$, $-$),
@@ -206,9 +206,9 @@ There are 3 differents types of bar :
     scale(x: 60%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$, $8$, $ 10 $),
-        contents: (($+$, ("|", $-$), ("0", $-$), ("||", $+$)),),
+        contents: ((("||", $+$), ("|", $-$), ("0", $-$), ("||", $+$)),),
       )
     ],
   )
@@ -243,7 +243,7 @@ If you want a double line at the start of the table, you can use a double bar `"
     scale(x: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$),
         contents: ((("||", $+$), $-$, "||"),),
       )
@@ -279,7 +279,7 @@ For this, it is pretty easy, instead of putting the sign directly, you can put a
       #tabvar(
         line-0: true,
         variable: $t$,
-        label: (([sign], "Sign"),),
+        label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$, $8$),
         contents: (($+$, (), $-$),),
       )
@@ -331,7 +331,7 @@ The position can be ```typ top, center``` or ```typ bottom```, but no other type
     move(dx: -22mm, scale(x: 60%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([variation], "Variation"),),
+        label: (([variation], "v"),),
         domain: ($ 2 $, $4$, $6$, $8$),
         contents: (
           (
@@ -384,7 +384,7 @@ where :
     move(dx: -16mm, scale(x: 80%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([variation], "Variation"),),
+        label: (([variation], "v"),),
         domain: ($2$, $4$, $6$),
         contents: (
           (
@@ -431,7 +431,7 @@ Instead of ```typ (top, top, "||" , $0$, $0$) ```you can use ```typ (top, "||" ,
     move(dx: -25mm, scale(x: 55%, y: 70%)[
       #tabvar(
         variable: $t$,
-        label: (([variation], "Variation"),),
+        label: (([variation], "v"),),
         domain: ($ 2 $, $4$, $6$, $8$, $9$),
         contents: (
           (
@@ -476,7 +476,7 @@ For example ``` (top, "||", $3$)```
     move(dx: -16mm, scale(x: 80%, y: 80%)[
       #tabvar(
         variable: $t$,
-        label: (([variation], "Variation"),),
+        label: (([variation], "v"),),
         domain: ($2$, $4$, $6$),
         contents: (
           (
@@ -523,7 +523,7 @@ to do this, as with sign arrays, you must create an empty array
       #tabvar(
         arrow-mark: (end: ">", stroke: red),
         variable: $t$,
-        label: (([variation], "Variation"),),
+        label: (([variation], "v"),),
         domain: ($2$, $4$, $6$),
         contents: (
           (
@@ -555,7 +555,7 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
             variable: $t$,
             label: (
               ([sign of #sym.Gamma], "Sign"),
-              ([variation of #sym.Gamma], "Variation"),
+              ([variation of #sym.Gamma], "v"),
             ),
           ),
           domain: ($0$, $ alpha $, $ +oo $),
@@ -573,8 +573,8 @@ Where it takes a minimum on $[0;+oo[$ for $x = alpha$
     #tabvar(
       variable: $t$,
       label: (
-        ([sign of #sym.Gamma’], "Sign"),
-        ([variation of #sym.Gamma], "Variation"),
+        ([sign of #sym.Gamma’], "s"),
+        ([variation of #sym.Gamma], "v"),
       ),
       domain: ($0$, $ alpha $, $ +oo $),
       contents: (
@@ -634,8 +634,8 @@ And finaly, we get :
       #tabvar(
         variable: $t$,
         label: (
-          ([sign of $f’$], "Sign"),
-          ([variation of $f$], "Variation"),
+          ([sign of $f’$], "s"),
+          ([variation of $f$], "v"),
         ),
         domain: ($ -oo $, $ -2 $, $ -3 / 2 $, $ -1 $, $ +oo $),
         contents: (
@@ -708,11 +708,11 @@ And finaly, we get :
 
             variable: $t$,
             label: (
-              ([sign of $cosh$], "Sign"),
-              ([variation of $cosh$], "Variation"),
-              ([sign of $sinh$ and $tanh$], "Sign"),
-              ([variation of $sinh$], "Variation"),
-              ([variation of $tanh$], "Variation"),
+              ([sign of $cosh$], "s"),
+              ([variation of $cosh$], "v"),
+              ([sign of $sinh$ and $tanh$], "s"),
+              ([variation of $sinh$], "v"),
+              ([variation of $tanh$], "v"),
             ),
             domain: ($ -oo $, $ 0 $, $ +oo $),
             contents: (
@@ -793,8 +793,8 @@ And has local extrema for $x = 0$ and $x = 2 / 3$
 
         variable: $t$,
         label: (
-          ([sign of $g’$], "Sign"),
-          ([variation of $g$], "Variation"),
+          ([sign of $g’$], "s"),
+          ([variation of $g$], "v"),
         ),
         domain: ($ -oo $, $ 0 $, $ 2 / 3 $, $ +oo $),
         contents: (

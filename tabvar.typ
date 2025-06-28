@@ -259,7 +259,7 @@
 #let tabvar(
   /// variable is a content block which contains the table’s variable name (like $x$ or $t$) -> string
   variable: $ x $,
-  /// `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign" \
+  /// `label` is an array which contain arrays of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "v" for variation and "s" for sign \
   /// *Example :* for a variation table of a function $f$, you should write : \
   /// ```typst
   /// init: (
@@ -270,7 +270,7 @@
   ///   )
   /// )
   /// ``` -> string
-  label: [],
+  label: (),
   /// values taken by the variable \
   /// for example if your funtions changes sign or reaches a max/min for $x in {0,1,2,3}$ \
   /// you should write this :
@@ -315,16 +315,16 @@
   /// change the width of the first column -> length
   first-column-width: none,
   /// *Optional*\
-  /// change the height of the first line -> height
+  /// change the height of the first line -> length
   first-line-height: none,
   /// *Optional*\
-  /// change the distance betwen two elements
+  /// change the distance betwen two elements -> length
   element-distance: none,
   /// *Optional*\
-  /// To add values betwen to pre-difined values
+  /// To add values betwen to pre-defined values -> array
   values: ((),),
-  /// Optional*\
-  /// To add more stuff with Cetz
+  /// *Optional*\
+  /// To add more stuff with Cetz -> content
   add: (),
 ) = {
   //start of function
@@ -647,8 +647,14 @@
 
         if label.at(i).last() == "s" {
           // panic si il y a plus ou moins d’éléments qu’il faudrais
-          if contents.at(i).len() != domain.len() - 1 {
-            panic("TabVar: Not enough elements in the table number " + str(i + 1))
+          if contents.at(i).at(-1) == "||" {
+            if contents.at(i).len() != domain.len() {
+              panic("TabVar: Not enough elements in the table number " + str(i + 1))
+            }
+          } else {
+            if contents.at(i).len() != domain.len() - 1 {
+              panic("TabVar: Not enough elements in the table number " + str(i + 1))
+            }
           }
 
           for j in range(0, contents.at(i).len() - 1) {
@@ -929,31 +935,83 @@
                   )
                 }
               } else {
-                content(
-                  (
-                    (coordX.at(-2).at(0) + coordX.at(-1).at(0)) / 2,
-                    coordY.at(i).at(0),
-                  ),
-                  box(width: 1pt, align(center, contents.at(i).at(-1))),
-                  name: "sign" + str(i) + str(contents.at(i).len() - 1),
-                )
+                //tu bosse d’ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                if (
-                  contents.at(i).at(-2) != "h"
-                    and contents.at(i).at(-2) != "|h"
-                    and contents.at(i).at(-2) != "h|"
-                    and contents.at(i).at(-2) != "|h|"
-                ) {
-                  set-style(..line-style)
-                  line(
-                    (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                    (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                    name: "zero3",
+                if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() >= 2 {
+                  // le signe si le signe n'est pas vide mais à une bar spécial
+                  content(
+                    (
+                      (coordX.at(-2).at(0) + coordX.at(-1).at(0)) / 2,
+                      coordY.at(i).at(0),
+                    ),
+                    box(width: 1pt, align(center, contents.at(i).at(-1).last())),
+                    name: "sign" + str(i) + str(contents.at(i).len() - 1),
                   )
-                  content("zero3.mid", if line-0 { $ 0 $ } else { [] })
+
+                  set-style(..line-style)
+                  if contents.at(i).at(-1).at(0) == "||" {
+                    set-style(..table-style)
+                    line(
+                      (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                    )
+                    line(
+                      (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                    )
+                  } else if contents.at(i).at(-1).at(0) == "0" {
+                    line(
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      name: "zero",
+                    )
+                    content(
+                      "zero.mid",
+                      $ 0 $,
+                    )
+                  } else if contents.at(i).at(-1).first() == "|" {
+                    line(
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                    )
+                  } else {
+                    line(
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      name: "zero3",
+                    )
+                    content("zero3.mid", if line-0 { $ 0 $ } else { [] })
+                  }
                   set-style(..table-style)
+                } else if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() == 0 {
+                  // On ne fait rien s'il n'y a pas de signe
+                } else {
+                  content(
+                    (
+                      (coordX.at(-2).at(0) + coordX.at(-1).at(0)) / 2,
+                      coordY.at(i).at(0),
+                    ),
+                    box(width: 1pt, align(center, contents.at(i).at(-1))),
+                    name: "sign" + str(i) + str(contents.at(i).len() - 1),
+                  )
+
+                  if (
+                    contents.at(i).at(-2) != "h"
+                      and contents.at(i).at(-2) != "|h"
+                      and contents.at(i).at(-2) != "h|"
+                      and contents.at(i).at(-2) != "|h|"
+                  ) {
+                    set-style(..line-style)
+                    line(
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      name: "zero3",
+                    )
+                    content("zero3.mid", if line-0 { $ 0 $ } else { [] })
+                    set-style(..table-style)
+                  }
                 }
-              }
+              } // à la !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
           }
 
@@ -1434,7 +1492,7 @@
   ),
   domain: ($ -oo $, $o$, $3$, $4$, $5$, $6$),
   contents: (
-    ("h|", "|h", $4$, $5$, $+$),
+    ("h|", "|h", $4$, ("0", $5$), $ + $),
     (
       (top, $4$),
       (bottom, "|h", $4$),
