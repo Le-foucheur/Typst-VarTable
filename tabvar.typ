@@ -247,7 +247,7 @@
 /// Return a variation table
 #let tabvar(
   /// variable is a content block which contains the table’s variable name (like $x$ or $t$) -> string
-  variable: [],
+  variable: $ x $,
   /// `label` is an array of 2 arguments that contains in first position the line’s label and in second position, if the line is a variation table or a sign table with this following keys : "Variation" and "Sign" \
   /// *Example :* for a variation table of a function $f$, you should write : \
   /// ```typst
@@ -276,6 +276,8 @@
   /// so I invite you to have a look at the #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[Cetz manual]]. \
   /// *Caution :* if you haven't entered the mark symbol as none, all lines in the table will have an arrowhead. -> style
   table-style: (stroke: 1pt + black, mark: (symbol: none)),
+  /// to hide the external cardre
+  nocadre: false,
   /// the style of the arrowhead, the type of which is defined by Cetz -> mark
   arrow-mark: (end: "straight"),
   /// *Optional*\
@@ -290,7 +292,8 @@
   ///
   /// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed. -> style
   line-style: (stroke: black + 1pt),
-  ///
+  /// *Optional*\
+  /// The style of the hatching in the sign and variation table -> style
   hachurage-style: tiling(size: (30pt, 30pt))[
 
     #place(line(start: (0%, 100%), end: (100%, 0%), stroke: 2pt))
@@ -306,6 +309,12 @@
   /// *Optional*\
   /// change the distance betwen two elements
   element-distance: none,
+  /// *Optional*\
+  /// To add values betwen to pre-difined values
+  values: ((),),
+  /// Optional*\
+  /// To add more stuff with Cetz
+  add: (),
 ) = {
   //start of function
 
@@ -350,7 +359,7 @@
         hauteur_permiere_ligne = first-line-height.mm() / 10.65
       }
 
-      content((largeur_permiere_colonne / 2, -hauteur_permiere_ligne / 2), [#variable]) // La variable
+      content((largeur_permiere_colonne / 2, -hauteur_permiere_ligne / 2), [#variable], name: "var") // La variable
 
       let coordX = for i in range(0, domain.len()) {
         ((0, 0),)
@@ -461,25 +470,27 @@
         }
 
         if i == 0 {
-          content((decalage_domaine, -hauteur_permiere_ligne / 2), box(width: 3 * 10.65mm, align(center, if type(
-            domain.at(i),
+          content(
+            (decalage_domaine, -hauteur_permiere_ligne / 2),
+            box(width: 3 * 10.65mm, align(center, if type(domain.at(i)) == array {
+              domain.at(i).first()
+            } else {
+              domain.at(i)
+            })),
+            name: "domain" + str(i),
           )
-            == array {
-            domain.at(i).first()
-          } else {
-            domain.at(i)
-          })))
         } else {
-          content((decalage_domaine, -hauteur_permiere_ligne / 2), box(width: 3 * 10.65mm, align(center, if type(
-            domain.at(i),
+          content(
+            (decalage_domaine, -hauteur_permiere_ligne / 2),
+            box(width: 3 * 10.65mm, align(center, if type(domain.at(i)) == array {
+              show math.equation.where(block: false): math.equation.with(block: true)
+              domain.at(i).first()
+            } else {
+              show math.equation.where(block: false): math.equation.with(block: true)
+              domain.at(i)
+            })),
+            name: "domain" + str(i),
           )
-            == array {
-            show math.equation.where(block: false): math.equation.with(block: true)
-            domain.at(i).first()
-          } else {
-            show math.equation.where(block: false): math.equation.with(block: true)
-            domain.at(i)
-          })))
         }
 
         decalage_domaine = (
@@ -497,6 +508,7 @@
           show math.equation.where(block: false): math.equation.with(block: true)
           domain.at(-1)
         })),
+        name: "domain" + str(domain.len() - 1),
       )
       coordX.at(-1) = (
         decalage_domaine,
@@ -534,7 +546,7 @@
       }
 
       let hauteur_total = hauteur_permiere_ligne
-      for i in range(-0, label.len()) {
+      for i in range(0, label.len()) {
         //le texte de la première colonne
         let hauteur_case = {
           if label.at(i).len() > 2 {
@@ -571,14 +583,16 @@
         }
 
 
-        content((largeur_permiere_colonne / 2, -hauteur_total - hauteur_case / 2 - 1.75 / 2), box(
-          width: largeur_permiere_colonne * 10.64mm,
-          align(center, label.at(i).at(0)),
-        ))
+        content(
+          (largeur_permiere_colonne / 2, -hauteur_total - hauteur_case / 2 - 1.75 / 2),
+          box(width: largeur_permiere_colonne * 10.64mm, align(center, label.at(i).at(0))),
+          name: "label" + str(i),
+        )
 
         line(
           (0, -hauteur_total),
           (decalage_domaine, -hauteur_total),
+          name: "line-betwen-table-nb" + str(i),
         )
 
         coordY.at(i) = (-hauteur_total - hauteur_case / 2 - 1.75 / 2, hauteur_case + 1.75)
@@ -586,17 +600,34 @@
         hauteur_total = hauteur_total + hauteur_case + 1.75
       }
 
-      rect(
-        //les countours du tableau
-        (0, 0),
-        (decalage_domaine, -hauteur_total),
-        fill: none,
-      )
+      if not nocadre {
+        rect(
+          //les countours du tableau
+          (0, 0),
+          (decalage_domaine, -hauteur_total),
+          fill: none,
+          name: "cadre",
+        )
+      } else {
+        hide(rect(
+          //les countours du tableau
+          (0, 0),
+          (decalage_domaine, -hauteur_total),
+          fill: none,
+          name: "cadre",
+        ))
+      }
       line(
         // ligne de séparation entre le texte et les tableaux
         (largeur_permiere_colonne, 0),
         (largeur_permiere_colonne, -hauteur_total),
+        name: "line-betwen-label-table",
       )
+      hide(line(
+        (0, -hauteur_permiere_ligne / 2),
+        (decalage_domaine, -hauteur_permiere_ligne / 2),
+        name: "line-centred-domain",
+      ))
 
       for i in range(0, label.len()) {
         // Début des différents tableaux
@@ -623,6 +654,7 @@
                   show math.equation.where(block: false): math.equation.with(block: true)
                   contents.at(i).at(j).at(1)
                 })),
+                name: "sign" + str(i) + str(j),
               )
 
               if j != 0 {
@@ -775,6 +807,7 @@
                     show math.equation.where(block: false): math.equation.with(block: true)
                     contents.at(i).at(j)
                   })),
+                  name: "sign" + str(i) + str(j),
                 )
 
                 if (
@@ -891,6 +924,7 @@
                     coordY.at(i).at(0),
                   ),
                   box(width: 1pt, align(center, contents.at(i).at(-1))),
+                  name: "sign" + str(i) + str(contents.at(i).len() - 1),
                 )
 
                 if (
@@ -944,6 +978,7 @@
                   y,
                 ),
                 element,
+                name: "variation" + str(i) + str(j),
               )
 
               let indice_proch_ele = _prochain-ele(contents.at(i), j)
@@ -954,6 +989,7 @@
                 c1,
                 c2,
                 mark: arrow-mark,
+                name: "arrow" + str(i) + str(j),
               )
               set-style(..table-style)
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("||") {
@@ -995,6 +1031,7 @@
                     } else { 0 },
                 ),
                 element_gauche,
+                name: "variation" + str(i) + str(j) + "g",
               )
               content(
                 // éléments à droite de la bar
@@ -1009,6 +1046,7 @@
                     } else { 0 },
                 ),
                 element_droite,
+                name: "variation" + str(i) + str(j) + "d",
               )
               // les flèches entre un éléments avec bar et sont prochain non vide
               let proch_element = contents.at(i).at(j + 1)
@@ -1018,6 +1056,7 @@
                 c1,
                 c2,
                 mark: arrow-mark,
+                name: "arrow" + str(i) + str(j),
               )
               set-style(..table-style)
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("h") {
@@ -1037,6 +1076,7 @@
                     } else { 0 },
                 ),
                 element_gauche,
+                name: "variation" + str(i) + str(j),
               )
 
               // Le hachurage
@@ -1053,6 +1093,7 @@
                   coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                 ),
                 fill: hachurage-style,
+                name: "hatching" + str(i) + str(j),
               )
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("|h") {
               //cas d'un hachurage indef à gauche
@@ -1082,6 +1123,7 @@
                     } else { 0 },
                 ),
                 element_gauche,
+                name: "variation" + str(i) + str(j),
               )
 
               // Le hachurage
@@ -1098,6 +1140,7 @@
                   coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                 ),
                 fill: hachurage-style,
+                name: "hatching" + str(i) + str(j),
               )
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("H") {
               let element = contents.at(i).at(j).at(if contents.at(i).at(j).at(1) == "H" { 2 } else { 3 })
@@ -1113,6 +1156,7 @@
                     } else { 0 },
                 ),
                 element,
+                name: "variation" + str(i) + str(j),
               )
 
               let proch_element = contents.at(i).at(j + 1)
@@ -1122,6 +1166,7 @@
                 c1,
                 c2,
                 mark: arrow-mark,
+                name: "arrow" + str(i) + str(j),
               )
               set-style(..table-style)
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("H|") {
@@ -1149,6 +1194,7 @@
                     } else { 0 },
                 ),
                 element,
+                name: "variation" + str(i) + str(j),
               )
 
               let proch_element = contents.at(i).at(j + 1)
@@ -1158,6 +1204,7 @@
                 c1,
                 c2,
                 mark: arrow-mark,
+                name: "arrow" + str(i) + str(j),
               )
               set-style(..table-style)
             }
@@ -1193,6 +1240,7 @@
                   } else { 0 },
               ),
               der_ele.last(),
+              name: "variation" + str(i) + str(contents.at(i).len() - 1),
             )
           } else if der_ele.len() <= 2 and not (der_ele.contains("H")) and not (der_ele.contains("H|")) {
             content(
@@ -1210,6 +1258,7 @@
                   } else { 0 },
               ),
               der_ele.last(),
+              name: "variation" + str(i) + str(contents.at(i).len() - 1),
             )
           }
 
@@ -1234,6 +1283,7 @@
                 c1,
                 c2,
                 mark: arrow-mark,
+                name: "arrow" + str(i) + "0",
               )
             }
 
@@ -1259,6 +1309,7 @@
                   } else { 0 },
               ),
               pr_ele.last(),
+              name: "variation" + str(i) + "0",
             )
           } else if pr_ele.contains("h") or pr_ele.contains("|h") {
             let proch_element = _prochainne-baliseh(contents.at(i), 0)
@@ -1274,6 +1325,7 @@
                 coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
               ),
               fill: hachurage-style,
+              name: "hatching" + str(i) + "0",
             )
           } else {
             let (c1, c2) = _coord-fleche(
@@ -1291,6 +1343,7 @@
               c1,
               c2,
               mark: arrow-mark,
+              name: "arrow" + str(i) + "0",
             )
             set-style(..table-style)
 
@@ -1305,15 +1358,64 @@
                   } else { 0 },
               ),
               pr_ele.last(),
+              name: "variation" + str(i) + "0",
             )
           }
         }
       }
+
+      if values != ((),) {
+        let coulfleche = if type(values.last()) != array { values.last() } else { black }
+
+        let longeur = if type(values.last()) != array { values.len() - 1 } else { values.len() }
+
+        for i in range(longeur) {
+          content(
+            ("line-centred-domain", "-|", values.at(i).at(0)),
+            values.at(i).at(1),
+            name: "depart" + str(i),
+            padding: .25,
+          )
+
+          content(
+            values.at(i).at(0),
+            values.at(i).at(2),
+            name: "fin" + str(i),
+            frame: "rect",
+            fill: white,
+            stroke: none,
+            padding: (y: .05),
+          )
+
+          if values.at(i).len() == 4 {
+            if values.at(i).at(3) == "f" {
+              line(
+                "depart" + str(i) + ".south",
+                "fin" + str(i) + ".north",
+                stroke: (thickness: .6pt, paint: coulfleche),
+                mark: arrow-mark,
+                fill: coulfleche,
+              )
+            } else {
+              if values.at(i).at(3) == "l" {
+                line("depart" + str(i) + ".south", "fin" + str(i) + ".north", stroke: (
+                  thickness: .6pt,
+                  paint: coulfleche,
+                ))
+              }
+            }
+          }
+        }
+      }
+
+      set-style(..table-style)
+      add
     })
   }
 }
 
 #tabvar(
+  nocadre: true,
   variable: $x$,
   label: (
     ([sign of $f’$], 3cm, "s"),
@@ -1332,3 +1434,69 @@
     ),
   ),
 )
+
+#tabvar(
+  variable: $x$,
+  label: (
+    ([sign of $f’$], 1cm, "s"),
+    ([variation of $f$], 30mm, "v"),
+  ),
+
+  line-0: true,
+  domain: ($ -oo $, ($ 0 $, 3cm), $ +oo $, $ 3 $),
+  contents: (
+    ($"signe de" a$, ("||", $+$), $ - $),
+    (
+      (center, $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      (center, $ 0 $),
+      (top, $ -oo $),
+    ),
+  ),
+  add: {
+    cetz.draw.circle("sign02", radius: 6pt, stroke: red)
+    cetz.draw.polygon("variation13", 5, angle: 90deg, radius: .6, stroke: blue)
+  },
+)
+
+#tabvar(
+  // first-column-width: 1.5cm,
+  // first-line-height: 1cm,
+  // element-distance: 2cm,
+  // arrow-mark: (end: "stealth",fill:red),//, start: "|"
+  // table-style:(stroke:(paint:blue)),
+  // line-style:(stroke:(paint:blue,dash:"dashed")),
+  // arrow-style:(stroke:(paint:blue)),
+  nocadre: true,
+  // variable: $t$,
+  label: (
+    ([$f’(x)$], .8cm, "s"),
+    ([$f$], 25mm, "v"),
+    ([$F$], 25mm, "v"),
+  ),
+
+  domain: (($ -oo $, 3cm), ($ 0 $, 5cm), $ +oo $),
+  contents: (
+    (("0", $-$), $ + $),
+    (
+      ("", $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      // ("t", $8$),
+      ("", $ 2/7/15 $),
+    ),
+    (
+      ("", $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      // ("t", $8$),
+      ("", $ 2/7/15 $),
+    ),
+  ),
+  values: (("arrow10.25%", $beta$, $0$, "l"), ("arrow21.50%", $5$, $0$, "f"), red),
+  add: {
+    cetz.draw.circle("domain1", radius: 6pt)
+    cetz.draw.polygon("variation21g", 4, angle: 45deg, radius: .6, stroke: blue)
+    cetz.draw.line("line-betwen-table-nb1.mid", "line-betwen-label-table.end", stroke: red)
+    cetz.draw.line("cadre.mid", "cadre.0", stroke: red)
+  },
+)
+
