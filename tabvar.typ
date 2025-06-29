@@ -255,6 +255,39 @@
   (Ppoint, Dpoint)
 }
 
+// Quelque Tilling pour les hachurages
+#let grille = tiling(size: (8pt, 8pt))[
+  #place(line(start: (0%, 0%), end: (100%, 100%), stroke: .7pt))
+  #place(line(start: (0%, 100%), end: (100%, 0%), stroke: .7pt))
+]
+
+#let nelines = tiling(size: (6pt, 6pt))[
+  #place(line(start: (100%, 0%), end: (0%, 100%)))
+  #place(line(start: (100%, -100%), end: (-100%, 100%)))
+  #place(line(start: (200%, 0%), end: (0%, 200%)))
+]
+
+#let bignelines = tiling(size: (30pt, 30pt))[
+  #place(line(start: (100%, 0%), end: (0%, 100%), stroke: 2pt))
+  #place(line(start: (100%, -100%), end: (-100%, 100%), stroke: 2pt))
+  #place(line(start: (200%, 0%), end: (0%, 200%), stroke: 2pt))
+]
+
+#let nwlines = tiling(size: (6pt, 6pt))[
+  #place(line(start: (0%, 0%), angle: 45deg))
+  #place(line(start: (-100%, 0%), angle: 45deg))
+  #place(line(start: (100%, 0%), end: (200%, 100%)))
+  #place(line(start: (100%, -100%), angle: -135deg))
+]
+#let hatch = tiling(size: (7pt, 7pt))[
+  #place(polygon.regular(vertices: 6, size: 6.5pt, stroke: .6pt))
+]
+
+#let etoile = tiling(size: (7pt, 7pt))[
+  #place(rotate(180deg, origin: center + horizon)[#polygon.regular(vertices: 3, size: 6.5pt, stroke: .6pt)])
+  #place(polygon.regular(vertices: 3, size: 7pt, stroke: .5pt))
+]
+
 /// Return a variation table
 #let tabvar(
   /// variable is a content block which contains the table’s variable name (like $x$ or $t$) -> string
@@ -305,7 +338,7 @@
   line-style: (stroke: black + 1pt),
   /// *Optional*\
   /// The style of the hatching in the sign and variation table -> style
-  hachurage-style: tiling(size: (30pt, 30pt))[
+  hatching-style: tiling(size: (30pt, 30pt))[
 
     #place(line(start: (0%, 100%), end: (100%, 0%), stroke: 2pt))
     #place(line(start: (-100%, 100%), end: (100%, -100%), stroke: 2pt))
@@ -483,7 +516,7 @@
         if i == 0 {
           content(
             (decalage_domaine, -hauteur_permiere_ligne / 2),
-            box(width: 3 * 10.65mm, align(center, if type(domain.at(i)) == array {
+            box(width: auto, align(center, if type(domain.at(i)) == array {
               domain.at(i).first()
             } else {
               domain.at(i)
@@ -493,7 +526,7 @@
         } else {
           content(
             (decalage_domaine, -hauteur_permiere_ligne / 2),
-            box(width: 3 * 10.65mm, align(center, if type(domain.at(i)) == array {
+            box(width: auto, align(center, if type(domain.at(i)) == array {
               show math.equation.where(block: false): math.equation.with(block: true)
               domain.at(i).first()
             } else {
@@ -515,7 +548,7 @@
       content(
         // le dernier éléments du domaine
         (decalage_domaine, -hauteur_permiere_ligne / 2),
-        box(width: 3 * 10.65mm, align(center, {
+        box(width: auto, align(center, {
           show math.equation.where(block: false): math.equation.with(block: true)
           domain.at(-1)
         })),
@@ -596,7 +629,7 @@
 
         content(
           (largeur_permiere_colonne / 2, -hauteur_total - hauteur_case / 2 - 1.75 / 2),
-          box(width: largeur_permiere_colonne * 10.64mm, align(center, label.at(i).at(0))),
+          box(width: auto, align(center, label.at(i).at(0))),
           name: "label" + str(i),
         )
 
@@ -729,7 +762,7 @@
                     if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
               } else if contents.at(i).at(j) == "|h" {
                 rect(
@@ -741,7 +774,7 @@
                     if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
                 if j != 0 {
                   line(
@@ -765,7 +798,7 @@
                     if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
 
                 line(
@@ -788,7 +821,7 @@
                     if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
                 if prochain != contents.at(i).len() {
                   line(
@@ -872,7 +905,7 @@
                     decalage_domaine,
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
               } else if contents.at(i).at(-1) == "|h" {
                 rect(
@@ -884,7 +917,7 @@
                     decalage_domaine,
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
                 if contents.at(i).len() - 1 != 0 {
                   line(
@@ -908,7 +941,7 @@
                     decalage_domaine,
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
               } else if contents.at(i).at(-1) == "|h|" {
                 rect(
@@ -920,7 +953,7 @@
                     decalage_domaine,
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
-                  fill: hachurage-style,
+                  fill: hatching-style,
                 )
                 if contents.at(i).len() - 1 != 0 {
                   line(
@@ -1161,7 +1194,7 @@
                   } else { decalage_domaine },
                   coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                 ),
-                fill: hachurage-style,
+                fill: hatching-style,
                 name: "hatching" + str(i) + str(j),
               )
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("|h") {
@@ -1208,7 +1241,7 @@
                   } else { decalage_domaine },
                   coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                 ),
-                fill: hachurage-style,
+                fill: hatching-style,
                 name: "hatching" + str(i) + str(j),
               )
             } else if contents.at(i).at(j).len() > 2 and contents.at(i).at(j).contains("H") {
@@ -1393,7 +1426,7 @@
                 } else { decalage_domaine },
                 coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
               ),
-              fill: hachurage-style,
+              fill: hatching-style,
               name: "hatching" + str(i) + "0",
             )
           } else {
@@ -1486,6 +1519,7 @@
 #tabvar(
   nocadre: true,
   variable: $x$,
+  hatching-style: hatch,
   label: (
     ([sign of $f’$], 3cm, "s"),
     ([variation of $f$], 20mm, "v"),
