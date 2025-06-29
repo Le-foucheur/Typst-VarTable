@@ -611,7 +611,14 @@
                   if contents.at(i).at(j).len() > 2 {
                     calc.max(
                       measure(contents.at(i).at(j).last()).height.mm() / 10.65,
-                      measure(contents.at(i).at(j).at(if contents.at(i).at(j).at(1) == "||" { 2 } else { 3 }))
+                      measure(contents
+                        .at(i)
+                        .at(j)
+                        .at(if contents.at(i).at(j).at(1) == "||"
+                          or contents.at(i).at(j).at(1) == "h"
+                          or contents.at(i).at(j).at(1) == "|h"
+                          or contents.at(i).at(j).at(1) == "H"
+                          or contents.at(i).at(j).at(1) == "H|" { 2 } else { 3 }))
                         .height
                         .mm()
                         / 10.65,
@@ -753,7 +760,20 @@
               // On ne fait rien s'il n'y a pas de signe
             } else {
               if contents.at(i).at(j) == "h" {
+                set-style(..line-style)
+                if j != 0 {
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
+                line(
+                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                )
+                set-style(..table-style)
                 rect(
+                  stroke: none,
                   (
                     if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -765,7 +785,20 @@
                   fill: hatching-style,
                 )
               } else if contents.at(i).at(j) == "|h" {
+                set-style(..line-style)
+                if j != 0 {
+                  line(
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
+                line(
+                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                )
+                set-style(..table-style)
                 rect(
+                  stroke: none,
                   (
                     if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) + 0.07 },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -789,7 +822,20 @@
                   )
                 }
               } else if contents.at(i).at(j) == "h|" {
+                set-style(..line-style)
+                if j != 0 {
+                  line(
+                    (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
+                line(
+                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                )
+                set-style(..table-style)
                 rect(
+                  stroke: none,
                   (
                     if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -812,7 +858,20 @@
                   ),
                 )
               } else if contents.at(i).at(j) == "|h|" {
+                set-style(..line-style)
+                if j != 0 {
+                  line(
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
+                line(
+                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                )
+                set-style(..table-style)
                 rect(
+                  stroke: none,
                   (
                     if j == 0 { largeur_permiere_colonne } else { coordX.at(j).at(0) + 0.07 },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -896,7 +955,16 @@
               // On ne fait rien s'il n'y a pas de signe
             } else {
               if contents.at(i).at(-1) == "h" {
+                set-style(..line-style)
+                if contents.at(i).len() >= 2 {
+                  line(
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
+                set-style(..table-style)
                 rect(
+                  stroke: none,
                   (
                     if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -908,7 +976,16 @@
                   fill: hatching-style,
                 )
               } else if contents.at(i).at(-1) == "|h" {
+                if contents.at(i).len() >= 2 {
+                  set-style(..line-style)
+                  line(
+                    (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                  set-style(..table-style)
+                }
                 rect(
+                  stroke: none,
                   (
                     if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) + 0.07 },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -932,7 +1009,16 @@
                   )
                 }
               } else if contents.at(i).at(-1) == "h|" {
+                if contents.at(i).len() >= 2 {
+                  set-style(..line-style)
+                  line(
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                  set-style(..table-style)
+                }
                 rect(
+                  stroke: none,
                   (
                     if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -944,7 +1030,16 @@
                   fill: hatching-style,
                 )
               } else if contents.at(i).at(-1) == "|h|" {
+                if contents.at(i).len() >= 2 {
+                  set-style(..line-style)
+                  line(
+                    (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                  set-style(..table-style)
+                }
                 rect(
+                  stroke: none,
                   (
                     if contents.at(i).len() - 1 == 0 { largeur_permiere_colonne } else { coordX.at(-2).at(0) + 0.07 },
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
@@ -968,8 +1063,6 @@
                   )
                 }
               } else {
-                //tu bosse d’ici !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
                 if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() >= 2 {
                   // le signe si le signe n'est pas vide mais à une bar spécial
                   content(
@@ -1029,7 +1122,8 @@
                   )
 
                   if (
-                    contents.at(i).at(-2) != "h"
+                    contents.at(i).len() >= 2
+                      and contents.at(i).at(-2) != "h"
                       and contents.at(i).at(-2) != "|h"
                       and contents.at(i).at(-2) != "h|"
                       and contents.at(i).at(-2) != "|h|"
@@ -1044,7 +1138,7 @@
                     set-style(..table-style)
                   }
                 }
-              } // à la !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              }
             }
           }
 
@@ -1183,7 +1277,34 @@
 
               // Le hachurage
               let proch_element = _prochainne-baliseh(contents.at(i), j)
+              set-style(..line-style)
+              line(
+                (
+                  coordX.at(j).at(0) + if contents.at(i).at(j).contains("|h") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                ),
+                (
+                  coordX.at(j).at(0) + if contents.at(i).at(j).contains("|h") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                ),
+              )
+              if proch_element != contents.at(i).len() - 1 {
+                line(
+                  (
+                    coordX.at(proch_element).at(0)
+                      - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    coordX.at(proch_element).at(0)
+                      - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                )
+              }
+              set-style(..table-style)
               rect(
+                stroke: none,
                 (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                 (
                   if proch_element != contents.at(i).len() - 1 {
@@ -1230,7 +1351,34 @@
 
               // Le hachurage
               let proch_element = _prochainne-baliseh(contents.at(i), j)
+              set-style(..line-style)
+              line(
+                (
+                  coordX.at(j).at(0) + if contents.at(i).at(j).contains("|h") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                ),
+                (
+                  coordX.at(j).at(0) + if contents.at(i).at(j).contains("|h") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                ),
+              )
+              if proch_element != contents.at(i).len() - 1 {
+                line(
+                  (
+                    coordX.at(proch_element).at(0)
+                      - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                  ),
+                  (
+                    coordX.at(proch_element).at(0)
+                      - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                  ),
+                )
+              }
+              set-style(..table-style)
               rect(
+                stroke: none,
                 (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                 (
                   if proch_element != contents.at(i).len() - 1 {
@@ -1415,10 +1563,27 @@
             )
           } else if pr_ele.contains("h") or pr_ele.contains("|h") {
             let proch_element = _prochainne-baliseh(contents.at(i), 0)
+            if proch_element != contents.at(i).len() - 1 {
+              set-style(..line-style)
+              line(
+                (
+                  coordX.at(proch_element).at(0)
+                    - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                ),
+                (
+                  coordX.at(proch_element).at(0)
+                    - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 },
+                  coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                ),
+              )
+              set-style(..table-style)
+            }
             rect(
+              stroke: none,
               (largeur_permiere_colonne, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
               (
-                if proch_element < contents.at(i).len() {
+                if proch_element != contents.at(i).len() - 1 {
                   (
                     coordX.at(proch_element).at(0)
                       - if contents.at(i).at(proch_element).contains("H|") { 0.07 } else { 0 }
@@ -1518,6 +1683,19 @@
 
 #tabvar(
   nocadre: true,
+  label: (
+    ([oui], "s"),
+    ([non], "v"),
+  ),
+  domain: ($5$, $6$),
+  contents: (
+    ("h",),
+    ((top, "h", $4$), (bottom, "H", $6$)),
+  ),
+)
+
+#tabvar(
+  nocadre: true,
   variable: $x$,
   hatching-style: hatch,
   label: (
@@ -1526,10 +1704,10 @@
   ),
   domain: ($ -oo $, $o$, $3$, $4$, $5$, $6$),
   contents: (
-    ("h|", "|h", $4$, ("0", $5$), $ + $),
+    ("|h|", "|h", $4$, $6$, "|h|"),
     (
-      (top, $4$),
-      (bottom, "|h", $4$),
+      (top, $-1$),
+      (bottom, "h", $4$),
       (),
       (),
       (),
