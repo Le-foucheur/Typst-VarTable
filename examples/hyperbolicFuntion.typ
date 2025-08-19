@@ -4,12 +4,10 @@
 
 #tabvar(
   arrow-mark: (end: ">", start: "|"),
-  init: (
-    variable: $x$,
-    label: (
-      ([sign of $f’$], "Sign"),
-      ([variation of $f$], "Variation"),
-    ),
+  variable: $x$,
+  label: (
+    ([sign of $f’$], "s"),
+    ([variation of $f$], "v"),
   ),
   domain: ($ -oo $, $ 0 $, $ +oo $),
   contents: (

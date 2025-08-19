@@ -3,15 +3,15 @@
 #import "../tabvar.typ": tabvar
 
 #tabvar(
-  init: (
-    variable: $x$,
-    label: (
-      ([sign of cos’], "Sign"),
-      ([variation of cos], "Variation"),
-      ([sign of sin’], "Sign"),
-      ([variation of sin], "Variation"),
-    ),
+
+  variable: $x$,
+  label: (
+    ([sign of cos’], "s"),
+    ([variation of cos], "v"),
+    ([sign of sin’], "s"),
+    ([variation of sin], "v"),
   ),
+
   domain: ($0$, $ pi / 2 $, $ pi $, $ (2pi) / 3 $, $ 2 pi $),
   contents: (
     ($-$, (), ("0",$+$), ()),
