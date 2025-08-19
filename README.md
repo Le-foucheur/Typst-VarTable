@@ -13,7 +13,7 @@ La [documention](https://github.com/Le-foucheur/Typst-VarTable/blob/main/documen
 ### Trigonometric functions
 Turn this :
 ```js
-#import "@preview/Tabvar:0.2.0": tabvar
+#import "@preview/Tabvar:0.2.1": tabvar
 
 #tabvar(
 
@@ -44,6 +44,10 @@ Turn this :
       (center, $0$),
     ),
   ),
+  values: (
+    ("arrow10.50%", $  $, $ 0 $, "f"),
+    ("arrow12.49%", $  $, $ 0 $, "f"),
+  )
 )
 ```
 Into this
@@ -109,6 +113,7 @@ Into this
 - change "Sign" into "s"
 - add the possibility to hatch some area 
 - add the possibility to add some elements
+- can change the table dimension
 - support `Cetz 0.4.1`
 - bug fix
 

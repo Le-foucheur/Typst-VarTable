@@ -1717,7 +1717,7 @@
             ("line-centred-domain", "-|", values.at(i).at(0)),
             values.at(i).at(1),
             name: "depart" + str(i),
-            padding: .25,
+            padding: .35,
           )
 
           content(
@@ -1756,103 +1756,3 @@
     })
   }
 }
-
-#tabvar(
-  nocadre: true,
-  label: (
-    ([oui], "s"),
-    ([non], "v"),
-  ),
-  domain: ($5$, $6$),
-  contents: (
-    ("h",),
-    ((top, "h", $4$), (bottom, "H", $6$)),
-  ),
-)
-
-#tabvar(
-  nocadre: true,
-  variable: $x$,
-  hatching-style: hatch,
-  label: (
-    ([sign of $f’$], 3cm, "s"),
-    ([variation of $f$], 20mm, "v"),
-  ),
-  domain: ($ -oo $, $o$, $3$, $4$, $5$, $6$),
-  contents: (
-    ("|h|", "|h", $4$, $6$, "|h|"),
-    (
-      (top, $-1$),
-      (bottom, "h", $4$),
-      (),
-      (),
-      (),
-      (top, "H", $5$),
-    ),
-  ),
-)
-
-#tabvar(
-  variable: $x$,
-  label: (
-    ([sign of $f’$], 1cm, "s"),
-    ([variation of $f$], 30mm, "v"),
-  ),
-
-  line-0: true,
-  domain: ($ -oo $, ($ 0 $, 3cm), $ +oo $, $ 3 $),
-  contents: (
-    ($"signe de" a$, ("||", $+$), $ - $),
-    (
-      (center, $0$),
-      (bottom, top, "||", $ -oo $, $ +oo $),
-      (center, $ 0 $),
-      (top, $ -oo $),
-    ),
-  ),
-  add: {
-    cetz.draw.circle("sign02", radius: 6pt, stroke: red)
-    cetz.draw.polygon("variation13", 5, angle: 90deg, radius: .6, stroke: blue)
-  },
-)
-
-#tabvar(
-  first-column-width: 1.5cm,
-  first-line-height: 1cm,
-  element-distance: 2cm,
-  arrow-mark: (end: "stealth", fill: red), //, start: "|"
-  table-style: (stroke: (paint: blue)),
-  line-style: (stroke: (paint: blue, dash: "dashed")),
-  arrow-style: (stroke: (paint: blue)),
-  nocadre: true,
-  variable: $t$,
-  label: (
-    ([$f’(x)$], .8cm, "s"),
-    ([$f$], 25mm, "v"),
-    ([$F$], 25mm, "v"),
-  ),
-
-  domain: (($ -oo $, 3cm), ($ 0 $, 5cm), $ +oo $),
-  contents: (
-    (("0", $-$), $ + $),
-    (
-      ("", $0$),
-      (bottom, top, "||", $ -oo $, $ +oo $),
-      // ("t", $8$),
-      ("", $ 2/7/15 $),
-    ),
-    (
-      "h",
-      (bottom, "H|", $ +oo $),
-      // ("t", $8$),
-      ("", $ 2/7/15 $),
-    ),
-  ),
-  values: (("arrow10.25%", $beta$, $0$, "l"), ("arrow21.50%", $5$, $0$, "f"), red),
-  add: {
-    cetz.draw.circle("domain1", radius: 6pt)
-    cetz.draw.polygon("variation21", 4, angle: 45deg, radius: .6, stroke: blue)
-    cetz.draw.line("line-betwen-table-nb1.mid", "line-betwen-label-table.end", stroke: red)
-    cetz.draw.line("cadre.mid", "cadre.0", stroke: red)
-  },
-)
