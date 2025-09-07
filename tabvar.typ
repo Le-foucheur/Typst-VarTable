@@ -437,6 +437,8 @@
   add: (),
 ) = {
   //start of function
+  
+  let c1stroke = stroke
 
   context {
     cetz.canvas({
@@ -445,6 +447,7 @@
       set-style(..table-style)
 
       //Début des problèmes
+
 
       //Pour la conversion 1unit = 10,65mm
       let largeur_permiere_colonne = 0
@@ -826,9 +829,24 @@
                   content("zero3.mid", if line-0 { $ 0 $ } else { [] })
                 }
               } else if contents.at(i).at(j).first() == "||" {
+                set-style(..table-style)
                 line(
-                  (3.15, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (3.15, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  (
+                    largeur_permiere_colonne 
+                    + 0.15 
+                    + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                       table-style.at("stroke").thickness.mm() / (10.65)
+                      } else {0}, 
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2
+                  ),
+                  (
+                    largeur_permiere_colonne 
+                    + 0.15 
+                    + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                       table-style.at("stroke").thickness.mm() / (10.65)
+                      } else {0}, 
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2
+                  ),
                 )
               }
               set-style(..table-style)
@@ -1613,13 +1631,22 @@
               )
             }
 
+            set-style(..table-style)
             line(
               (
-                3.15,
+                largeur_permiere_colonne 
+                + 0.15 
+                + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                   table-style.at("stroke").thickness.mm() / (10.65)
+                  } else {0},
                 coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
               ),
               (
-                3.15,
+                largeur_permiere_colonne 
+                + 0.15 
+                + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                   table-style.at("stroke").thickness.mm() / (10.65)
+                  } else {0},
                 coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
               ),
             )

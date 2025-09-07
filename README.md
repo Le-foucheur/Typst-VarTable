@@ -6,14 +6,14 @@ La [documention](https://github.com/Le-foucheur/Typst-VarTable/blob/main/documen
 
 
 ```js
-#import "@preview/Tabvar:0.2.1": tabvar
+#import "@preview/vartable:0.2.1": tabvar
 ```
 # Few examples
 
 ### Trigonometric functions
 Turn this :
 ```js
-#import "@preview/Tabvar:0.2.1": tabvar
+#import "@preview/vartable:0.2.1": tabvar
 
 #tabvar(
 
@@ -57,7 +57,7 @@ Into this
 ### hyperbolic function $f(x) = 1/x $
 
 ```js
-#import "@preview/Tabvar:0.2.1": tabvar
+#import "@preview/vartable:0.2.1": tabvar
 
 #tabvar(
   arrow-mark: (end: ">", start: "|"),
@@ -107,6 +107,9 @@ Into this
 ![random function](./examples/randomFunction.png)
 
 ## ·change log·
+
+#### 0.2.2 :
+- fix [issue #15](https://github.com/Le-foucheur/Typst-VarTable/issues/15)
 
 #### 0:2:1 :
 - change "Variation" into "v"
