@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.4.1"
+#import "@preview/cetz:0.4.2"
 #set page(paper: "a1")
 
 #let _prochain-signe(tab_signe, j) = {
@@ -1169,38 +1169,63 @@
                   )
 
                   set-style(..line-style)
-                  if contents.at(i).at(-1).at(0) == "||" {
-                    set-style(..table-style)
-                    line(
-                      (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                      (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                    )
-                    line(
-                      (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                      (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                    )
-                  } else if contents.at(i).at(-1).at(0) == "0" {
-                    line(
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                      name: "zero",
-                    )
-                    content(
-                      "zero.mid",
-                      $ 0 $,
-                    )
-                  } else if contents.at(i).at(-1).first() == "|" {
-                    line(
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                    )
+                  if contents.at(i).len() != 1 {
+                    if contents.at(i).at(-1).at(0) == "||" {
+                      set-style(..table-style)
+                      line(
+                        (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      )
+                      line(
+                        (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      )
+                    } else if contents.at(i).at(-1).at(0) == "0" {
+                      line(
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                        name: "zero",
+                      )
+                      content(
+                        "zero.mid",
+                        $ 0 $,
+                      )
+                    } else if contents.at(i).at(-1).first() == "|" {
+                      line(
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                      )
+                    } else {
+                      line(
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                        name: "zero3",
+                      )
+                      content("zero3.mid", if line-0 { $ 0 $ } else { [] })
+                    }
                   } else {
-                    line(
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                      (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                      name: "zero3",
-                    )
-                    content("zero3.mid", if line-0 { $ 0 $ } else { [] })
+                    if contents.at(i).at(-1).contains("||") {
+                      set-style(..table-style)
+                      line(
+                        (
+                          largeur_permiere_colonne 
+                          + 0.15 
+                          + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                            table-style.at("stroke").thickness.mm() / (10.65)
+                            } else {0}, 
+                          coordY.at(i).at(0) - coordY.at(i).at(1) / 2
+                        ),
+                        (
+                          largeur_permiere_colonne 
+                          + 0.15 
+                          + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                            table-style.at("stroke").thickness.mm() / (10.65)
+                            } else {0}, 
+                          coordY.at(i).at(0) + coordY.at(i).at(1) / 2
+                        ),
+                      )
+                    }
+                    set-style(..table-style)
                   }
                   set-style(..table-style)
                 } else if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() == 0 {
