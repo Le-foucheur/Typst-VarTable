@@ -12,7 +12,7 @@
   (version : 0.2.1)
 ]
 
-#outline(indent: 2em, title: [Table des Matières] )
+#outline(indent: 2em, title: [Table des Matières])
 
 #pagebreak()
 
@@ -91,9 +91,9 @@ Un tableau de signe classique :
   )
 ]
 Un example plus complexe :
-#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+#rect(fill: luma(95%), radius: 10pt, width: 17cm)[
   #grid(
-    columns: (7cm, 7cm),
+    columns: (7.5cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
@@ -171,9 +171,9 @@ Pour des usages plus complexe référer vous au manuel de Cetz.
 
 Pour tout les signes sauf le premier, au lieux de placé directement un signe, vous pouvez mettre un couple, dont le premier éléments définis le type de la bar placée avant le signe.\
 Il y a trois type différents de bar :
- - `"|"` : une bar simple
- - `0` : une bar avec un zéro en sont centre
- - `||` une double bar, pour les valeurs non-définis
+- `"|"` : une bar simple
+- `0` : une bar avec un zéro en sont centre
+- `||` une double bar, pour les valeurs non-définis
 
 *Exemple *
 #rect(fill: luma(95%), radius: 10pt, width: 18cm)[
@@ -244,8 +244,9 @@ Si vous voulez avoir une double bar avant le premier signe, vous pouvez utilisez
   )
 ]
 
-===== 2.2.1.2.3 - Un même signe pour plus d’une seul valeur
+==== 2.2.1.3 - Un même signe pour plus d’une seul valeur
 
+Quand votre tableau de signe possède plus d’un sous tableau, alors vous seriez tanté de vouloir mettre un même signe pour plusieurs valeurs du domaine.\
 Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez simplement un couple vide `()`
 
 *Example :*
@@ -279,4 +280,43 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
   )
 ]
 
-#pagebreak()
+===== 2.2.1.4 - Hachurage pour une zone non définis pour les sous tableaux de signes
+Il peut que vos fonctions ne soient pas définis sur un ou plusieurs interval malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
+Étant donnée que les signes porte sur les intervals du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on pourait distinguer 4 cas :
+- le premier cas et le plus courant, celuis où les deux bornes de l’interval indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
+- le second cas, également relativement présent, est celuis où les deux bornes elle définits contrairement cette fois à l’interval, ainsi vous omettrez les deux bar « | » de l’élément présenté ci-dessus, i.e. vous renseignerez `"h"`
+- les deux autres cas, moins courant mais pouvant tout de même apparaitre, est celuis où seul l’une des deux bornes est définis, ainsi, comme vous l’auriez sans doute compris, retirer ( resp. rajouter ) la bare pour le côter où l’élément est défini ( resp. indéfinis ), soit : pour une valeurs définis à gauches `"h|"`; pour une valeur définis à droite `"|h"`
+\
+*Remarque :* Vous avez sans doute compris que la bare « | » symbolise les doubles bares indéfini, de même que le « h » représente le « h » de hachurage, ainis il est naturel de mettre ou non les bares au besoins\
+
+Pour étandre le hachurage sur plus d’un des intervals du domaine, il vous suffie de sauté l’élément suivant avec toujour la même notation, à savoir `()`\
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    column-gutter: -16.5mm,
+    columns: (7cm, 7cm),
+    align: horizon,
+    ```typ
+      #tabvar(
+        line-0: true,
+        variable: $t$,
+        label: (
+          ([signe], "s"),
+        ),
+        domain: ($2$, $4$, $6$, $8$),
+        contents: (
+          ($+$, (), $-$),
+        ),
+      )
+    ```,
+    scale(x: 75%, y: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([signe], "s"),),
+        domain: ($ 2 $, $4$, $5$, $6$, $8$, $9$),
+        contents: (($+$, "|h|", (), $-$, $-$),),
+      )
+    ],
+  )
+]
