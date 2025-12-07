@@ -2,6 +2,7 @@
 #import "tabvar.typ": tabvar
 
 #set page(numbering: "1/1")
+#set text(lang: "fr")
 
 #align(center, text(20pt)[*VarTable*\ ])
 
@@ -18,7 +19,7 @@
 
 = 1 - Introduction
 \
-Ce paquet a été réalisé pour rendre la création de tableau de signe plus simple. Pour cela, ce paquet fournis la fonction « `tabvar` », dont les arguments sont décrit dans cette documentation.\
+Ce paquet a été réalisé pour rendre la création de tableau de signe plus simple. Pour cela, ce paquet fournis la fonction "`tabvar`", dont les arguments sont décrit dans cette documentation.\
 \
 Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main")[#underline(stroke: blue)[GitHub]].
 
