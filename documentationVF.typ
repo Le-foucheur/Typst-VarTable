@@ -295,28 +295,44 @@ Pour étandre le hachurage sur plus d’un des intervals du domaine, il vous suf
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
-    column-gutter: -16.5mm,
+    column-gutter: -20mm,
     columns: (7cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
-        line-0: true,
         variable: $t$,
         label: (
-          ([signe], "s"),
+          ([Pour `|h|`], "s"),
+          ([Pour `h|`], "s"),
+          ([Pour `|h`], "s"),
+          ([Pour `h`], "s"),
         ),
-        domain: ($2$, $4$, $6$, $8$),
+        domain: ($ 2 $, $4$, $5$, $8$, $9$),
         contents: (
-          ($+$, (), $-$),
+          ($+$, "|h|", (), $-$),
+          ($-$, "h|", $-$, $+$),
+          ($+$, "|h", (), $-$),
+          ($-$, "h", $-$, $+$),
         ),
       )
+
     ```,
-    scale(x: 75%, y: 80%)[
+    scale(x: 60%, y: 70%)[
       #tabvar(
         variable: $t$,
-        label: (([signe], "s"),),
-        domain: ($ 2 $, $4$, $5$, $6$, $8$, $9$),
-        contents: (($+$, "|h|", (), $-$, $-$),),
+        label: (
+          ([Pour `|h|`], "s"),
+          ([Pour `h|`], "s"),
+          ([Pour `|h`], "s"),
+          ([Pour `h`], "s"),
+        ),
+        domain: ($ 2 $, $4$, $5$, $8$, $9$),
+        contents: (
+          ($+$, "|h|", (), $-$),
+          ($-$, "h|", $-$, $+$),
+          ($+$, "|h", (), $-$),
+          ($-$, "h", $-$, $+$),
+        ),
       )
     ],
   )

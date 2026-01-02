@@ -1,5 +1,4 @@
 #import "@preview/cetz:0.4.2"
-#set page(width: auto, height: auto)
 
 #let _prochain-signe(tab_signe, j) = {
   // Cherche le prochain élément non vide "()" dans ce sous tableau
@@ -34,8 +33,8 @@
   while indice >= 0 and type(ligne.at(indice)) == array and ligne.at(indice).len() == 0 {
     indice -= 1
   }
-  if type(ligne.at(indice)) == array {
-    "h" in ligne.at(indice) or "|h" in ligne.at(indice) or "h|" in ligne.at(indice) or "|h|" in ligne.at(indice)
+  if "h" == ligne.at(indice) or "|h" == ligne.at(indice) or "h|" == ligne.at(indice) or "|h|" == ligne.at(indice) {
+    true
   } else {
     false
   }
@@ -801,11 +800,11 @@
           // panic si il y a plus ou moins d’éléments qu’il faudrais
           if contents.at(i).at(-1) == "||" {
             if contents.at(i).len() != domain.len() {
-              panic("TabVar: Not enough elements in the table number " + str(i + 1))
+              panic("TabVar: Wrong number of elements in the table number " + str(i + 1))
             }
           } else {
             if contents.at(i).len() != domain.len() - 1 {
-              panic("TabVar: Not enough elements in the table number " + str(i + 1))
+              panic("TabVar: Wrong number of elements in the table number " + str(i + 1))
             }
           }
 
@@ -956,10 +955,22 @@
                     (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                   )
                 }
-                line(
-                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
+                if prochain != contents.at(i).len() and contents.at(i).at(prochain) != "||" {
+                  line(
+                    (coordX.at(prochain).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(prochain).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                  line(
+                    (
+                      coordX.at(prochain).at(0) + 0.07,
+                      coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
+                    ),
+                    (
+                      coordX.at(prochain).at(0) + 0.07,
+                      coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
+                    ),
+                  )
+                }
                 set-style(..table-style)
                 rect(
                   stroke: none,
@@ -968,21 +979,16 @@
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
                   (
-                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
+                    if prochain == contents.at(i).len() {
+                      decalage_domaine
+                    } else if contents.at(i).at(prochain) == "||" {
+                      decalage_domaine - 0.15
+                    } else {
+                      coordX.at(prochain).at(0) - 0.07
+                    },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
                   fill: hatching-style,
-                )
-
-                line(
-                  (
-                    coordX.at(prochain).at(0) + 0.07,
-                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
-                  ),
-                  (
-                    coordX.at(prochain).at(0) + 0.07,
-                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
-                  ),
                 )
               } else if contents.at(i).at(j) == "|h|" {
                 set-style(..line-style)
@@ -1060,7 +1066,7 @@
                 )
 
                 if (
-                  j != 0 and _yatilhach(contents.at(i), j)
+                  j != 0 and not _yatilhach(contents.at(i), j)
                 ) {
                   //Si c'est pas le premier signe et qu’il n’y est pas d’hachurage avant
                   set-style(..line-style)
@@ -1283,7 +1289,11 @@
                   )
 
                   if (
-                    contents.at(i).len() >= 2 and _yatilhach(contents.at(i), contents.at(i).len())
+                    contents.at(i).len() >= 2
+                      and not _yatilhach(
+                        contents.at(i),
+                        contents.at(i).len() - 1 + if contents.at(i).at(-1) == "||" { -1 },
+                      )
                   ) {
                     set-style(..line-style)
                     line(
@@ -1846,10 +1856,3 @@
     })
   }
 }
-
-#tabvar(
-  variable: $t$,
-  label: (([signe], "s"),),
-  domain: ($ 2 $, $4$, $5$, $6$, $8$, $9$),
-  contents: (($+$, "|h|", (), (), ()),),
-)
