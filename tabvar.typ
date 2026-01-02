@@ -1,5 +1,5 @@
 #import "@preview/cetz:0.4.2"
-#set page(paper: "a1")
+#set page(width: auto, height: auto)
 
 #let _prochain-signe(tab_signe, j) = {
   // Cherche le prochain élément non vide "()" dans ce sous tableau
@@ -28,6 +28,19 @@
   indice
 }
 
+#let _yatilhach(ligne, j) = {
+  // Renvoie vrais s’il y a une zone haché jute avant, non sinon
+  let indice = j - 1
+  while indice >= 0 and type(ligne.at(indice)) == array and ligne.at(indice).len() == 0 {
+    indice -= 1
+  }
+  if type(ligne.at(indice)) == array {
+    "h" in ligne.at(indice) or "|h" in ligne.at(indice) or "h|" in ligne.at(indice) or "|h|" in ligne.at(indice)
+  } else {
+    false
+  }
+}
+
 #let _coord-fleche(i, j, indef, proch_indef, ligne, coordX, coordY) = {
   // Caclule les points de départ et d’arrivé des flèches
 
@@ -40,33 +53,37 @@
   let l = measure(ligne.at(j).last()).width.mm() / 10.65
 
   let n = (
-    measure(ligne
-      .at(indice_proch_ele)
-      .at(if proch_indef {
-        if (
-          ligne.at(indice_proch_ele).at(1) == "||"
-            or ligne.at(indice_proch_ele).at(1) == "h"
-            or ligne.at(indice_proch_ele).at(1) == "|h"
-            or ligne.at(indice_proch_ele).at(1) == "H"
-            or ligne.at(indice_proch_ele).at(1) == "H|"
-        ) { 2 } else { 3 }
-      } else { 1 }))
+    measure(
+      ligne
+        .at(indice_proch_ele)
+        .at(if proch_indef {
+          if (
+            ligne.at(indice_proch_ele).at(1) == "||"
+              or ligne.at(indice_proch_ele).at(1) == "h"
+              or ligne.at(indice_proch_ele).at(1) == "|h"
+              or ligne.at(indice_proch_ele).at(1) == "H"
+              or ligne.at(indice_proch_ele).at(1) == "H|"
+          ) { 2 } else { 3 }
+        } else { 1 }),
+    )
       .height
       .mm()
       / 10.65
   )
   let d = (
-    measure(ligne
-      .at(indice_proch_ele)
-      .at(if proch_indef {
-        if (
-          ligne.at(indice_proch_ele).at(1) == "||"
-            or ligne.at(indice_proch_ele).at(1) == "h"
-            or ligne.at(indice_proch_ele).at(1) == "|h"
-            or ligne.at(indice_proch_ele).at(1) == "H"
-            or ligne.at(indice_proch_ele).at(1) == "H|"
-        ) { 2 } else { 3 }
-      } else { 1 }))
+    measure(
+      ligne
+        .at(indice_proch_ele)
+        .at(if proch_indef {
+          if (
+            ligne.at(indice_proch_ele).at(1) == "||"
+              or ligne.at(indice_proch_ele).at(1) == "h"
+              or ligne.at(indice_proch_ele).at(1) == "|h"
+              or ligne.at(indice_proch_ele).at(1) == "H"
+              or ligne.at(indice_proch_ele).at(1) == "H|"
+          ) { 2 } else { 3 }
+        } else { 1 }),
+    )
       .width
       .mm()
       / 10.65
@@ -96,21 +113,23 @@
         (
           coordY.at(i).at(1) / 2
             - 0.3
-            - measure(ligne
-              .at(j)
-              .at(if ligne.at(j).len() > 2 {
-                if (
-                  ligne.at(j).at(1) == "||"
-                    or ligne.at(j).at(1) == "h"
-                    or ligne.at(j).at(1) == "|h"
-                    or ligne.at(j).at(1) == "H"
-                    or ligne.at(j).at(1) == "H|"
-                ) {
-                  2
-                } else {
-                  3
-                }
-              } else { 1 }))
+            - measure(
+              ligne
+                .at(j)
+                .at(if ligne.at(j).len() > 2 {
+                  if (
+                    ligne.at(j).at(1) == "||"
+                      or ligne.at(j).at(1) == "h"
+                      or ligne.at(j).at(1) == "|h"
+                      or ligne.at(j).at(1) == "H"
+                      or ligne.at(j).at(1) == "H|"
+                  ) {
+                    2
+                  } else {
+                    3
+                  }
+                } else { 1 }),
+            )
               .height
               .mm()
               / (2 * 10.65)
@@ -130,21 +149,23 @@
         (
           -coordY.at(i).at(1) / 2
             + 0.3
-            + measure(ligne
-              .at(j)
-              .at(if ligne.at(j).len() > 2 {
-                if (
-                  ligne.at(j).at(1) == "||"
-                    or ligne.at(j).at(1) == "h"
-                    or ligne.at(j).at(1) == "|h"
-                    or ligne.at(j).at(1) == "H"
-                    or ligne.at(j).at(1) == "H|"
-                ) {
-                  2
-                } else {
-                  3
-                }
-              } else { 1 }))
+            + measure(
+              ligne
+                .at(j)
+                .at(if ligne.at(j).len() > 2 {
+                  if (
+                    ligne.at(j).at(1) == "||"
+                      or ligne.at(j).at(1) == "h"
+                      or ligne.at(j).at(1) == "|h"
+                      or ligne.at(j).at(1) == "H"
+                      or ligne.at(j).at(1) == "H|"
+                  ) {
+                    2
+                  } else {
+                    3
+                  }
+                } else { 1 }),
+            )
               .height
               .mm()
               / (2 * 10.65)
@@ -160,21 +181,23 @@
         (
           coordY.at(i).at(1) / 2
             - 0.3
-            - measure(ligne
-              .at(indice_proch_ele)
-              .at(if ligne.at(indice_proch_ele).len() > 2 {
-                if (
-                  ligne.at(indice_proch_ele).at(1) == "||"
-                    or ligne.at(indice_proch_ele).at(1) == "h"
-                    or ligne.at(indice_proch_ele).at(1) == "|h"
-                    or ligne.at(indice_proch_ele).at(1) == "H"
-                    or ligne.at(indice_proch_ele).at(1) == "H|"
-                ) {
-                  2
-                } else {
-                  3
-                }
-              } else { 1 }))
+            - measure(
+              ligne
+                .at(indice_proch_ele)
+                .at(if ligne.at(indice_proch_ele).len() > 2 {
+                  if (
+                    ligne.at(indice_proch_ele).at(1) == "||"
+                      or ligne.at(indice_proch_ele).at(1) == "h"
+                      or ligne.at(indice_proch_ele).at(1) == "|h"
+                      or ligne.at(indice_proch_ele).at(1) == "H"
+                      or ligne.at(indice_proch_ele).at(1) == "H|"
+                  ) {
+                    2
+                  } else {
+                    3
+                  }
+                } else { 1 }),
+            )
               .height
               .mm()
               / (2 * 10.65)
@@ -183,21 +206,23 @@
         (
           -coordY.at(i).at(1) / 2
             + 0.3
-            + measure(ligne
-              .at(indice_proch_ele)
-              .at(if ligne.at(indice_proch_ele).len() > 2 {
-                if (
-                  ligne.at(indice_proch_ele).at(1) == "||"
-                    or ligne.at(indice_proch_ele).at(1) == "h"
-                    or ligne.at(indice_proch_ele).at(1) == "|h"
-                    or ligne.at(indice_proch_ele).at(1) == "H"
-                    or ligne.at(indice_proch_ele).at(1) == "H|"
-                ) {
-                  2
-                } else {
-                  3
-                }
-              } else { 1 }))
+            + measure(
+              ligne
+                .at(indice_proch_ele)
+                .at(if ligne.at(indice_proch_ele).len() > 2 {
+                  if (
+                    ligne.at(indice_proch_ele).at(1) == "||"
+                      or ligne.at(indice_proch_ele).at(1) == "h"
+                      or ligne.at(indice_proch_ele).at(1) == "|h"
+                      or ligne.at(indice_proch_ele).at(1) == "H"
+                      or ligne.at(indice_proch_ele).at(1) == "H|"
+                  ) {
+                    2
+                  } else {
+                    3
+                  }
+                } else { 1 }),
+            )
               .height
               .mm()
               / (2 * 10.65)
@@ -291,8 +316,8 @@
 ///// Return a variation table
 /// Retourne un tableau de variation
 #let tabvar(
-  ///// variable is a content block which contains the table’s variable name (like $x$ or $t$) 
-  ///// 
+  ///// variable is a content block which contains the table’s variable name (like $x$ or $t$)
+  /////
   /// `variable` est la variable qui contient la variable du tableau ( comme $x$ ou $t$ )\
   /// *Exemple :* si la variable de la fonction est $t$, alors :\
   /// ```typst
@@ -310,8 +335,8 @@
   /////     ([variation of $f$], "Variation") // the second line is a variation table
   /////   )
   ///// )
-  ///// ``` 
-  ///// 
+  ///// ```
+  /////
   /// `label` est un array qui contient des array de longueur 2, une pour chaque ligne du tableau, dont le premier élément est le titre de la ligne et le second est le type de la ligne : signe ( s ) ou variation ( v ) \
   /// *Exemple :* pour le tableau de variation de la fonction $f$, vous devriez écrire :\
   /// ```typst
@@ -327,19 +352,19 @@
   ///// you should write this :
   ///// ```typst
   ///// domain: ($0$, $1$, $2$, $3$)
-  ///// ``` 
-  ///// 
+  ///// ```
+  /////
   /// les valeurs prises par la variable \
   /// par exemple, si votre fonction change de signe ou atteind un extremum pour $x in {0,1,2,3}$ \
   /// vous devriez écrire :
   /// ```typst
   /// domain: ($0$, $1$, $2$, $3$)
   /// ```
-  /// 
+  ///
   /// -> array
   domain: (),
   ///// the content of the table \
-  ///// see below for more details 
+  ///// see below for more details
   /// le contenu de la table\
   /// voir 2.2<2.2> pour plus de détaille
   /// -> array
@@ -348,27 +373,27 @@
   ///// The style of the table,\
   ///// the style type is defined by Cetz,
   ///// so I invite you to have a look at the #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[Cetz manual]]. \
-  ///// *Caution :* if you haven't entered the mark symbol as none, all lines in the table will have an arrowhead. 
+  ///// *Caution :* if you haven't entered the mark symbol as none, all lines in the table will have an arrowhead.
   ///
   /// *Optionelle*\
   /// Le style de la table\
   /// le type style est définis par Cetz, ainsi je vous recommande de vous référer au #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[manuelle de Cetz]].\
-  /// *Attention :* Si vous ne mettez pas le paramètre de style : `mark` a `none`, alors toute les lignes du tableau aurons une tête en flèche 
+  /// *Attention :* Si vous ne mettez pas le paramètre de style : `mark` a `none`, alors toute les lignes du tableau aurons une tête en flèche
   ///  -> style
   table-style: (stroke: 1pt + black, mark: (symbol: none)),
   ///// to hide the external cardre
-  /// Pour cacher le cadre externe du tableau 
+  /// Pour cacher le cadre externe du tableau
   /// -> bool
   nocadre: false,
-  ///// the style of the arrowhead, the type of which is defined by Cetz 
-  /// 
+  ///// the style of the arrowhead, the type of which is defined by Cetz
+  ///
   /// Le style de la tête de flèche.\
   /// *N.B.* le type `mark` est définis par Cetz
   /// -> mark
   arrow-mark: (end: "straight"),
   ///// *Optional*\
   /////  the style of the arrow, as for the `table-style` parameter\
-  ///// *Caution :* the `mark` section is overwrite by the `arrow-mark` 
+  ///// *Caution :* the `mark` section is overwrite by the `arrow-mark`
   ///
   /// *Optionelle :*\
   /// Le style des flèches.\
@@ -376,7 +401,7 @@
   /// -> style
   arrow-style: (stroke: black + 1pt),
   /////  *Optional*\
-  ///// if you want to change the default bar sign to a bar with a 0 
+  ///// if you want to change the default bar sign to a bar with a 0
   ///
   /// *Optionelle*\
   /// si vous voulez changer la bar par défaut dans les tableaux de signe, pour une bar avec un zéro en sont centre
@@ -385,17 +410,17 @@
   ///// *Optional*\
   ///// if you want to change the style of all separator lines between signs\
   /////
-  ///// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed. 
+  ///// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed.
   ///
   /// *Optionelle*\
   /// Si vous voulez le style de toutes les bars de séparation entre les signes
   /// -> style
   line-style: (stroke: black + 1pt),
   ///// *Optional*\
-  ///// The style of the hatching in the sign and variation table 
+  ///// The style of the hatching in the sign and variation table
   ///
   /// *Optionelle*\
-  /// le style des hachures s’il y a des zones hachurées 
+  /// le style des hachures s’il y a des zones hachurées
   /// -> tiling
   hatching-style: tiling(size: (30pt, 30pt))[
 
@@ -411,33 +436,33 @@
   /// -> length
   first-column-width: none,
   ///// *Optional*\
-  ///// change the height of the first line 
+  ///// change the height of the first line
   ///
   /// change la hauteur de la première ligne ( celle du domaine et de la variable )
   /// -> length
   first-line-height: none,
   ///// *Optional*\
-  ///// change the distance betwen two elements 
+  ///// change the distance betwen two elements
   ///
   /// *Optionelle*\
   /// change la distance entre deux éléments
   /// -> length
   element-distance: none,
   ///// *Optional*\
-  ///// To add values betwen to pre-defined values 
+  ///// To add values betwen to pre-defined values
   ///
   /// pour ajouter des valeurs entre deux valeurs prè-définis
   /// -> array
   values: ((),),
   ///// *Optional*\
-  ///// To add more stuff with Cetz 
+  ///// To add more stuff with Cetz
   ///
   /// Pour ajouter plus d’éléments via Cetz
   /// -> content
   add: (),
 ) = {
   //start of function
-  
+
   let c1stroke = stroke
 
   context {
@@ -530,14 +555,16 @@
                   if contents.at(j).at(i).len() > 2 {
                     calc.max(
                       measure(contents.at(j).at(i).last()).width.mm() / 10.65,
-                      measure(contents
-                        .at(j)
-                        .at(i)
-                        .at(if contents.at(j).at(i).at(1) == "||"
-                          or contents.at(j).at(i).at(1) == "h"
-                          or contents.at(j).at(i).at(1) == "H"
-                          or contents.at(j).at(i).at(1) == "|h"
-                          or contents.at(j).at(i).at(1) == "H|" { 2 } else { 3 }))
+                      measure(
+                        contents
+                          .at(j)
+                          .at(i)
+                          .at(if contents.at(j).at(i).at(1) == "||"
+                            or contents.at(j).at(i).at(1) == "h"
+                            or contents.at(j).at(i).at(1) == "H"
+                            or contents.at(j).at(i).at(1) == "|h"
+                            or contents.at(j).at(i).at(1) == "H|" { 2 } else { 3 }),
+                      )
                         .width
                         .mm()
                         / 10.65,
@@ -570,14 +597,16 @@
                   if contents.at(j).at(i + 1).len() > 2 {
                     calc.max(
                       measure(contents.at(j).at(i + 1).last()).width.mm() / 10.65,
-                      measure(contents
-                        .at(j)
-                        .at(i + 1)
-                        .at(if contents.at(j).at(i + 1).at(1) == "||"
-                          or contents.at(j).at(i + 1).at(1) == "h"
-                          or contents.at(j).at(i + 1).at(1) == "H"
-                          or contents.at(j).at(i + 1).at(1) == "|h"
-                          or contents.at(j).at(i + 1).at(1) == "H|" { 2 } else { 3 }))
+                      measure(
+                        contents
+                          .at(j)
+                          .at(i + 1)
+                          .at(if contents.at(j).at(i + 1).at(1) == "||"
+                            or contents.at(j).at(i + 1).at(1) == "h"
+                            or contents.at(j).at(i + 1).at(1) == "H"
+                            or contents.at(j).at(i + 1).at(1) == "|h"
+                            or contents.at(j).at(i + 1).at(1) == "H|" { 2 } else { 3 }),
+                      )
                         .width
                         .mm()
                         / 10.65,
@@ -641,14 +670,16 @@
               if contents.at(j).at(-1).len() > 2 {
                 calc.max(
                   measure(contents.at(j).at(-1).last()).width.mm() / 10.65,
-                  measure(contents
-                    .at(j)
-                    .at(-1)
-                    .at(if contents.at(j).at(-1).at(1) == "||"
-                      or contents.at(j).at(-1).at(1) == "|h"
-                      or contents.at(j).at(-1).at(1) == "h"
-                      or contents.at(j).at(-1).at(1) == "H"
-                      or contents.at(j).at(-1).at(1) == "H|" { 2 } else { 3 }))
+                  measure(
+                    contents
+                      .at(j)
+                      .at(-1)
+                      .at(if contents.at(j).at(-1).at(1) == "||"
+                        or contents.at(j).at(-1).at(1) == "|h"
+                        or contents.at(j).at(-1).at(1) == "h"
+                        or contents.at(j).at(-1).at(1) == "H"
+                        or contents.at(j).at(-1).at(1) == "H|" { 2 } else { 3 }),
+                  )
                     .width
                     .mm()
                     / 10.65,
@@ -690,14 +721,16 @@
                   if contents.at(i).at(j).len() > 2 {
                     calc.max(
                       measure(contents.at(i).at(j).last()).height.mm() / 10.65,
-                      measure(contents
-                        .at(i)
-                        .at(j)
-                        .at(if contents.at(i).at(j).at(1) == "||"
-                          or contents.at(i).at(j).at(1) == "h"
-                          or contents.at(i).at(j).at(1) == "|h"
-                          or contents.at(i).at(j).at(1) == "H"
-                          or contents.at(i).at(j).at(1) == "H|" { 2 } else { 3 }))
+                      measure(
+                        contents
+                          .at(i)
+                          .at(j)
+                          .at(if contents.at(i).at(j).at(1) == "||"
+                            or contents.at(i).at(j).at(1) == "h"
+                            or contents.at(i).at(j).at(1) == "|h"
+                            or contents.at(i).at(j).at(1) == "H"
+                            or contents.at(i).at(j).at(1) == "H|" { 2 } else { 3 }),
+                      )
                         .height
                         .mm()
                         / 10.65,
@@ -832,20 +865,20 @@
                 set-style(..table-style)
                 line(
                   (
-                    largeur_permiere_colonne 
-                    + 0.15 
-                    + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                       table-style.at("stroke").thickness.mm() / (10.65)
-                      } else {0}, 
-                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2
+                    largeur_permiere_colonne
+                      + 0.15
+                      + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                        table-style.at("stroke").thickness.mm() / 10.65
+                      } else { 0 },
+                    coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
                   (
-                    largeur_permiere_colonne 
-                    + 0.15 
-                    + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                       table-style.at("stroke").thickness.mm() / (10.65)
-                      } else {0}, 
-                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2
+                    largeur_permiere_colonne
+                      + 0.15
+                      + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                        table-style.at("stroke").thickness.mm() / 10.65
+                      } else { 0 },
+                    coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
                 )
               }
@@ -862,8 +895,8 @@
                   )
                 }
                 line(
-                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                 )
                 set-style(..table-style)
                 rect(
@@ -887,8 +920,8 @@
                   )
                 }
                 line(
-                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(j + 1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                 )
                 set-style(..table-style)
                 rect(
@@ -959,10 +992,14 @@
                     (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                   )
                 }
-                line(
-                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                  (coordX.at(j + 1).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                )
+                if (
+                  prochain != contents.at(i).len() and contents.at(i).at(prochain) != "||"
+                ) {
+                  line(
+                    (coordX.at(prochain).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(prochain).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
                 set-style(..table-style)
                 rect(
                   stroke: none,
@@ -971,12 +1008,21 @@
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
                   (
-                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) - 0.07 },
+                    if prochain == contents.at(i).len() {
+                      //cas si on termine à la fin du tableau
+                      decalage_domaine
+                    } else if contents.at(i).at(-1) == "||" {
+                      //cas si on termine à la fin du tableau et qu’il est indéfinis
+                      decalage_domaine - 0.15
+                    } else {
+                      // cas normal
+                      coordX.at(prochain).at(0) - 0.07
+                    },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
                   fill: hatching-style,
                 )
-                if prochain != contents.at(i).len() {
+                if prochain != contents.at(i).len() and contents.at(i).at(prochain) != "||" {
                   line(
                     (
                       coordX.at(prochain).at(0) + 0.07,
@@ -1014,15 +1060,9 @@
                 )
 
                 if (
-                  j != 0
-                    and not (
-                      contents.at(i).at(j - 1) == "h"
-                        or contents.at(i).at(j - 1) == "|h"
-                        or contents.at(i).at(j - 1) == "h|"
-                        or contents.at(i).at(j - 1) == "|h|"
-                    )
+                  j != 0 and _yatilhach(contents.at(i), j)
                 ) {
-                  //Si c'est pas le premier signe
+                  //Si c'est pas le premier signe et qu’il n’y est pas d’hachurage avant
                   set-style(..line-style)
                   line(
                     (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
@@ -1208,20 +1248,22 @@
                       set-style(..table-style)
                       line(
                         (
-                          largeur_permiere_colonne 
-                          + 0.15 
-                          + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                            table-style.at("stroke").thickness.mm() / (10.65)
-                            } else {0}, 
-                          coordY.at(i).at(0) - coordY.at(i).at(1) / 2
+                          largeur_permiere_colonne
+                            + 0.15
+                            + if type(table-style.at("stroke")) == c1stroke
+                              and table-style.at("stroke").thickness != auto {
+                              table-style.at("stroke").thickness.mm() / 10.65
+                            } else { 0 },
+                          coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                         ),
                         (
-                          largeur_permiere_colonne 
-                          + 0.15 
-                          + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                            table-style.at("stroke").thickness.mm() / (10.65)
-                            } else {0}, 
-                          coordY.at(i).at(0) + coordY.at(i).at(1) / 2
+                          largeur_permiere_colonne
+                            + 0.15
+                            + if type(table-style.at("stroke")) == c1stroke
+                              and table-style.at("stroke").thickness != auto {
+                              table-style.at("stroke").thickness.mm() / 10.65
+                            } else { 0 },
+                          coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                         ),
                       )
                     }
@@ -1241,11 +1283,7 @@
                   )
 
                   if (
-                    contents.at(i).len() >= 2
-                      and contents.at(i).at(-2) != "h"
-                      and contents.at(i).at(-2) != "|h"
-                      and contents.at(i).at(-2) != "h|"
-                      and contents.at(i).at(-2) != "|h|"
+                    contents.at(i).len() >= 2 and _yatilhach(contents.at(i), contents.at(i).len())
                   ) {
                     set-style(..line-style)
                     line(
@@ -1659,19 +1697,19 @@
             set-style(..table-style)
             line(
               (
-                largeur_permiere_colonne 
-                + 0.15 
-                + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                   table-style.at("stroke").thickness.mm() / (10.65)
-                  } else {0},
+                largeur_permiere_colonne
+                  + 0.15
+                  + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                    table-style.at("stroke").thickness.mm() / 10.65
+                  } else { 0 },
                 coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
               ),
               (
-                largeur_permiere_colonne 
-                + 0.15 
-                + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
-                   table-style.at("stroke").thickness.mm() / (10.65)
-                  } else {0},
+                largeur_permiere_colonne
+                  + 0.15
+                  + if type(table-style.at("stroke")) == c1stroke and table-style.at("stroke").thickness != auto {
+                    table-style.at("stroke").thickness.mm() / 10.65
+                  } else { 0 },
                 coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
               ),
             )
@@ -1808,3 +1846,10 @@
     })
   }
 }
+
+#tabvar(
+  variable: $t$,
+  label: (([signe], "s"),),
+  domain: ($ 2 $, $4$, $5$, $6$, $8$, $9$),
+  contents: (($+$, "|h|", (), (), ()),),
+)

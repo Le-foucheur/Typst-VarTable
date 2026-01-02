@@ -282,7 +282,7 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
 ]
 
 ===== 2.2.1.4 - Hachurage pour une zone non définis pour les sous tableaux de signes
-Il peut que vos fonctions ne soient pas définis sur un ou plusieurs interval malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
+Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs interval malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
 Étant donnée que les signes porte sur les intervals du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on pourait distinguer 4 cas :
 - le premier cas et le plus courant, celuis où les deux bornes de l’interval indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
 - le second cas, également relativement présent, est celuis où les deux bornes elle définits contrairement cette fois à l’interval, ainsi vous omettrez les deux bar « | » de l’élément présenté ci-dessus, i.e. vous renseignerez `"h"`
