@@ -341,7 +341,7 @@
   /// ```typst
   /// label : (
   ///   ([Signe de $f$], "s"), // la première ligne est un tableau de signe
-  ///   ([Variation de $f$], "v") // la seconde ligne est un tableas de variation
+  ///   ([Variation de $f$], "v") // la seconde ligne est un tableau de variation
   /// )
   /// ```
   /// -> array
@@ -353,8 +353,8 @@
   ///// domain: ($0$, $1$, $2$, $3$)
   ///// ```
   /////
-  /// les valeurs prises par la variable \
-  /// par exemple, si votre fonction change de signe ou atteind un extremum pour $x in {0,1,2,3}$ \
+  /// Les valeurs prises par la variable \
+  /// par exemple, si votre fonction change de signe ou atteint un extremum pour $x in {0,1,2,3}$ \
   /// vous devriez écrire :
   /// ```typst
   /// domain: ($0$, $1$, $2$, $3$)
@@ -364,8 +364,8 @@
   domain: (),
   ///// the content of the table \
   ///// see below for more details
-  /// le contenu de la table\
-  /// voir 2.2<2.2> pour plus de détaille
+  /// Le contenu de la table\
+  /// Voir 2.2<2.2> pour plus de détails
   /// -> array
   contents: ((),),
   ///// *Optional*\
@@ -376,7 +376,7 @@
   ///
   /// *Optionelle*\
   /// Le style de la table\
-  /// le type style est définis par Cetz, ainsi je vous recommande de vous référer au #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[manuelle de Cetz]].\
+  /// le type style est définis par Cetz, ainsi je vous recommande de vous référer au #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[manuel de Cetz]].\
   /// *Attention :* Si vous ne mettez pas le paramètre de style : `mark` a `none`, alors toute les lignes du tableau aurons une tête en flèche
   ///  -> style
   table-style: (stroke: 1pt + black, mark: (symbol: none)),
@@ -396,14 +396,14 @@
   ///
   /// *Optionelle :*\
   /// Le style des flèches.\
-  /// *Attention :* le paramètre `mark` est supplenté par le paramètre `arrow-mark`
+  /// *Attention :* le paramètre `mark` est supplanté par le paramètre `arrow-mark`
   /// -> style
   arrow-style: (stroke: black + 1pt),
   /////  *Optional*\
   ///// if you want to change the default bar sign to a bar with a 0
   ///
   /// *Optionelle*\
-  /// si vous voulez changer la bar par défaut dans les tableaux de signe, pour une bar avec un zéro en sont centre
+  /// Si vous voulez changer la bar par défaut dans les tableaux de signe, pour une bar avec un zéro en sont centre
   /// -> bool
   line-0: false,
   ///// *Optional*\
@@ -450,7 +450,7 @@
   ///// *Optional*\
   ///// To add values betwen to pre-defined values
   ///
-  /// pour ajouter des valeurs entre deux valeurs prè-définis
+  /// pour ajouter des valeurs entre deux valeurs prédéfinis
   /// -> array
   values: ((),),
   ///// *Optional*\

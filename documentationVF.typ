@@ -27,7 +27,7 @@ Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.c
 
 = 2 - Tabvar
 
-== 2.1 - déscription générale
+== 2.1 - description générale
 
 #let docs = tidy.parse-module(
   read("tabvar.typ"),
@@ -42,26 +42,26 @@ Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.c
 
 #pagebreak()
 
-== 2.2 - Le paramètre de contenus
+== 2.2 - Le paramètre de contenu
 
 Le paramètre contenu est un array avec un élément par ligne ( par label ).
 
-Chaque éléments sont eux même des array avec un élément pour chaque colonne, avec un format différents pour les signes et les variations qui seront détaillés ci-dessous.
+Chaque éléments sont eux même des arrays avec un élément pour chaque colonne, avec un format différents pour les signes et les variations qui seront détaillés ci-dessous.
 
 === 2.2.1 - Le format pour les Signes
 
-Il doit être possisioné au même index dans l’array `contents` que un label possèdant le string `"s"`, ce qui indique que la ligne doit être considéré comme un tableau de signe
+Il doit être positioné au même index dans l’array `contents` qu’un label possèdant le string `"s"`, ce qui indique que la ligne doit être considéré comme un tableau de signe
 
-De plus, il doit contenir autemps d’éléments que le domaine moins un ( un par interval ), plus un argument optionelle si le dernier élément est non défini
+De plus, il doit contenir autant d’éléments que le domaine moins un ( un par intervalle ), plus un argument optionel si le dernier élément est non défini
 
-Chaque éléments doits être d’une de ces forme :
+Chaque éléments doit être d’une de ces formes :
 
 - `()` - Vide : pour étendre le dernier signe en partant de la gauche sur les intervals marqués vides\
 - `body` - Le cas basique, constitué du type body de typst, comme `$ + $` ou `$ - $`\
-- `(style de la bar, body)` - Pour spécifier un style particulier à la bar de *devant* le signe, ce style peut être : `"|"` la bar simple, `"||"` une double bar ou `"0"` pour une bar avec un zéro en sont centre \
-*NB :* le paramètre `line-0` change la bar par défaut pour la bar avec un zéro `"0"`.
+- `(style de la barre, body)` - Pour spécifier un style particulier à la barre de *devant* le signe, ce style peut être : `"|"` la barre simple, `"||"` une double barre ou `"0"` pour une barre avec un zéro en sont centre \
+*NB :* le paramètre `line-0` change la barre par défaut pour la barre avec un zéro `"0"`.
 
-Vous pouvez mettre en plus à la fin le string `"||"`, pour rajouter un double bar à la toute fin
+Vous pouvez mettre en plus à la fin le string `"||"`, pour rajouter un double barre à la toute fin
 
 ==== 2.2.1.1 - Un array classique pour les signes
 
@@ -91,20 +91,22 @@ Un tableau de signe classique :
     ],
   )
 ]
-Un example plus complexe :
-#rect(fill: luma(95%), radius: 10pt, width: 17cm)[
+Un exemple plus complexe :
+#rect(fill: luma(95%), radius: 10pt, width: 17.4cm)[
   #grid(
-    columns: (7.5cm, 7cm),
+    columns: (7.9cm, 7cm),
     align: horizon,
     ```typ
       #tabvar(
         variable: $t$,
         label: (
-          ([signe], "s"),
+          ([signe 1], "s"),
+          ([signe 2], "s"),
         ),
         domain: ($ 2 $, $4$, $6$, $8$),
         contents: (
           ("Hello world !", $-$, $ 3 / 2 $),
+          ($1/3/9/27$, $+$, "Goodbye word !"),
         ),
       )
     ```,
@@ -126,13 +128,13 @@ Un example plus complexe :
 ]
 *Note :* Sur le second example, le tableau est comprimé à l’aide de la fonction scale
 
-==== 2.2.1.2 - Une bar de séparation customisé
-===== 2.2.1.2.1 - Le style de la bar
-Vous pouvez modifier le style de la bar
+==== 2.2.1.2 - Une barre de séparation customisé
+===== 2.2.1.2.1 - Le style de la barre
+Vous pouvez modifier le style de la barre
 
-Le style de la bar est un dictionary, du type `"style"` définis par Cetz.\
-Pour fair simple, si vous voulez changer uniquement le stroke des bars, vous avez juste a mettre `(stroke: votre stroke)`.\
-Pour des usages plus complexe référer vous au manuel de Cetz.
+Le style de la barre est un dictionary, du type `"style"` définis par Cetz.\
+Pour faire simple, si vous voulez changer uniquement le stroke des barres, vous avez juste a mettre `(stroke: votre stroke)`.\
+Pour des usages plus complexe référez vous au manuel de Cetz.
 
 *Example :*
 
@@ -168,13 +170,13 @@ Pour des usages plus complexe référer vous au manuel de Cetz.
   )
 ]
 
-===== 2.2.1.2.2 - Le type de la bar
+===== 2.2.1.2.2 - Le type de la barre
 
-Pour tout les signes sauf le premier, au lieux de placé directement un signe, vous pouvez mettre un couple, dont le premier éléments définis le type de la bar placée avant le signe.\
-Il y a trois type différents de bar :
-- `"|"` : une bar simple
-- `0` : une bar avec un zéro en sont centre
-- `||` une double bar, pour les valeurs non-définis
+Pour tout les signes sauf le premier, au lieux de placé directement un signe, vous pouvez mettre un couple, dont le premier éléments définis le type de la barre placée avant le signe.\
+Il y a trois type différents de barre :
+- `"|"` : une barre simple
+- `0` : une barre avec un zéro en sont centre
+- `||` une double barre, pour les valeurs non-définis
 
 *Exemple *
 #rect(fill: luma(95%), radius: 10pt, width: 18cm)[
@@ -209,7 +211,7 @@ Il y a trois type différents de bar :
 ]
 
 #pagebreak()
-Si vous voulez avoir une double bar avant le premier signe, vous pouvez utilisez le couple avec en permier éléments `"||"`, à la place du premier signe ; pour mettre une double bar à la fin, ajoutez à la fin de l’array le string `"||"`.
+Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilisez le couple avec en premier éléments `"||"`, à la place du premier signe ; pour mettre une double barre à la fin, ajoutez à la fin de l’array le string `"||"`.
 
 *Example :*
 
@@ -282,15 +284,15 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
 ]
 
 ===== 2.2.1.4 - Hachurage pour une zone non définis pour les sous tableaux de signes
-Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs interval malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
-Étant donnée que les signes porte sur les intervals du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on pourait distinguer 4 cas :
-- le premier cas et le plus courant, celuis où les deux bornes de l’interval indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
-- le second cas, également relativement présent, est celuis où les deux bornes elle définits contrairement cette fois à l’interval, ainsi vous omettrez les deux bar « | » de l’élément présenté ci-dessus, i.e. vous renseignerez `"h"`
-- les deux autres cas, moins courant mais pouvant tout de même apparaitre, est celuis où seul l’une des deux bornes est définis, ainsi, comme vous l’auriez sans doute compris, retirer ( resp. rajouter ) la bare pour le côter où l’élément est défini ( resp. indéfinis ), soit : pour une valeurs définis à gauches `"h|"`; pour une valeur définis à droite `"|h"`
+Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs intervalle malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
+Étant donnée que les signes portent sur les intervalles du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on poura distinguer 4 cas :
+- le premier cas et le plus courant, celui où les deux bornes de l’intervalle indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
+- le second cas, relativement présent également, est celui où les deux bornes sont définits, ainsi vous omettrez les deux barres « | » de l’élément présenté ci-dessus, i.e. vous renseignerez `"h"`
+- les deux autres cas, sont celui où seul l’une des deux bornes est définis, ainsi, comme vous l’auriez sans doute compris, retirer ( resp. rajouter ) la barre pour le côter où l’élément est défini ( resp. indéfinis ), soit : pour une valeurs définis à gauches `"h|"`; pour une valeur définis à droite `"|h"`
 \
-*Remarque :* Vous avez sans doute compris que la bare « | » symbolise les doubles bares indéfini, de même que le « h » représente le « h » de hachurage, ainis il est naturel de mettre ou non les bares au besoins\
+*Remarque :* Vous avez sans doute compris que la bare « | » symbolise les doubles barres indéfini, de même que le « h » représente le « h » de hachurage, ainis il est naturel de mettre ou non les barres au besoins\
 
-Pour étandre le hachurage sur plus d’un des intervals du domaine, il vous suffie de sauté l’élément suivant avec toujour la même notation, à savoir `()`\
+Pour étendre le hachurage sur plus d’un des intervalles du domaine, il vous suffit de sauter l’élément suivant avec toujours la même notation, à savoir `()`\
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -342,11 +344,11 @@ Pour étandre le hachurage sur plus d’un des intervals du domaine, il vous suf
 
 === 2.2.2 - Le format pour les variations
 
-Il doit être possisioné au même index dans l’array `contents` que un label possèdant le string `"v"`, ce qui indique que la ligne doit être considéré comme un tableau de signe\
+Il doit être positioné au même index dans l’array `contents` que un label possèdant le string `"v"`, ce qui indique que la ligne doit être considéré comme un tableau de signe\
 \
-De plus il doit avoir autemps d’éléments que le domain, sinon le programme renvéras une erreur.\
+De plus il doit avoir autant d’éléments que le domaine, sinon le programme renverras une erreur.\
 \
-Chaqu’un des éléments qui le compose doit être sous l’une de ces formes :\
+Chacun des éléments qui le compose doit être sous l’une de ces formes :\
 \
 - `()` - Vide : pour étendre la flèche précédente au prochain élément
 - `(position, body)` - Le cas classique, constitué de la position de l’élément (top, center, bottom), et du body
@@ -357,8 +359,8 @@ Chaqu’un des éléments qui le compose doit être sous l’une de ces formes�
 
 ==== 2.2.2.1 - Un array classique pour les sous tableaux de variation
 
-Un array pour les sous tableaux de variation, doit contenir au moins deux éléments, à savoir la position et l’élément luis même.\
-La positon peut être 3 élément, à savoir : `top`, `center` et `bottom`, mais ne peut être aucun autre type « alignement »
+Un array pour les sous tableaux de variation, doit contenir au moins deux éléments, à savoir la position et l’élément lui-même.\
+La position peut être 3 élément, à savoir : `top`, `center` et `bottom`, mais ne peut être aucun autre type « alignement »
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     column-gutter: -10mm,
@@ -402,14 +404,14 @@ La positon peut être 3 élément, à savoir : `top`, `center` et `bottom`, ma
 
 ==== 2.2.2.2 - Les valeurs indéfinis
 
-Si votre fonction n’est pas définis en certain points comme $f(x) = 1/x$ pour $x = 0$, vous voudrez sans doute mettre une double bar pour signifier que ces valeurs sont indéfini.
+Si votre fonction n’est pas définis en certain points comme $f(x) = 1/x$ pour $x = 0$, vous voudrez sans doute mettre une double barre pour signifier que ces valeurs sont indéfini.
 
 #sym.star Pour chaque valeurs du domaine excepté le début et la fin :
 
 l’array doit avoir cette forme `(pos1, pos2, "||", élément1, élément2)` où :
 - `pos1` et `pos2` sont au choix `top`, `center` ou `bottom`
-- `"||"` est là pour spécifier que la valeur est non définits
-- `élément1` et `2` est de type `contents` où `élément1` est l’élément avant la bar et `élément2` après
+- `"||"` est là pour spécifier que la valeur est non définis
+- `élément1` et `2` est de type `contents` où `élément1` est l’élément avant la barre et `élément2` après
 
 *Example :*
 
@@ -507,7 +509,7 @@ Dans le cas où `pos1` et `pos2` sont identique, alors vous pouvez n’en mettre
 
 #sym.star Pour le début et la fin
 
-Ici comme il n’y a qu’un élément, alors l’array est comme la notation compréssé vue précédement, i.e. : `(pos, "||", élément)`
+Ici comme il n’y a qu’un élément, alors l’array est comme la notation compressé vue précédement, i.e. : `(pos, "||", élément)`
 
 *Example :*
 
@@ -522,14 +524,11 @@ Ici comme il n’y a qu’un élément, alors l’array est comme la notation co
         label: (
           ([Variation], "v"),
         ),
-        domain: ($ 2 $, $4$, $5$, $7$, $8$),
+        domain: ($ 2 $, $4$),
         contents: (
           (
             (top, $3$),
-            (bottom, "||", $0$, $1$),
-            (top, center, "||", $2$),
-            (top, "||", $3$),
-            (bottom, $1$),
+            (bottom, "||", $1$),
           ),
         ),
       )
