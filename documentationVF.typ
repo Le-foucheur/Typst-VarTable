@@ -247,7 +247,7 @@ Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilis
   )
 ]
 
-==== 2.2.1.3 - Un même signe pour plus d’une seul valeur
+==== 2.2.1.3 - Ignorer une valeur
 
 Quand votre tableau de signe possède plus d’un sous tableau, alors vous seriez tanté de vouloir mettre un même signe pour plusieurs valeurs du domaine.\
 Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez simplement un couple vide `()`
@@ -283,7 +283,7 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
   )
 ]
 
-===== 2.2.1.4 - Hachurage pour une zone non définis pour les sous tableaux de signes
+==== 2.2.1.4 - Hachurage pour un intervalle non définis
 Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs intervalle malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
 Étant donnée que les signes portent sur les intervalles du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on poura distinguer 4 cas :
 - le premier cas et le plus courant, celui où les deux bornes de l’intervalle indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
@@ -543,11 +543,142 @@ Ici comme il n’y a qu’un élément, alors l’array est comme la notation co
         domain: ($ 2 $, $4$),
         contents: (
           (
-            (top, $3$),
+            (top, "||", $3$),
             (bottom, "||", $1$),
           ),
         ),
       )
     ],
   )
+]
+
+==== 2.2.2.3 - Ignorer une valeur
+Quand vous utilisez plusieurs fonctions dans un même tableau de signe, vous voudriez probablement ignorer certaine valeur du domaine,
+pour celà, comme pour les sous-tableaux de signe, il suffit de mettre un array vide « `()` »
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $3$),
+            (),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $3$),
+            (),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+==== 2.2.2.4 - Hachurage pour un intervalle non définis
+À la différence des sous-tableaux de signe, ici, les éléments portent sur chacune des valeurs du domaine, et non les intervalles.\
+Ainsi pour indiquer qu’un certain intervalle est non définit, on utiliseras quatres balises, dont deux « d’ouverture » et deux de « fermeture ».\
+\
+- Les balise « d’ouverture » sont : `"h"` et `"|h"`, la seconde balise précise que la fonction n’est pas défini pour cette valeur
+
+- Les balise de « fermeture » sont : `"H"` et `"H|"`, la seconde balise précise que la fonction n’est pas défini pour cette valeur\
+\
+Ainsi il vous suffiras de mettre cette balise entre l’alignement et la valeurs de la fonction,\ e.g. `(top, [balise], $3)`
+
+De plus si vous voulez étendre l’hachurage sur plus d’un intervalle, il vous suffie de mettre des array vide entre les deux éléments contenant une balise d’ouverture et de fermeture
+
+*Attention :*
+- les balise « `|h` » et « `H|` », ne sont respectivement pas compatible avec le premier élément et le dernier élément\
+- Et faites gaffe à ne pas mettre d’éléments non vide entre deux balises, ceci casse le tableau
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+
+  ```typ
+    #tabvar(
+      variable: $t$,
+      label: (
+        ([variation 1], "v"),
+        ([variation 2], "v"),
+        ([variation 3], "v"),
+      ),
+      domain: ($2$, $3$, $4$, $5$, $6$),
+      contents: (
+        (
+          (top, $3$),
+          (bottom, "h", $2$),
+          (top, "H", $4$),
+          (),
+          (bottom, $2$),
+        ),
+        (
+          (top, $3$),
+          (bottom, "|h", $2$),
+          (),
+          (top, "H|", $4$),
+          (bottom, $2$),
+        ),
+        (
+          (bottom, "|h", $2$),
+          (),
+          (top, "H|", $4$),
+          (),
+          (bottom, $2$),
+        ),
+      ),
+    )
+    –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  ```
+  #scale(x: 81%, y: 81%)[
+    #tabvar(
+      variable: $t$,
+      label: (
+        ([variation 1], "v"),
+        ([variation 2], "v"),
+        ([variation 3], "v"),
+      ),
+      domain: ($2$, $3$, $4$, $5$, $6$),
+      contents: (
+        (
+          (top, $3$),
+          (bottom, "h", $2$),
+          (top, "H", $4$),
+          (),
+          (bottom, $2$),
+        ),
+        (
+          (top, $3$),
+          (bottom, "|h", $2$),
+          (),
+          (top, "H|", $4$),
+          (bottom, $2$),
+        ),
+        (
+          (bottom, "|h", $2$),
+          (),
+          (top, "H|", $4$),
+          (),
+          (bottom, $2$),
+        ),
+      ),
+    )
+  ]
 ]
