@@ -454,6 +454,15 @@
   /// -> array
   values: ((),),
   ///// *Optional*\
+  ///// The fill color for values (should be the same as the background of the table)
+  ///// default : white
+  ///
+  /// *Optionelle*\
+  /// La couleur de remplissage pour les valeurs sur les flèches (devrait être identique
+  /// à l'arrière plan du tableau)
+  /// Par défaut : white
+  fill-color : white,
+  ///// *Optional*\
   ///// To add more stuff with Cetz
   ///
   /// Pour ajouter plus d’éléments via Cetz
@@ -1825,7 +1834,7 @@
             values.at(i).at(2),
             name: "fin" + str(i),
             frame: "rect",
-            fill: white,
+            fill: fill-color,
             stroke: none,
             padding: (y: .05),
           )
