@@ -461,7 +461,7 @@
   /// La couleur de remplissage pour les valeurs sur les flèches (devrait être identique
   /// à l'arrière plan du tableau)
   /// Par défaut : white
-  fill-color : white,
+  fill-color: white,
   ///// *Optional*\
   ///// To add more stuff with Cetz
   ///
@@ -1828,6 +1828,8 @@
             name: "depart" + str(i),
             padding: .35,
           )
+
+          let fill-color = if fill-color == none { color.oklab(5%, 0.5, 0.5, 0%) } else { fill-color }
 
           content(
             values.at(i).at(0),
