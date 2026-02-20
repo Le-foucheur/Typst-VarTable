@@ -461,7 +461,7 @@
   /// La couleur de remplissage pour les valeurs sur les flèches (devrait être identique
   /// à l'arrière plan du tableau)
   /// Par défaut : white
-  fill-color: white,
+  fill-color: none,
   ///// *Optional*\
   ///// To add more stuff with Cetz
   ///
@@ -1829,7 +1829,7 @@
             padding: .35,
           )
 
-          let fill-color = if fill-color == none { color.oklab(5%, 0.5, 0.5, 0%) } else { fill-color }
+          let fill-color = if fill-color == none { page.fill } else { fill-color }
 
           content(
             values.at(i).at(0),
@@ -1867,3 +1867,25 @@
     })
   }
 }
+
+#set page(fill: red)
+
+#tabvar(
+  variable: $t$,
+  domain: ($0$, $1$, $2$),
+  label: (
+    ([signe], "s"),
+    ([variation], "v"),
+  ),
+  contents: (
+    ($+$, $+$),
+    (
+      (top, $0$),
+      (bottom, $-1$),
+      (top, $0$),
+    ),
+  ),
+  values: (
+    ("arrow11", $beta$, $0$, "f"),
+  ),
+)

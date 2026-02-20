@@ -108,7 +108,11 @@ Into this
 
 ## ·change log·
 
-### 0.2.3
+#### 0.2.4
+- bug fix
+- 
+
+#### 0.2.3
 - fix [issue #17](https://github.com/Le-foucheur/Typst-VarTable/issues/17)
 
 #### 0.2.2 :
