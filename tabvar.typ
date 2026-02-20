@@ -483,6 +483,9 @@
 
 
       //Pour la conversion 1unit = 10,65mm
+      if first-line-height != none and first-line-height < 0mm {
+        panic("fist-line-height must be positive")
+      }
       let largeur_permiere_colonne = 0
       if first-column-width == none {
         largeur_permiere_colonne = calc.max(
@@ -493,7 +496,11 @@
           }),
         )
       } else {
-        largeur_permiere_colonne = first-column-width.mm() / 10.65
+        if first-column-width < 0mm {
+          panic("first-column-width parameter must be positive")
+        } else {
+          largeur_permiere_colonne = first-column-width.mm() / 10.65
+        }
       }
 
       let hauteur_permiere_ligne = 0
@@ -1867,25 +1874,3 @@
     })
   }
 }
-
-#set page(fill: red)
-
-#tabvar(
-  variable: $t$,
-  domain: ($0$, $1$, $2$),
-  label: (
-    ([signe], "s"),
-    ([variation], "v"),
-  ),
-  contents: (
-    ($+$, $+$),
-    (
-      (top, $0$),
-      (bottom, $-1$),
-      (top, $0$),
-    ),
-  ),
-  values: (
-    ("arrow11", $beta$, $0$, "f"),
-  ),
-)

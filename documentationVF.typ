@@ -1,5 +1,6 @@
 #import "@preview/tidy:0.4.2"
-#import "tabvar.typ": tabvar
+#import "tabvar.typ": *
+#import "@preview/cetz:0.4.2"
 
 #set page(numbering: "1/1")
 #set text(lang: "fr")
@@ -23,11 +24,15 @@ Ce paquet a été réalisé pour rendre la création de tableau de signe plus si
 \
 Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main")[#underline(stroke: blue)[GitHub]].
 
+*P.S :* Je sais que mon français n’est pas des plus exellent, donc si cette documentation vous brûle les yeux et que vous avez un peu de temps à perdre, alors vous serez la bien venus pour amélioré cette documentation
+
+*Remerciment :*
+Je tiens à remercier #link("https://github.com/supersurviveur")[supersurviveur] et #link("https://github.com/dododu74")[dododu74], pour leur aide au début du projet, (notament la correction des premières documentations)\
+Ainsi que #link("https://github.com/Akilon27")[Akilon27] qui sans lui, les tableaux ne seraits pas aussi customisable.
+
 #pagebreak()
 
-= 2 - Tabvar
-
-== 2.1 - description générale
+= 2 - description générale
 
 #let docs = tidy.parse-module(
   read("tabvar.typ"),
@@ -42,13 +47,13 @@ Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.c
 
 #pagebreak()
 
-== 2.2 - Le paramètre de contenu
+= 3 - Le paramètre de contenu
 
 Le paramètre contenu est un array avec un élément par ligne ( par label ).
 
 Chaque éléments sont eux même des arrays avec un élément pour chaque colonne, avec un format différents pour les signes et les variations qui seront détaillés ci-dessous.
 
-=== 2.2.1 - Le format pour les Signes
+== 3.1 - Le format pour les Signes
 
 Il doit être positioné au même index dans l’array `contents` qu’un label possèdant le string `"s"`, ce qui indique que la ligne doit être considéré comme un tableau de signe
 
@@ -63,7 +68,7 @@ Chaque éléments doit être d’une de ces formes :
 
 Vous pouvez mettre en plus à la fin le string `"||"`, pour rajouter un double barre à la toute fin
 
-==== 2.2.1.1 - Un array classique pour les signes
+=== 3.1.1 - Un array classique pour les signes
 
 Un tableau de signe classique :
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -128,8 +133,8 @@ Un exemple plus complexe :
 ]
 *Note :* Sur le second example, le tableau est comprimé à l’aide de la fonction scale
 
-==== 2.2.1.2 - Une barre de séparation customisé
-===== 2.2.1.2.1 - Le style de la barre
+=== 3.1.2 - Une barre de séparation customisé
+==== 3.1.2.1 - Le style de la barre
 Vous pouvez modifier le style de la barre
 
 Le style de la barre est un dictionary, du type `"style"` définis par Cetz.\
@@ -170,7 +175,7 @@ Pour des usages plus complexe référez vous au manuel de Cetz.
   )
 ]
 
-===== 2.2.1.2.2 - Le type de la barre
+==== 3.1.2.2 - Le type de la barre
 
 Pour tout les signes sauf le premier, au lieux de placé directement un signe, vous pouvez mettre un couple, dont le premier éléments définis le type de la barre placée avant le signe.\
 Il y a trois type différents de barre :
@@ -247,7 +252,7 @@ Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilis
   )
 ]
 
-==== 2.2.1.3 - Ignorer une valeur
+=== 3.1.3 - Ignorer une valeur
 
 Quand votre tableau de signe possède plus d’un sous tableau, alors vous seriez tanté de vouloir mettre un même signe pour plusieurs valeurs du domaine.\
 Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez simplement un couple vide `()`
@@ -283,7 +288,7 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
   )
 ]
 
-==== 2.2.1.4 - Hachurage pour un intervalle non définis
+=== 3.1.4 - Hachurage pour un intervalle non définis
 Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs intervalle malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
 Étant donnée que les signes portent sur les intervalles du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on poura distinguer 4 cas :
 - le premier cas et le plus courant, celui où les deux bornes de l’intervalle indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
@@ -342,7 +347,7 @@ Pour étendre le hachurage sur plus d’un des intervalles du domaine, il vous s
 
 #pagebreak()
 
-=== 2.2.2 - Le format pour les variations
+== 3.2 - Le format pour les variations
 
 Il doit être positioné au même index dans l’array `contents` que un label possèdant le string `"v"`, ce qui indique que la ligne doit être considéré comme un tableau de signe\
 \
@@ -357,7 +362,7 @@ Chacun des éléments qui le compose doit être sous l’une de ces formes :\
 - `"h"` ou `"|h"` - La balise de début d’une zone hachurées
 - `"H"` ou `"H|"` - La balise de fin d’une zone hachurées
 
-==== 2.2.2.1 - Un array classique pour les sous tableaux de variation
+=== 3.2.1 - Un array classique pour les sous tableaux de variation
 
 Un array pour les sous tableaux de variation, doit contenir au moins deux éléments, à savoir la position et l’élément lui-même.\
 La position peut être 3 élément, à savoir : `top`, `center` et `bottom`, mais ne peut être aucun autre type « alignement »
@@ -402,7 +407,7 @@ La position peut être 3 élément, à savoir : `top`, `center` et `bottom`, m
   )
 ]
 
-==== 2.2.2.2 - Les valeurs indéfinis
+=== 3.2.2 - Les valeurs indéfinis
 
 Si votre fonction n’est pas définis en certain points comme $f(x) = 1/x$ pour $x = 0$, vous voudrez sans doute mettre une double barre pour signifier que ces valeurs sont indéfini.
 
@@ -552,7 +557,7 @@ Ici comme il n’y a qu’un élément, alors l’array est comme la notation co
   )
 ]
 
-==== 2.2.2.3 - Ignorer une valeur
+=== 3.2.3 - Ignorer une valeur
 Quand vous utilisez plusieurs fonctions dans un même tableau de signe, vous voudriez probablement ignorer certaine valeur du domaine,
 pour celà, comme pour les sous-tableaux de signe, il suffit de mettre un array vide « `()` »
 
@@ -593,7 +598,7 @@ pour celà, comme pour les sous-tableaux de signe, il suffit de mettre un array 
   )
 ]
 
-==== 2.2.2.4 - Hachurage pour un intervalle non définis
+== 3.3 - Hachurage pour un intervalle non définis
 À la différence des sous-tableaux de signe, ici, les éléments portent sur chacune des valeurs du domaine, et non les intervalles.\
 Ainsi pour indiquer qu’un certain intervalle est non définit, on utiliseras quatres balises, dont deux « d’ouverture » et deux de « fermeture ».\
 \
@@ -681,4 +686,573 @@ De plus si vous voulez étendre l’hachurage sur plus d’un intervalle, il vou
       ),
     )
   ]
+]
+
+= 4 - Redimensionner le tableau
+
+== 4.1 - Première ligne et colonne
+
+Comme indiqué dans la section 2, il existe deux paramètre effectuant exactement ce qu’il est question ici, i.e. modifier la première ligne et la première colonne.\
+
+Ces deux paramètre prenne un type `lenght`, ils doivent être toute fois positif !
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        first-column-width: 1cm,
+        first-line-height: 5mm,
+        contents: (
+          (
+            (top, $3$),
+            (),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        first-column-width: 1cm,
+        first-line-height: 5mm,
+        contents: (
+          (
+            (top, $3$),
+            (),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+*N.B.: * Si c’est deux paramètre ne sont pas remplis, alors la hauteur et la largeur se calerons sur la taille du texte contenu,\
+cependant, si celui-ci est trop petit alors la première colonne feras 30mm le largeur et la première ligne feras 12mm de haut
+
+== 4.2 - Redimensionner l’espacement entre les élélemts
+
+Pour modifier l’écart entre les éléments du domaines, remplacez l’élément avant l’écart à modifier par un couple de la forme « `(content, lenght)` », où `content` est l’élément du domaine à cette endroit, et `lenght` la distance entre cette élément et le prochain.\
+Ainsi comme vous l’avez compris le dernier élément ne peut être remplacez par un telle couple.
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: (($2$, 5cm), ($4$, 1cm), $6$),
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: (($2$, 5cm), ($4$, 1cm), $6$),
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+Si vous voulez modifier tous les écarts de la même manière, il vous suffie d’utiliser le paramètre `element-distance`
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        element-distance: 1cm,
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (([variation], "v"),),
+        domain: ($2$, $4$, $6$),
+        element-distance: 1cm,
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+== 4.3 - Redimensionner la hauteur des sous-tableaux
+
+Pour modifier cette hauteur, rajoutez dans le label, dans l’array correspondant au sous-tableau, entre le content et la balise signe `"s"` ou variation `"v"`, la hauteur que vous souhaitez.\
+Sachez que par défaut cette hauteur est au minimum : 13,5 mm
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], 5cm, "v"),
+          ([signe], 10mm, "s"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+          ($+$, $-$),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], 5cm, "v"),
+          ([signe], 10mm, "s"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+          ($+$, $-$),
+        ),
+      )
+    ]),
+  )
+]
+
+= 5 - customisation du hachurage
+Pour celà il suffie de mettre un objet de type `tiling` au paramètre `hatching-style`
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        #let exemple = tiling(size: (30pt, 30pt))[
+        #place(line(start: (0%, 0%), end: (100%, 100%)))
+        #place(line(start: (0%, 100%), end: (100%, 0%)))
+      ]
+
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: exemple,
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #let exemple = tiling(size: (30pt, 30pt))[
+        #place(line(start: (0%, 0%), end: (100%, 100%)))
+        #place(line(start: (0%, 100%), end: (100%, 0%)))
+      ]
+
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: exemple,
+        contents: (
+          (
+            "h",
+            (top, "H", $3$),
+            (bottom, $2$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alkion (merci à lui), dont en voici la présentation :
+
+#sym.star `grille`
+
+*Définition :*
+```typ
+  #let grille = tiling(size: (8pt, 8pt))[
+    #place(line(start: (0%, 0%), end: (100%, 100%), stroke: .7pt))
+    #place(line(start: (0%, 100%), end: (100%, 0%), stroke: .7pt))
+  ]
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: grille,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: grille,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+#sym.star `nelines`
+
+*Définition :*
+```typ
+  #let nelines = tiling(size: (6pt, 6pt))[
+    #place(line(start: (100%, 0%), end: (0%, 100%)))
+    #place(line(start: (100%, -100%), end: (-100%, 100%)))
+    #place(line(start: (200%, 0%), end: (0%, 200%)))
+  ]
+
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: nelines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: nelines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+#sym.star `bignelines`
+
+*Définition :*
+```typ
+  #let bignelines = tiling(size: (30pt, 30pt))[
+    #place(line(start: (100%, 0%), end: (0%, 100%), stroke: 2pt))
+    #place(line(start: (100%, -100%), end: (-100%, 100%), stroke: 2pt))
+    #place(line(start: (200%, 0%), end: (0%, 200%), stroke: 2pt))
+  ]
+
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: bignelines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: bignelines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+#sym.star `nwlines`
+
+*Définition :*
+```typ
+  #let nwlines = tiling(size: (6pt, 6pt))[
+    #place(line(start: (0%, 0%), angle: 45deg))
+    #place(line(start: (-100%, 0%), angle: 45deg))
+    #place(line(start: (100%, 0%), end: (200%, 100%)))
+    #place(line(start: (100%, -100%), angle: -135deg))
+  ]
+
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: nwlines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: nwlines,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+#sym.star `hatch`
+
+*Définition :*
+```typ
+  #let hatch = tiling(size: (7pt, 7pt))[
+    #place(polygon.regular(vertices: 6, size: 6.5pt, stroke: .6pt))
+  ]
+
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: hatch,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: hatch,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
+]
+
+#sym.star `etoile`
+
+*Définition :*
+```typ
+  #let etoile = tiling(size: (7pt, 7pt))[
+    #place(rotate(180deg, origin: center + horizon)[#polygon.regular(vertices: 3, size: 6.5pt, stroke: .6pt)])
+    #place(polygon.regular(vertices: 3, size: 7pt, stroke: .5pt))
+  ]
+
+```
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: etoile,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        hatching-style: etoile,
+        contents: (
+          (
+            "h",
+            (),
+            (top, "H", $3$),
+          ),
+        ),
+      )
+    ]),
+  )
 ]

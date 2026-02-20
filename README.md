@@ -110,7 +110,8 @@ Into this
 
 #### 0.2.4
 - bug fix
-- 
+- add tfe fill-color parameter for added values
+- fix color background for added values
 
 #### 0.2.3
 - fix [issue #17](https://github.com/Le-foucheur/Typst-VarTable/issues/17)
