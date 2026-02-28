@@ -8,7 +8,7 @@
 #align(center, text(20pt)[*VarTable*\ ])
 
 #align(center)[
-  VarTable est un paquet pour rendre la réalisation \
+  VarTable est un paquet pour rendre la réalisation
   des tableaux de signe plus simple \
   Ce paquet est construit sur #link("https://github.com/cetz-package/cetz")[#underline(stroke: blue)[Cetz]]\
   (version : 0.2.1)
@@ -1252,6 +1252,447 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
             (top, "H", $3$),
           ),
         ),
+      )
+    ]),
+  )
+]
+
+= 6 - Ajouter des valeurs dans les sous-tableaux de variation
+
+Il est possible en effet d’ajouter des valeurs dans les sous-tableaux de variation, sans alonger le domaine.\
+Ce cas peut être utile à ceux qui voudrais explicité sur leur tableaux une valeurs précise prise par vorte fonction du au théorème des valeurs intermédiaires.\
+
+C’est ici que l’argument `values` sert, en effet vous allez mettre dans `values` autant de valeurs que vous voulez ajouter que vous voulez.\
+Les éléments que vous ajoutez doivent avoir cette forme : `("arrowxy", content1, content2)`, où :
+- `x` et `y` dans `"arrowxy` sont les coordonnée de la flèche sur la quel vous voulez ajouter une valeur, ces coordonées commence en haut à gauche par `x = 0, y = 0`
+
+#tabvar(
+  variable: $ y $,
+  domain: ($ 0 $, $ 1 $, $ 2 $, $ 3 $, $ 4 $),
+  label: (
+    ([`x = 0`], "v"),
+    ([`x = 1`], "v"),
+    ([`x = 2`], "v"),
+  ),
+  contents: (
+    (
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+    ),
+    (
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+    ),
+    (
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+      (bottom, $1$),
+      (top, $1$),
+    ),
+  ),
+  add: {
+    for j in range(3) {
+      for i in range(4) {
+        cetz.draw.content(
+          "arrow" + str(j) + str(i),
+          "arrow" + str(j) + str(i),
+          frame: "rect",
+          fill: white,
+          stroke: none,
+          padding: 0.05,
+        )
+      }
+    }
+  },
+)
+
+- `content1` le content qui seras placé au niveau du domain
+- `content2` le content qui seras placé sur la flèche
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        fill-color: luma(95%),
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        values: (
+          ("arrow00", $alpha$, $beta$),
+          ("arrow11", $a$, $b$),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        fill-color: luma(95%),
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        values: (
+          ("arrow00", $alpha$, $beta$),
+          ("arrow11", $a$, $b$),
+        ),
+      )
+    ]),
+  )
+]
+
+De plus, il est possible d’ajouter une flèche ou une ligne joignant la valeur dans le domaine et celle sur la flèche
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (9cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        fill-color: luma(95%),
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        values: (
+          ("arrow00", $alpha$, $beta$, "f"),
+          ("arrow11", $a$, $b$, "l"),
+        ),
+      )
+    ```,
+    move(dx: -16mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        fill-color: luma(95%),
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        values: (
+          ("arrow00", $alpha$, $beta$, "f"),
+          ("arrow11", $a$, $b$, "l"),
+        ),
+      )
+    ]),
+  )
+]
+
+= 7 - ajouter ce que vous voulez avec `add`
+Il est en effet possible d’ajouter autemps d’éléments que vous voulez (tant que cetz le peut) à vos tableaux, pour celà il suffie d’ajouter ces éléments dans le paramètre `add`
+
+*Attention :* Pour ajouter des éléments propre à Cetz, comme `content, rect, etc` vous devez y importé dans votre fichier Cetz
+
+*Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (16cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          cetz.draw.circle((3, -1), stroke: red, radius: 5mm)
+          cetz.draw.content((6, -5.5), text(fill: gradient.linear(..color.map.rainbow))[Hello World])
+          cetz.draw.rect((1, -2), (10, -3), stroke: blue)
+        },
+      )
+    ```,
+    move(dx: -10cm, dy: -15mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          cetz.draw.circle((3, -1), stroke: red, radius: 5mm)
+          cetz.draw.content((6, -5.5), text(fill: gradient.linear(..color.map.rainbow))[Hello World])
+          cetz.draw.rect((1, -2), (10, -3), stroke: blue)
+        },
+      )
+    ]),
+  )
+]
+
+Pour simplifier le procésus chaque éléments du tableau possède un « nom » qui permet, par le système de coordonnée de Cetz, d’attacher les éléments ajoutés au éléments déjà présent.\
+Voici un tableau qui résume les noms :
+#align(
+  center,
+  table(
+    columns: (4cm, 5cm, 8cm),
+    align: center + horizon,
+
+    [éléments], [nom], [précision],
+    [la variable], `var`, [],
+    [domaine], `domainx`, [`x` représente le x-ième élément du domain],
+    [label], `labely`, [`y` représente le y-ième label],
+    [ligne entre les sous-tableaux],
+    `line-betwen-table-nby`,
+    [`y` représente la y-ième ligne\ note : la ligne 0 sépare le domaine du reste],
+
+    [cadre], `cadre`, [toujours utilisable même avec `nocadre` mis à `true`],
+    [ligne entre les labels et les sous-tableaux], [`line-separating-labels-tables`], [],
+    [ligne passant au niveau du domaine, centré], `line-centred-domain`, [cette ligne n’est pas visible],
+    [flèches dans les sous-tableaux de variation],
+    `arrowxy`,
+    [sont exactement ceux rencontré dans la section 6\ si référer pour plus de précision],
+
+    [les éléments dans un sous-tableau de variation], `variationxy`, [`x` et `y` sont les coordonnées de l’élément],
+    [les éléments dans un sous-tableau de signe],
+    `signxy`,
+    [`x` et `y` sont les coordonnées de la barre.\ fonctionne de la même manière que pour `arrowxy`.],
+
+    [le hachurage], `hatchingxy`, [`x` et `y` sont les coordonnée du hachurage],
+    [l’élément dans le domaine, pour une valeur ajouter], `depart_valuesx`, [`x` est le x-ième élément ajouter],
+    [l’élément dans le sous-tableau de variation, pour une valeur ajouter],
+    `fin_valuesx`,
+    [`x` est le x-ième élément ajouter],
+  ),
+)
+
+*1#super[er] Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (16cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          import cetz.draw: *
+          circle("domain1", stroke: red, radius: 5mm)
+          content(
+            "line-betwen-table-nb1",
+            text(fill: gradient.linear(..color.map.rainbow))[Hello World],
+            frame: "rect",
+            fill: luma(95%),
+            stroke: none,
+          )
+          rect("variation02", "variation10", stroke: blue)
+        },
+      )
+    ```,
+    move(dx: -10cm, dy: -25mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          import cetz.draw: *
+          circle("domain1", stroke: red, radius: 5mm)
+          content(
+            "line-betwen-table-nb1",
+            text(fill: gradient.linear(..color.map.rainbow))[Hello World],
+            frame: "rect",
+            fill: luma(95%),
+            stroke: none,
+          )
+          rect("variation02", "variation10", stroke: blue)
+        },
+      )
+    ]),
+  )
+]
+
+*2#super[ième] Example :*
+#rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
+  #grid(
+    columns: (16cm, 7cm),
+    column-gutter: 0pt,
+    align: horizon,
+    ```typ
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          import cetz.draw: *
+          polygon("line-centred-domain.82%", 5, stroke: red, radius: 5mm)
+          line("var", "label1", stroke: blue)
+          image("")
+        },
+      )
+    ```,
+    move(dx: -10cm, dy: -0mm, scale(x: 81%, y: 81%)[
+      #tabvar(
+        variable: $t$,
+        label: (
+          ([variation], "v"),
+          ([variation 2], "v"),
+        ),
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            (top, $1$),
+            (bottom, $2$),
+            (top, $3$),
+          ),
+          (
+            (bottom, $1$),
+            (top, $2$),
+            (center, $3$),
+          ),
+        ),
+        add: {
+          cetz.draw.polygon("line-centred-domain.82%", 5, stroke: red, radius: 5mm)
+          cetz.draw.line("var", "label1", stroke: blue)
+          cetz.draw.content((6.7, -5.9), scale(
+            x: 25%,
+            y: 25%,
+          )[
+            #tabvar(
+              domain: ($0$, $1$),
+              label: (([et oui], "s"), ([c’est possible], "v")),
+              contents: (($+$,), ((bottom, $1$), (top, $2$))),
+            ),
+          ])
+        },
       )
     ]),
   )

@@ -1,5 +1,7 @@
 #import "@preview/cetz:0.4.2"
 
+#set page(width: auto, height: auto)
+
 #let _prochain-signe(tab_signe, j) = {
   // Cherche le prochain élément non vide "()" dans ce sous tableau
   let indice = j + 1
@@ -308,7 +310,7 @@
 ]
 
 #let etoile = tiling(size: (7pt, 7pt))[
-  #place(rotate(180deg, origin: center + horizon)[#polygon.regular(vertices: 3, size: 6.5pt, stroke: .6pt)])
+  #place(dy: 0.7mm, rotate(180deg, origin: center + horizon)[#polygon.regular(vertices: 3, size: 6.5pt, stroke: .6pt)])
   #place(polygon.regular(vertices: 3, size: 7pt, stroke: .5pt))
 ]
 
@@ -461,7 +463,7 @@
   /// La couleur de remplissage pour les valeurs sur les flèches (devrait être identique
   /// à l'arrière plan du tableau)
   /// Par défaut : white
-  fill-color: none,
+  fill-color: white,
   ///// *Optional*\
   ///// To add more stuff with Cetz
   ///
@@ -799,7 +801,7 @@
         // ligne de séparation entre le texte et les tableaux
         (largeur_permiere_colonne, 0),
         (largeur_permiere_colonne, -hauteur_total),
-        name: "line-betwen-label-table",
+        name: "line-separating-labels-tables",
       )
       hide(line(
         (0, -hauteur_permiere_ligne / 2),
@@ -1832,34 +1834,34 @@
           content(
             ("line-centred-domain", "-|", values.at(i).at(0)),
             values.at(i).at(1),
-            name: "depart" + str(i),
+            name: "depart_values" + str(i),
             padding: .35,
           )
 
-          let fill-color = if fill-color == none { page.fill } else { fill-color }
+          let fill-color = if fill-color == page.fill { white } else { fill-color }
 
           content(
             values.at(i).at(0),
             values.at(i).at(2),
-            name: "fin" + str(i),
-            frame: "rect",
+            name: "fin_values" + str(i),
+            frame: "circle",
             fill: fill-color,
             stroke: none,
-            padding: (y: .05),
+            padding: 0.05,
           )
 
           if values.at(i).len() == 4 {
             if values.at(i).at(3) == "f" {
               line(
-                "depart" + str(i) + ".south",
-                "fin" + str(i) + ".north",
+                "depart_values" + str(i) + ".south",
+                "fin_values" + str(i) + ".north",
                 stroke: (thickness: .6pt, paint: coulfleche),
                 mark: arrow-mark,
                 fill: coulfleche,
               )
             } else {
               if values.at(i).at(3) == "l" {
-                line("depart" + str(i) + ".south", "fin" + str(i) + ".north", stroke: (
+                line("depart_values" + str(i) + ".south", "fin_values" + str(i) + ".north", stroke: (
                   thickness: .6pt,
                   paint: coulfleche,
                 ))
@@ -1874,3 +1876,22 @@
     })
   }
 }
+
+#tabvar(
+  label: (
+    ([$f’(x)$], .8cm, "s"),
+    ([$f$], 25mm, "v"),
+  ),
+
+  domain: ($ -oo $, ($ 0 $, 10cm), $ +oo $, $ 3 $),
+  contents: (
+    ($+$, ("||", $+$), $ - $),
+    (
+      (center, $0$),
+      (bottom, top, "||", $ -oo $, $ +oo $),
+      (center, $ 0 $),
+      (top, $ -oo $),
+    ),
+  ),
+  values: (("arrow11", $ beta $, $ alpha $, "f"),),
+)
