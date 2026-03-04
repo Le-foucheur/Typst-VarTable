@@ -8,31 +8,29 @@
 #align(center, text(20pt)[*VarTable*\ ])
 
 #align(center)[
-  VarTable est un paquet pour rendre la réalisation
-  des tableaux de signe plus simple \
-  Ce paquet est construit sur #link("https://github.com/cetz-package/cetz")[#underline(stroke: blue)[Cetz]]\
-  (version : 0.2.1)
+  VarTable est un paquet pour rendre la réalisation \
+  de tableaux de signes et de variations plus simple \
+  Ce paquet est construit sur #link("https://github.com/cetz-package/cetz")[#underline(stroke: blue)[Cetz]]   (version : 0.2.1)
 ]
 
-#outline(indent: 2em, title: [Table des Matières])
+#outline(indent: 2em)
 
 #pagebreak()
 
 = 1 - Introduction
 \
-Ce paquet a été réalisé pour rendre la création de tableau de signe plus simple. Pour cela, ce paquet fournis la fonction "`tabvar`", dont les arguments sont décrit dans cette documentation.\
+Ce paquet a été réalisé pour rendre la création de tableau de signes et de variations plus simple. Pour cela, ce paquet fournit la fonction « `tabvar` », dont les paramètres sont décrit dans cette documentation.\
 \
 Si vous rencontrez un bug, merci de me prévenir via mon #link("https://github.com/Le-foucheur/Typst-VarTable/tree/main")[#underline(stroke: blue)[GitHub]].
 
-*P.S :* Je sais que mon français n’est pas des plus exellent, donc si cette documentation vous brûle les yeux et que vous avez un peu de temps à perdre, alors vous serez la bien venus pour amélioré cette documentation
+*P-S.* Je sais que mon français n’est pas des plus excellents, donc si cette documentation vous brûle les yeux et que vous avez un peu de temps à perdre, vous serez les bienvenus pour améliorer cette documentation.
 
-*Remerciment :*
-Je tiens à remercier #link("https://github.com/supersurviveur")[supersurviveur] et #link("https://github.com/dododu74")[dododu74], pour leur aide au début du projet, (notament la correction des premières documentations)\
-Ainsi que #link("https://github.com/Akilon27")[Akilon27] qui sans lui, les tableaux ne seraits pas aussi customisable.
+*Remerciements :*
+Je tiens à remercier #link("https://github.com/supersurviveur")[supersurviveur] et #link("https://github.com/dododu74")[dododu74], pour leur aide au début du projet (notament la correction des premières documentations), ainsi que #link("https://github.com/Akilon27")[Akilon27], sans qui les tableaux ne seraient pas aussi customisables.
 
 #pagebreak()
 
-= 2 - description générale
+= 2 - Description générale
 
 #let docs = tidy.parse-module(
   read("tabvar.typ"),
@@ -47,26 +45,26 @@ Ainsi que #link("https://github.com/Akilon27")[Akilon27] qui sans lui, les table
 
 #pagebreak()
 
-= 3 - Le paramètre de contenu
+= 3 - Paramètre de contenu
 
-Le paramètre contenu est un array avec un élément par ligne ( par label ).
+Le paramètre contenu est un array avec un élément par ligne (par label).
 
-Chaque éléments sont eux même des arrays avec un élément pour chaque colonne, avec un format différents pour les signes et les variations qui seront détaillés ci-dessous.
+Les éléments sont eux-mêmes chacun des arrays avec un élément pour chaque colonne, avec un format différent pour les signes et les variations, qui seront détaillés ci-dessous.
 
-== 3.1 - Le format pour les Signes
+== 3.1 - Format pour les signes
 
-Il doit être positioné au même index dans l’array `contents` qu’un label possèdant le string `"s"`, ce qui indique que la ligne doit être considéré comme un tableau de signe
+Il doit être positioné au même index dans l’array `contents` qu’un label possèdant le string `"s"`, ce qui indique que la ligne doit être considérée comme un tableau de signes.
 
-De plus, il doit contenir autant d’éléments que le domaine moins un ( un par intervalle ), plus un argument optionel si le dernier élément est non défini
+De plus, il doit contenir autant d’éléments moins 1 que le _domain_ (un par intervalle), plus un argument optionel si le dernier élément est non défini.
 
-Chaque éléments doit être d’une de ces formes :
+Chaque élément doit être d’une de ces formes :
 
-- `()` - Vide : pour étendre le dernier signe en partant de la gauche sur les intervals marqués vides\
-- `body` - Le cas basique, constitué du type body de typst, comme `$ + $` ou `$ - $`\
-- `(style de la barre, body)` - Pour spécifier un style particulier à la barre de *devant* le signe, ce style peut être : `"|"` la barre simple, `"||"` une double barre ou `"0"` pour une barre avec un zéro en sont centre \
+- `()` - Vide : pour étendre le dernier signe en partant de la gauche sur les intervalles marqués vides
+- `body` - Le cas basique, constitué du type body de Typst, comme `$ + $` ou `$ - $`
+- `(style de la barre, body)` - Pour appliquer un style particulier à la barre de *devant* le signe. Ce style peut être : `"|"` barre simple, `"||"` double barre, ou `"0"` pour une barre avec un 0 en son centre.
 *NB :* le paramètre `line-0` change la barre par défaut pour la barre avec un zéro `"0"`.
 
-Vous pouvez mettre en plus à la fin le string `"||"`, pour rajouter un double barre à la toute fin
+Vous pouvez mettre en plus à la fin la chaine de caractères `"||"`, pour ajouter une double barre à la toute fin.
 
 === 3.1.1 - Un array classique pour les signes
 
@@ -96,6 +94,7 @@ Un tableau de signe classique :
     ],
   )
 ]
+
 Un exemple plus complexe :
 #rect(fill: luma(95%), radius: 10pt, width: 17.4cm)[
   #grid(
@@ -131,17 +130,18 @@ Un exemple plus complexe :
     ]),
   )
 ]
-*Note :* Sur le second example, le tableau est comprimé à l’aide de la fonction scale
+*Note.* Sur le second example, le tableau est comprimé à l’aide de la fonction scale
 
-=== 3.1.2 - Une barre de séparation customisé
-==== 3.1.2.1 - Le style de la barre
-Vous pouvez modifier le style de la barre
+=== 3.1.2 - Barre de séparation customisée
+==== 3.1.2.1 - Style de barre
 
-Le style de la barre est un dictionary, du type `"style"` définis par Cetz.\
-Pour faire simple, si vous voulez changer uniquement le stroke des barres, vous avez juste a mettre `(stroke: votre stroke)`.\
-Pour des usages plus complexe référez vous au manuel de Cetz.
+Vous pouvez modifier le style de la barre.
 
-*Example :*
+Le style de la barre est un dictionary, de type `"style"` défini par Cetz.\
+Pour faire simple, si vous voulez changer uniquement le stroke des barres, vous n’avez qu’à mettre `(stroke: votre stroke)`.\
+Pour des usages plus complexes, référez-vous au manuel de Cetz.
+
+*Exemple.*
 
 #rect(fill: luma(95%), radius: 10pt, width: 15cm)[
   #grid(
@@ -175,15 +175,15 @@ Pour des usages plus complexe référez vous au manuel de Cetz.
   )
 ]
 
-==== 3.1.2.2 - Le type de la barre
+==== 3.1.2.2 - Type de barre
 
-Pour tout les signes sauf le premier, au lieux de placé directement un signe, vous pouvez mettre un couple, dont le premier éléments définis le type de la barre placée avant le signe.\
-Il y a trois type différents de barre :
+Pour tous les signes sauf le premier, au lieu de placer directement un signe, vous pouvez mettre un couple, dont le premier élément définit le type de la barre placée avant le signe.\
+Il y a trois types différents de barres :
 - `"|"` : une barre simple
-- `0` : une barre avec un zéro en sont centre
-- `||` une double barre, pour les valeurs non-définis
+- `0` : une barre avec un 0 en son centre
+- `||` : une double barre pour les valeurs interdites
 
-*Exemple *
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 18cm)[
   #grid(
     column-gutter: -12mm,
@@ -216,7 +216,7 @@ Il y a trois type différents de barre :
 ]
 
 #pagebreak()
-Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilisez le couple avec en premier éléments `"||"`, à la place du premier signe ; pour mettre une double barre à la fin, ajoutez à la fin de l’array le string `"||"`.
+Si vous voulez avoir une double barre avant le premier signe, vous pouvez utiliser le couple avec en premier élément `"||"`, à la place du premier signe ; pour mettre une double barre à la fin, ajoutez à la fin de l’array la chaine de caractères `"||"`.
 
 *Example :*
 
@@ -254,8 +254,8 @@ Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilis
 
 === 3.1.3 - Ignorer une valeur
 
-Quand votre tableau de signe possède plus d’un sous tableau, alors vous seriez tanté de vouloir mettre un même signe pour plusieurs valeurs du domaine.\
-Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez simplement un couple vide `()`
+Quand votre tableau de signes possède plus d’un sous-tableau, alors vous seriez tenté de vouloir mettre un même signe pour plusieurs valeurs du domaine.\
+Pour cela, c’est assez simple : au lieu de mettre un signe directement, mettez simplement un couple vide `()`
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -288,14 +288,14 @@ Pour celà c’est assez simple, au lieux de mettre un signe directement, mettez
   )
 ]
 
-=== 3.1.4 - Hachurage pour un intervalle non définis
-Il se peut que vos fonctions ne soient pas définis sur un ou plusieurs intervalle malheuresement présent dans le domaine du tableau de signe, pour celà la convention veut que l’on hache la zone en question.\
-Étant donnée que les signes portent sur les intervalles du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on poura distinguer 4 cas :
-- le premier cas et le plus courant, celui où les deux bornes de l’intervalle indéfini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autres éléments), vous renseignerez l’élément suivant : `"|h|"`
-- le second cas, relativement présent également, est celui où les deux bornes sont définits, ainsi vous omettrez les deux barres « | » de l’élément présenté ci-dessus, i.e. vous renseignerez `"h"`
-- les deux autres cas, sont celui où seul l’une des deux bornes est définis, ainsi, comme vous l’auriez sans doute compris, retirer ( resp. rajouter ) la barre pour le côter où l’élément est défini ( resp. indéfinis ), soit : pour une valeurs définis à gauches `"h|"`; pour une valeur définis à droite `"|h"`
+=== 3.1.4 - Hachurage pour un intervalle non défini
+Il se peut que vos fonctions ne soient pas définies sur un ou plusieurs intervalles malheuresement présent(s) dans le domaine du tableau de signes. Pour cela, la convention veut que l’on hachure la zone en question.\
+Étant donné que les signes portent sur les intervalles du domaine, il en résulte une syntaxe ralativement simple d’usage, dont on poura distinguer quatre cas :
+- le premier cas et le plus courant, celui où les deux bornes de l’intervalle non défini le sont également, ainsi à la place où vous auriez mis votre signe (ou tout autre élément), vous renseignerez l’élément suivant : `"|h|"`
+- le deuxième cas, relativement présent également, est celui où les deux bornes sont définies, ainsi vous omettrez les deux barres « | » de l’élément présenté ci-dessus, ie. vous renseignerez `"h"`
+- les deux autres cas, sont celui où une seule des deux bornes est définie. Ainsi, comme vous l’aurez sans doute compris, retirej (resp. ajoutez) la barre pour le côté où l’élément est défini (resp. non défini). Soit : pour une valeur définie à gauche `"h|"`; pour une valeur définie à droite `"|h"`
 \
-*Remarque :* Vous avez sans doute compris que la bare « | » symbolise les doubles barres indéfini, de même que le « h » représente le « h » de hachurage, ainis il est naturel de mettre ou non les barres au besoins\
+*Remarque.* Vous avez sans doute compris que la bare « | » symbolise les doubles barres de valeurs interdites, de même que le « h » représente le « h » de hachurage, ainsi il est naturel de mettre ou non les barres au besoin.\
 
 Pour étendre le hachurage sur plus d’un des intervalles du domaine, il vous suffit de sauter l’élément suivant avec toujours la même notation, à savoir `()`\
 
@@ -347,25 +347,25 @@ Pour étendre le hachurage sur plus d’un des intervalles du domaine, il vous s
 
 #pagebreak()
 
-== 3.2 - Le format pour les variations
+== 3.2 - Format pour les variations
 
-Il doit être positioné au même index dans l’array `contents` que un label possèdant le string `"v"`, ce qui indique que la ligne doit être considéré comme un tableau de signe\
-\
-De plus il doit avoir autant d’éléments que le domaine, sinon le programme renverras une erreur.\
-\
-Chacun des éléments qui le compose doit être sous l’une de ces formes :\
-\
+Il doit être positioné au même index dans l’array `contents` qu’un label possédant le string `"v"`, ce qui indique que la ligne doit être considérée comme un tableau de variations.
+
+De plus, il doit avoir autant d’éléments que le domaine, sinon le programme renvoie une erreur.
+
+Chacun des éléments qui le compose doit être sous l’une de ces formes :
+
 - `()` - Vide : pour étendre la flèche précédente au prochain élément
 - `(position, body)` - Le cas classique, constitué de la position de l’élément (top, center, bottom), et du body
 - `(pos1, pos2, "||", body1, body2)` - Le cas où l’élément est non défini
-- `(pos, "||", body)` - Une écriture condensé de la forme précédente
-- `"h"` ou `"|h"` - La balise de début d’une zone hachurées
-- `"H"` ou `"H|"` - La balise de fin d’une zone hachurées
+- `(pos, "||", body)` - Une écriture condensée de la forme précédente
+- `"h"` ou `"|h"` - La balise de début d’une zone hachurée
+- `"H"` ou `"H|"` - La balise de fin d’une zone hachurée
 
-=== 3.2.1 - Un array classique pour les sous tableaux de variation
+=== 3.2.1 - Array classique pour les sous-tableaux de variations
 
-Un array pour les sous tableaux de variation, doit contenir au moins deux éléments, à savoir la position et l’élément lui-même.\
-La position peut être 3 élément, à savoir : `top`, `center` et `bottom`, mais ne peut être aucun autre type « alignement »
+Un array pour les sous-tableaux de variations doit contenir au moins deux éléments, à savoir la position et l’élément lui-même.\
+La position peut être l’un des trois éléments `top`, `center` ou `bottom`, mais ne peut être d’aucun autre type d’alignement.
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     column-gutter: -10mm,
@@ -407,18 +407,18 @@ La position peut être 3 élément, à savoir : `top`, `center` et `bottom`, m
   )
 ]
 
-=== 3.2.2 - Les valeurs indéfinis
+=== 3.2.2 - Valeurs interdites
 
-Si votre fonction n’est pas définis en certain points comme $f(x) = 1/x$ pour $x = 0$, vous voudrez sans doute mettre une double barre pour signifier que ces valeurs sont indéfini.
+Si votre fonction n’est pas définie en certains points, comme $f(x) = 1/x$ pour $x = 0$, vous voudrez sans doute mettre une double barre pour signifier que ces valeurs ne sont pas définies.
 
-#sym.star Pour chaque valeurs du domaine excepté le début et la fin :
+#sym.star Pour chaque valeur du domaine excepté le début et la fin :
 
-l’array doit avoir cette forme `(pos1, pos2, "||", élément1, élément2)` où :
+l’array doit avoir cette forme `(pos1, pos2, "||", élément1, élément2)`, où :
 - `pos1` et `pos2` sont au choix `top`, `center` ou `bottom`
-- `"||"` est là pour spécifier que la valeur est non définis
-- `élément1` et `2` est de type `contents` où `élément1` est l’élément avant la barre et `élément2` après
+- `"||"` est là pour spécifier que la valeur est non définie
+- `élément1` et `élément2` sont de type `contents` où `élément1` est avant la barre, et `élément2` après.
 
-*Example :*
+*Exemple.*
 
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -461,9 +461,9 @@ l’array doit avoir cette forme `(pos1, pos2, "||", élément1, élément2)` o�
   )
 ]
 
-Dans le cas où `pos1` et `pos2` sont identique, alors vous pouvez n’en mettre qu’un seul des deux, de même pour `élément1` et `2`
+Dans le cas où `pos1` et `pos2` sont identiques, vous pouvez n’en mettre qu’un seul des deux, de même pour `élément1` et `élément2`
 
-*Example :*
+*Exemple.*
 
 À la place de `(top, top, "||", $0$, $0$)`, vous pouvez mettre `(top, "||", $0$)`
 
@@ -514,9 +514,9 @@ Dans le cas où `pos1` et `pos2` sont identique, alors vous pouvez n’en mettre
 
 #sym.star Pour le début et la fin
 
-Ici comme il n’y a qu’un élément, alors l’array est comme la notation compressé vue précédement, i.e. : `(pos, "||", élément)`
+Ici comme il n’y a qu’un élément, l’array est comme la notation compressée vue précédement, ie. : `(pos, "||", élément)`
 
-*Example :*
+*Exemple.*
 
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
@@ -558,10 +558,10 @@ Ici comme il n’y a qu’un élément, alors l’array est comme la notation co
 ]
 
 === 3.2.3 - Ignorer une valeur
-Quand vous utilisez plusieurs fonctions dans un même tableau de signe, vous voudriez probablement ignorer certaine valeur du domaine,
-pour celà, comme pour les sous-tableaux de signe, il suffit de mettre un array vide « `()` »
 
-*Example :*
+Quand vous utilisez plusieurs fonctions dans un même tableau de variations, vous voudrez probablement ignorer certaines valeurs du domaine. Pour cela, comme pour les sous-tableaux de signes, il suffit de mettre un array vide « `()` »
+
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -598,23 +598,24 @@ pour celà, comme pour les sous-tableaux de signe, il suffit de mettre un array 
   )
 ]
 
-== 3.3 - Hachurage pour un intervalle non définis
-À la différence des sous-tableaux de signe, ici, les éléments portent sur chacune des valeurs du domaine, et non les intervalles.\
-Ainsi pour indiquer qu’un certain intervalle est non définit, on utiliseras quatres balises, dont deux « d’ouverture » et deux de « fermeture ».\
-\
-- Les balise « d’ouverture » sont : `"h"` et `"|h"`, la seconde balise précise que la fonction n’est pas défini pour cette valeur
+== 3.3 - Hachurage pour un intervalle non défini
 
-- Les balise de « fermeture » sont : `"H"` et `"H|"`, la seconde balise précise que la fonction n’est pas défini pour cette valeur\
-\
-Ainsi il vous suffiras de mettre cette balise entre l’alignement et la valeurs de la fonction,\ e.g. `(top, [balise], $3)`
+À la différence des sous-tableaux de signes, ici, les éléments portent sur chacune des valeurs du domaine, et non sur les intervalles.\
+Ainsi, pour indiquer que la fonction n’est pas définie sur un certain intervalle, on utilisera quatre balises, dont deux « d’ouverture » et deux de « fermeture ».
 
-De plus si vous voulez étendre l’hachurage sur plus d’un intervalle, il vous suffie de mettre des array vide entre les deux éléments contenant une balise d’ouverture et de fermeture
+- Les balises « d’ouverture » sont : `"h"` et `"|h"`, la seconde balise précise que la fonction n’est pas définie pour cette valeur.
 
-*Attention :*
-- les balise « `|h` » et « `H|` », ne sont respectivement pas compatible avec le premier élément et le dernier élément\
-- Et faites gaffe à ne pas mettre d’éléments non vide entre deux balises, ceci casse le tableau
+- Les balises de « fermeture » sont : `"H"` et `"H|"`, la seconde balise précise que la fonction n’est pas définie pour cette valeur.
 
-*Example :*
+Ainsi, il vous suffira de mettre cette balise entre l’alignement et la valeur de la fonction,\ par exemple `(top, [balise], $3$)`
+
+De plus, si vous voulez étendre les hachures sur plus d’un intervalle, il vous suffit de mettre des array vidse entre les deux éléments contenant une balise d’ouverture et de fermeture.
+
+*Attention.*
+- les balises « `|h` » et « `H|` », ne sont respectivement pas compatibles avec le premier élément et le dernier élément.
+- faites attention à ne pas mettre d’élément non vide entre deux balises, ceci casse le tableau.
+
+*Exemple :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
 
   ```typ
@@ -690,13 +691,13 @@ De plus si vous voulez étendre l’hachurage sur plus d’un intervalle, il vou
 
 = 4 - Redimensionner le tableau
 
-== 4.1 - Première ligne et colonne
+== 4.1 - Première ligne et première colonne
 
-Comme indiqué dans la section 2, il existe deux paramètre effectuant exactement ce qu’il est question ici, i.e. modifier la première ligne et la première colonne.\
+Comme indiqué en section 2, il existe deux paramètres effectuant exactement ce dont il est question ici, ie. modifier la première ligne et la première colonne.
 
-Ces deux paramètre prenne un type `lenght`, ils doivent être toute fois positif !
+Ces deux paramètres prennen un type `length`, ils doivent être toutefois positifs !
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -737,15 +738,15 @@ Ces deux paramètre prenne un type `lenght`, ils doivent être toute fois positi
   )
 ]
 
-*N.B.: * Si c’est deux paramètre ne sont pas remplis, alors la hauteur et la largeur se calerons sur la taille du texte contenu,\
-cependant, si celui-ci est trop petit alors la première colonne feras 30mm le largeur et la première ligne feras 12mm de haut
+*NB.* Si ces deux paramètres ne sont pas remplis, alors la hauteur et la largeur se caleront sur la taille du texte contenu.\
+Cependant, si celui-ci est trop petit, alors la première colonne fera 30mm de largeur et la première ligne fera 12mm de haut.
 
-== 4.2 - Redimensionner l’espacement entre les élélemts
+== 4.2 - Redimensionner l’espacement entre les éléments
 
-Pour modifier l’écart entre les éléments du domaines, remplacez l’élément avant l’écart à modifier par un couple de la forme « `(content, lenght)` », où `content` est l’élément du domaine à cette endroit, et `lenght` la distance entre cette élément et le prochain.\
-Ainsi comme vous l’avez compris le dernier élément ne peut être remplacez par un telle couple.
+Pour modifier l’écart entre les éléments du domaine, remplacez l’élément avant l’écart à modifier par un couple de la forme « `(content, length)` », où `content` est l’élément du domaine à cet endroit, et `length` la distance entre cet élément et le prochain.\
+Ainsi comme vous l’avez compris, le dernier élément ne peut être remplacé par un tel couple.
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -782,7 +783,7 @@ Ainsi comme vous l’avez compris le dernier élément ne peut être remplacez p
   )
 ]
 
-Si vous voulez modifier tous les écarts de la même manière, il vous suffie d’utiliser le paramètre `element-distance`
+Si vous voulez modifier tous les écarts de la même manière, il vous suffit d’utiliser le paramètre `element-distance`
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -825,8 +826,9 @@ Si vous voulez modifier tous les écarts de la même manière, il vous suffie d�
 
 == 4.3 - Redimensionner la hauteur des sous-tableaux
 
-Pour modifier cette hauteur, rajoutez dans le label, dans l’array correspondant au sous-tableau, entre le content et la balise signe `"s"` ou variation `"v"`, la hauteur que vous souhaitez.\
-Sachez que par défaut cette hauteur est au minimum : 13,5 mm
+Pour modifier cette hauteur, rajoutez dans le label, dans l’array correspondant au sous-tableau, entre le content et la balise « signes » `"s"` ou « variations » `"v"`, la hauteur que vous souhaitez.
+
+Par défaut, cette hauteur est au minimum de 13,5 mm
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -873,10 +875,10 @@ Sachez que par défaut cette hauteur est au minimum : 13,5 mm
   )
 ]
 
-= 5 - customisation du hachurage
-Pour celà il suffie de mettre un objet de type `tiling` au paramètre `hatching-style`
+= 5 - Customisation du hachurage
+Pour cela, il suffit de mettre un objet de type `tiling` au paramètre `hatching-style`
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -929,7 +931,7 @@ Pour celà il suffie de mettre un objet de type `tiling` au paramètre `hatching
     ]),
   )
 ]
-De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alkion (merci à lui), dont en voici la présentation :
+De plus, le paquet vient avec sont lot de hachures prédéfinies par Alkion (merci à lui), dont en voici la présentation :
 
 #sym.star `grille`
 
@@ -941,7 +943,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
   ]
 ```
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -996,7 +998,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
 
 ```
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1051,7 +1053,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
 
 ```
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1107,7 +1109,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
 
 ```
 
-*Example :*
+*Exemple :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1160,7 +1162,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
 
 ```
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1214,7 +1216,7 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
 
 ```
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1257,14 +1259,14 @@ De plus le paquet viens avec sont lot de hachurages prè-définis, fait par Alki
   )
 ]
 
-= 6 - Ajouter des valeurs dans les sous-tableaux de variation
+= 6 - Ajouter des valeurs dans les sous-tableaux de variations
 
-Il est possible en effet d’ajouter des valeurs dans les sous-tableaux de variation, sans alonger le domaine.\
-Ce cas peut être utile à ceux qui voudrais explicité sur leur tableaux une valeurs précise prise par vorte fonction du au théorème des valeurs intermédiaires.\
+Il est en effet possible d’ajouter des valeurs dans les sous-tableaux de variations, sans allonger le domaine.\
+Ce cas peut être utile à ceux qui voudraient expliciter sur leur tableaux une valeur précise prise par votre fonction, dû au théorème des valeurs intermédiaires.
 
-C’est ici que l’argument `values` sert, en effet vous allez mettre dans `values` autant de valeurs que vous voulez ajouter que vous voulez.\
+C’est ici que l’argument `values` sert. En effet vous allez mettre dans `values` autant de valeurs que vous voulez ajouter.\
 Les éléments que vous ajoutez doivent avoir cette forme : `("arrowxy", content1, content2)`, où :
-- `x` et `y` dans `"arrowxy` sont les coordonnée de la flèche sur la quel vous voulez ajouter une valeur, ces coordonées commence en haut à gauche par `x = 0, y = 0`
+- `x` et `y` dans `"arrowxy` sont les coordonnées de la flèche sur laquelle vous voulez ajouter une valeur, ces coordonées commencent en haut à gauche par `x = 0, y = 0`
 
 #tabvar(
   variable: $ y $,
@@ -1313,8 +1315,8 @@ Les éléments que vous ajoutez doivent avoir cette forme : `("arrowxy", conte
   },
 )
 
-- `content1` le content qui seras placé au niveau du domain
-- `content2` le content qui seras placé sur la flèche
+- `content1` le content qui sera placé au niveau du domain
+- `content2` le content qui sera placé sur la flèche
 
 *Example :*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
@@ -1379,9 +1381,9 @@ Les éléments que vous ajoutez doivent avoir cette forme : `("arrowxy", conte
   )
 ]
 
-De plus, il est possible d’ajouter une flèche ou une ligne joignant la valeur dans le domaine et celle sur la flèche
+De plus, il est possible d’ajouter une flèche ou une ligne reliant la valeur dans le domaine et celle sur la flèche.
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (9cm, 7cm),
@@ -1444,12 +1446,12 @@ De plus, il est possible d’ajouter une flèche ou une ligne joignant la valeur
   )
 ]
 
-= 7 - ajouter ce que vous voulez avec `add`
-Il est en effet possible d’ajouter autemps d’éléments que vous voulez (tant que cetz le peut) à vos tableaux, pour celà il suffie d’ajouter ces éléments dans le paramètre `add`
+= 7 - Ajouter ce que vous voulez avec `add`
+Il est en effet possible d’ajouter autant d’éléments que vous voulez (tant que Cetz le peut) à vos tableaux, pour cela il suffit d’ajouter ces éléments dans le paramètre `add`.
 
-*Attention :* Pour ajouter des éléments propre à Cetz, comme `content, rect, etc` vous devez y importé dans votre fichier Cetz
+*Attention.* Pour ajouter des éléments propres à Cetz, comme `content`, `rect`, etc. vous devez les importer dans votre fichier Cetz.
 
-*Example :*
+*Exemple.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (16cm, 7cm),
@@ -1512,7 +1514,7 @@ Il est en effet possible d’ajouter autemps d’éléments que vous voulez (tan
   )
 ]
 
-Pour simplifier le procésus chaque éléments du tableau possède un « nom » qui permet, par le système de coordonnée de Cetz, d’attacher les éléments ajoutés au éléments déjà présent.\
+Pour simplifier le processus, chaque élément du tableau possède un « nom » qui permet, par le système de coordonnées de Cetz, d’attacher les éléments ajoutés aux éléments déjà présents.\
 Voici un tableau qui résume les noms :
 #align(
   center,
@@ -1520,35 +1522,35 @@ Voici un tableau qui résume les noms :
     columns: (4cm, 5cm, 8cm),
     align: center + horizon,
 
-    [éléments], [nom], [précision],
-    [la variable], `var`, [],
-    [domaine], `domainx`, [`x` représente le x-ième élément du domain],
-    [label], `labely`, [`y` représente le y-ième label],
-    [ligne entre les sous-tableaux],
+    [Éléments], [nom], [précision],
+    [Variable], `var`, [],
+    [Domaine], `domainx`, [`x` représente le x-ième élément du domaine],
+    [Label], `labely`, [`y` représente le y-ième label],
+    [Ligne entre les sous-tableaux],
     `line-betwen-table-nby`,
-    [`y` représente la y-ième ligne\ note : la ligne 0 sépare le domaine du reste],
+    [`y` représente la y-ième ligne\ Note : la ligne 0 sépare le domaine du reste],
 
-    [cadre], `cadre`, [toujours utilisable même avec `nocadre` mis à `true`],
-    [ligne entre les labels et les sous-tableaux], [`line-separating-labels-tables`], [],
-    [ligne passant au niveau du domaine, centré], `line-centred-domain`, [cette ligne n’est pas visible],
-    [flèches dans les sous-tableaux de variation],
+    [Cadre], `cadre`, [toujours utilisable, même avec `nocadre` à `true`],
+    [Ligne entre les labels et les sous-tableaux], [`line-separating-labels-tables`], [],
+    [Ligne passant au niveau du domaine, centré], `line-centred-domain`, [cette ligne n’est pas visible],
+    [Flèches dans les sous-tableaux de variation],
     `arrowxy`,
-    [sont exactement ceux rencontré dans la section 6\ si référer pour plus de précision],
+    [exactement ceux rencontrées dans la section 6\ S’y référer pour plus de précision],
 
-    [les éléments dans un sous-tableau de variation], `variationxy`, [`x` et `y` sont les coordonnées de l’élément],
-    [les éléments dans un sous-tableau de signe],
+    [Éléments dans un sous-tableau de variations], `variationxy`, [`x` et `y` sont les coordonnées de l’élément],
+    [Éléments dans un sous-tableau de signes],
     `signxy`,
-    [`x` et `y` sont les coordonnées de la barre.\ fonctionne de la même manière que pour `arrowxy`.],
+    [`x` et `y` sont les coordonnées de la barre.\ Fonctionne de la même manière que `arrowxy`.],
 
-    [le hachurage], `hatchingxy`, [`x` et `y` sont les coordonnée du hachurage],
-    [l’élément dans le domaine, pour une valeur ajouter], `depart_valuesx`, [`x` est le x-ième élément ajouter],
-    [l’élément dans le sous-tableau de variation, pour une valeur ajouter],
+    [Hachurage], `hatchingxy`, [`x` et `y` sont les coordonnées du hachurage],
+    [Élément dans le domaine, pour une valeur ajoutée], `depart_valuesx`, [`x` est le x-ième élément ajouté],
+    [Élément dans le sous-tableau de variations, pour une valeur ajoutée],
     `fin_valuesx`,
-    [`x` est le x-ième élément ajouter],
+    [`x` est le x-ième élément ajouté],
   ),
 )
 
-*1#super[er] Example :*
+*Exemple 1.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (16cm, 7cm),
@@ -1625,7 +1627,7 @@ Voici un tableau qui résume les noms :
   )
 ]
 
-*2#super[ième] Example :*
+*Exemple 2.*
 #rect(fill: luma(95%), radius: 10pt, width: 16.5cm)[
   #grid(
     columns: (16cm, 7cm),
