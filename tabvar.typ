@@ -319,7 +319,7 @@
 #let tabvar(
   ///// variable is a content block which contains the table’s variable name (like $x$ or $t$)
   /////
-  /// `variable` est la variable qui contient la variable du tableau ( comme $x$ ou $t$ )\
+  /// `variable` est la variable qui contient la variable du tableau (comme $x$ ou $t$)\
   /// *Exemple :* si la variable de la fonction est $t$, alors :\
   /// ```typst
   /// variable : $ t $
@@ -338,12 +338,12 @@
   ///// )
   ///// ```
   /////
-  /// `label` est un array qui contient des array de longueur 2, une pour chaque ligne du tableau, dont le premier élément est le titre de la ligne et le second est le type de la ligne : signe ( s ) ou variation ( v ) \
-  /// *Exemple :* pour le tableau de variation de la fonction $f$, vous devriez écrire :\
+  /// `label` est un array qui contient des array de longueur 2, une pour chaque ligne du tableau, dont le premier élément est le titre de la ligne et le second est le type de la ligne : signes ( "s" ) ou variations ( "v" ) \
+  /// *Exemple :* pour le tableau de variations de la fonction $f$, vous devriez écrire :\
   /// ```typst
   /// label : (
   ///   ([Signe de $f$], "s"), // la première ligne est un tableau de signe
-  ///   ([Variation de $f$], "v") // la seconde ligne est un tableau de variation
+  ///   ([Variations de $f$], "v") // la seconde ligne est un tableau de variations
   /// )
   /// ```
   /// -> array
@@ -355,8 +355,8 @@
   ///// domain: ($0$, $1$, $2$, $3$)
   ///// ```
   /////
-  /// Les valeurs prises par la variable \
-  /// par exemple, si votre fonction change de signe ou atteint un extremum pour $x in {0,1,2,3}$ \
+  /// Les valeurs prises par la variable. \
+  /// Par exemple, si votre fonction change de signe ou atteint un extrémum pour $x in {0;1;2;3}$, \
   /// vous devriez écrire :
   /// ```typst
   /// domain: ($0$, $1$, $2$, $3$)
@@ -366,7 +366,7 @@
   domain: (),
   ///// the content of the table \
   ///// see below for more details
-  /// Le contenu de la table\
+  /// Le contenu du tableau\
   /// Voir 2.2<2.2> pour plus de détails
   /// -> array
   contents: ((),),
@@ -377,9 +377,9 @@
   ///// *Caution :* if you haven't entered the mark symbol as none, all lines in the table will have an arrowhead.
   ///
   /// *Optionelle*\
-  /// Le style de la table\
-  /// le type style est définis par Cetz, ainsi je vous recommande de vous référer au #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[manuel de Cetz]].\
-  /// *Attention :* Si vous ne mettez pas le paramètre de style : `mark` a `none`, alors toute les lignes du tableau aurons une tête en flèche
+  /// Le style du tableau\
+  /// Le type style est défini par Cetz, aussi je vous recommande de vous référer au #link("https://cetz-package.github.io/docs")[#underline(stroke: blue)[manuel de Cetz]].\
+  /// *Attention :* Si vous ne mettez pas le paramètre de style : `mark` à `none`, alors toutes les lignes du tableau auront une tête en flèche
   ///  -> style
   table-style: (stroke: 1pt + black, mark: (symbol: none)),
   ///// to hide the external cardre
@@ -388,8 +388,8 @@
   nocadre: false,
   ///// the style of the arrowhead, the type of which is defined by Cetz
   ///
-  /// Le style de la tête de flèche.\
-  /// *N.B.* le type `mark` est définis par Cetz
+  /// Le style de la tête de la flèche.\
+  /// *NB.* le type `mark` est défini par Cetz
   /// -> mark
   arrow-mark: (end: "straight"),
   ///// *Optional*\
@@ -405,7 +405,7 @@
   ///// if you want to change the default bar sign to a bar with a 0
   ///
   /// *Optionelle*\
-  /// Si vous voulez changer la bar par défaut dans les tableaux de signe, pour une bar avec un zéro en sont centre
+  /// Si vous voulez remplacer la barre par défaut dans les tableaux de signes, par une barre avec un 0 en son centre
   /// -> bool
   line-0: false,
   ///// *Optional*\
@@ -414,14 +414,14 @@
   ///// Warning: this will only change the default lines, the `||`, `|` or `0` lines will not be changed.
   ///
   /// *Optionelle*\
-  /// Si vous voulez le style de toutes les bars de séparation entre les signes
+  /// Si vous voulez le style de toutes les barres de séparation entre les signes
   /// -> style
   line-style: (stroke: black + 1pt),
   ///// *Optional*\
   ///// The style of the hatching in the sign and variation table
   ///
   /// *Optionelle*\
-  /// le style des hachures s’il y a des zones hachurées
+  /// Le style des hachures, s’il y a des zones hachurées
   /// -> tiling
   hatching-style: tiling(size: (30pt, 30pt))[
 
@@ -433,26 +433,26 @@
   ///// change the width of the first column
   ///
   /// *Optionelle*\
-  /// change la largeur de la première colonne
+  /// Change la largeur de la première colonne
   /// -> length
   first-column-width: none,
   ///// *Optional*\
   ///// change the height of the first line
   ///
-  /// change la hauteur de la première ligne ( celle du domaine et de la variable )
+  /// Change la hauteur de la première ligne (celle du domaine et de la variable)
   /// -> length
   first-line-height: none,
   ///// *Optional*\
   ///// change the distance betwen two elements
   ///
   /// *Optionelle*\
-  /// change la distance entre deux éléments
+  /// Change la distance entre deux éléments
   /// -> length
   element-distance: none,
   ///// *Optional*\
   ///// To add values betwen to pre-defined values
   ///
-  /// pour ajouter des valeurs entre deux valeurs prédéfinis
+  /// Pour ajouter des valeurs entre deux valeurs prédéfinies
   /// -> array
   values: ((),),
   ///// *Optional*\
@@ -461,13 +461,13 @@
   ///
   /// *Optionelle*\
   /// La couleur de remplissage pour les valeurs sur les flèches (devrait être identique
-  /// à l'arrière plan du tableau)
+  /// à l'arrière-plan du tableau)
   /// Par défaut : white
   fill-color: white,
   ///// *Optional*\
   ///// To add more stuff with Cetz
   ///
-  /// Pour ajouter plus d’éléments via Cetz
+  /// Pour ajouter davantage d’éléments, via Cetz
   /// -> content
   add: (),
 ) = {
