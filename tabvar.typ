@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.4.2"
+#import "@preview/cetz:0.5.2"
 
 #set page(width: auto, height: auto)
 
@@ -828,6 +828,7 @@
           }
 
           for j in range(0, contents.at(i).len() - 1) {
+
             let prochain = _prochain-signe(contents.at(i), j)
 
             if type(contents.at(i).at(j)) == array and contents.at(i).at(j).len() >= 2 {
@@ -864,7 +865,6 @@
               } else if j != 0 {
                 set-style(..line-style)
                 if contents.at(i).at(j).at(0) == "||" {
-                  set-style(..table-style)
                   line(
                     (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                     (coordX.at(j).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
@@ -882,7 +882,7 @@
                   content("zero3.mid", if line-0 { $ 0 $ } else { [] })
                 }
               } else if contents.at(i).at(j).first() == "||" {
-                set-style(..table-style)
+                set-style(..line-style)
                 line(
                   (
                     largeur_permiere_colonne
@@ -914,10 +914,12 @@
                     (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                   )
                 }
-                line(
-                  (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
+                if prochain - 1 != contents.at(i).len() - 1 + if ("||", "0", "|").contains(contents.at(i).at(-1)) {- 1} else {0} {
+                  line(
+                    (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
                 set-style(..table-style)
                 rect(
                   stroke: none,
@@ -926,7 +928,7 @@
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
                   (
-                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) + if contents.at(i).at(-1) == "||" {0.15} else {0}  },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
                   fill: hatching-style,
@@ -939,10 +941,12 @@
                     (coordX.at(j).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                   )
                 }
-                line(
-                  (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
-                  (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
-                )
+                if prochain - 1 != contents.at(i).len() - 1 + if ("||", "0", "|").contains(contents.at(i).at(-1)) {- 1} else {0} {
+                  line(
+                    (coordX.at(prochain).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                    (coordX.at(prochain).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  )
+                }
                 set-style(..table-style)
                 rect(
                   stroke: none,
@@ -951,7 +955,7 @@
                     coordY.at(i).at(0) - coordY.at(i).at(1) / 2,
                   ),
                   (
-                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) },
+                    if prochain == contents.at(i).len() { decalage_domaine } else { coordX.at(prochain).at(0) + if contents.at(i).at(-1) == "||" {0.15} else {0}  },
                     coordY.at(i).at(0) + coordY.at(i).at(1) / 2,
                   ),
                   fill: hatching-style,
@@ -969,6 +973,9 @@
                   )
                 }
               } else if contents.at(i).at(j) == "h|" {
+                if prochain + 1 == contents.at(i).len() and ("0", "|").contains(contents.at(i).at(-1)) {
+                  panic("The end of the hatch area for line no. i cannot be defined or specified as undefined. Please remove the '|' character from the hatch tag or the '|' and '0' characters at the end of the symbol table.")
+                }
                 set-style(..line-style)
                 if j != 0 {
                   line(
@@ -1012,6 +1019,9 @@
                   fill: hatching-style,
                 )
               } else if contents.at(i).at(j) == "|h|" {
+                if prochain + 1 == contents.at(i).len() and ("0", "|").contains(contents.at(i).at(-1)) {
+                  panic("The end of the hatch area for line no. i cannot be defined or specified as undefined. Please remove the '|' character from the hatch tag or the '|' and '0' characters at the end of the symbol table.")
+                }
                 set-style(..line-style)
                 if j != 0 {
                   line(
@@ -1107,6 +1117,7 @@
 
           if contents.at(i).at(-1) == "||" {
             // Si bar indéfinie à la fin
+            set-style(..line-style)
             line(
               (decalage_domaine - 0.15, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
               (decalage_domaine - 0.15, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
@@ -1244,7 +1255,7 @@
                 }
               } else {
                 if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() >= 2 {
-                  // le signe si le signe n'est pas vide mais à une bar spécial
+                  // le signe si le signe n'est pas vide et à une bar spécial
                   content(
                     (
                       (coordX.at(-2).at(0) + coordX.at(-1).at(0)) / 2,
@@ -1257,7 +1268,7 @@
                   set-style(..line-style)
                   if contents.at(i).len() != 1 {
                     if contents.at(i).at(-1).at(0) == "||" {
-                      set-style(..table-style)
+                      set-style(..line-style)
                       line(
                         (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                         (coordX.at(-2).at(0) - 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
@@ -1266,7 +1277,9 @@
                         (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                         (coordX.at(-2).at(0) + 0.07, coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                       )
+                      set-style(..table-style)
                     } else if contents.at(i).at(-1).at(0) == "0" {
+                      set-style(..line-style)
                       line(
                         (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                         (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
@@ -1276,22 +1289,27 @@
                         "zero.mid",
                         $ 0 $,
                       )
+                      set-style(..table-style)
                     } else if contents.at(i).at(-1).first() == "|" {
+                      set-style(..line-style)
                       line(
                         (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                         (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                       )
+                      set-style(..table-style)
                     } else {
+                      set-style(..line-style)
                       line(
                         (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
                         (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                         name: "zero3",
                       )
+                      set-style(..table-style)
                       content("zero3.mid", if line-0 { $ 0 $ } else { [] })
                     }
                   } else {
                     if contents.at(i).at(-1).contains("||") {
-                      set-style(..table-style)
+                      set-style(..line-style)
                       line(
                         (
                           largeur_permiere_colonne
@@ -1341,8 +1359,8 @@
                       (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
                       name: "zero3",
                     )
+                    set-style(..table-style) 
                     content("zero3.mid", if line-0 { $ 0 $ } else { [] })
-                    set-style(..table-style)
                   }
                 }
               }
