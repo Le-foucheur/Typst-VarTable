@@ -57,6 +57,19 @@
   ),
 )
 
+#tabvar(
+  undefined-bar-alt: true,
+  label: (
+    ([Test], "s"),
+    ([Test], "s"),
+  ),
+  domain: ($0$, [test], $1/1$),
+  contents: (
+    (("||", $+$), ("||", $-$), "||"),
+    (("||", $-$), ("||", $+$), "||"),
+  ),
+)
+
 == Style de la barre
 
 #tabvar(
