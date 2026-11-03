@@ -108,6 +108,13 @@ Into this
 
 ## ·change log·
 
+#### 0.2.5
+
+- add a parameter to make the style of undefined values at the beginnig and the end, look like tkz-var 
+- support `Cetz 0.5.3`
+- support `"0"` bar at the beginnig and end of a sub-table `"s"`
+- bug fix
+
 #### 0.2.4
 - bug fix
 - add fill-color parameter for added values
