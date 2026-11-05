@@ -861,6 +861,19 @@
                   "zero.mid",
                   $ 0 $,
                 )
+              } else if type(contents.at(i).at(j).at(0)) == type([]) {
+                // Marque libre : un contenu posé au milieu de la barre, comme le 0
+                // (`type([])` : ici, `content` est la fonction de Cetz, pas le type)
+                set-style(..line-style)
+                line(
+                  (coordX.at(j).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                  (coordX.at(j).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                  name: "zero",
+                )
+                content(
+                  "zero.mid",
+                  contents.at(i).at(j).at(0),
+                )
               } else if contents.at(i).at(j).first() == "|" {
                 set-style(..line-style)
                 line(
@@ -1307,6 +1320,20 @@
                       content(
                         "zero.mid",
                         $ 0 $,
+                      )
+                      set-style(..table-style)
+                    } else if type(contents.at(i).at(-1).at(0)) == type([]) {
+                      // Marque libre : un contenu posé au milieu de la barre, comme le 0
+                // (`type([])` : ici, `content` est la fonction de Cetz, pas le type)
+                      set-style(..line-style)
+                      line(
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+                        (coordX.at(-2).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+                        name: "zero",
+                      )
+                      content(
+                        "zero.mid",
+                        contents.at(i).at(-1).at(0),
                       )
                       set-style(..table-style)
                     } else if contents.at(i).at(-1).first() == "|" {
