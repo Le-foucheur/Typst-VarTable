@@ -62,7 +62,7 @@ Each element must be in one of the following forms :
 
 - `()` - Empty : to extend the last sign from the left to the right on every interval marked empty\
 - `body` - The basic case, composed of the body type from typst, like `$ + $` or `$ - $`\
-- `(style of the bar, body)` - to specify a particular type for the bar *before* he sin, this style an be : `"|"` simple bar, `"||"` double bar or `"0"` for a bar with  zero in the middle. \
+- `(style of the bar, body)` - to specify a particular type for the bar *before* he sin, this style an be : `"|"` simple bar, `"||"` double bar or `"0"` for a bar with  zero in the middle. It can also be any content (`[…]`, `$…$`, `box(…)`): it is placed in the middle of the bar, like the zero — for instance an empty box to fill in, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`. \
 *NB :* The `line-0` parameter changes the defaut bar for the bar with the zero `"0"`.
 
 You can also ad at the `"||"` string at the end, to add a double bar at the end of the table.

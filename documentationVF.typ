@@ -61,7 +61,7 @@ Chaque élément doit être d’une de ces formes :
 
 - `()` - Vide : pour étendre le dernier signe en partant de la gauche sur les intervalles marqués vides
 - `body` - Le cas basique, constitué du type body de Typst, comme `$ + $` ou `$ - $`
-- `(style de la barre, body)` - Pour appliquer un style particulier à la barre de *devant* le signe. Ce style peut être : `"|"` barre simple, `"||"` double barre, ou `"0"` pour une barre avec un 0 en son centre.
+- `(style de la barre, body)` - Pour appliquer un style particulier à la barre de *devant* le signe. Ce style peut être : `"|"` barre simple, `"||"` double barre, ou `"0"` pour une barre avec un 0 en son centre. Ce peut aussi être un contenu quelconque (`[…]`, `$…$`, `box(…)`) : il est posé au centre de la barre, comme le 0 — par exemple une case vide à compléter, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`.
 *NB :* le paramètre `line-0` change la barre par défaut pour la barre avec un zéro `"0"`.
 
 Vous pouvez mettre en plus à la fin la chaine de caractères `"||"`, pour ajouter une double barre à la toute fin.
