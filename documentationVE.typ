@@ -62,7 +62,7 @@ Each element must be in one of the following forms :
 
 - `()` - Empty : to extend the last sign from the left to the right on every interval marked empty\
 - `body` - The basic case, composed of the body type from typst, like `$ + $` or `$ - $`\
-- `(style of the bar, body)` - to specify a particular type for the bar *before* he sin, this style an be : `"|"` simple bar, `"||"` double bar or `"0"` for a bar with  zero in the middle. It can also be any content (`[…]`, `$…$`, `box(…)`): it is placed in the middle of the bar, like the zero — for instance an empty box to fill in, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`. \
+- `(style of the bar, body)` - to specify a particular type for the bar *before* he sin, this style an be : `"|"` simple bar, `"||"` double bar or `"0"` for a bar with  zero in the middle. It can also be any content (`[…]`, `$…$`, `box(…)`): it is placed in the middle of the bar, like the zero — for instance an empty box to fill in, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`, please note that the table will not adapt to this insertion. \
 *NB :* The `line-0` parameter changes the defaut bar for the bar with the zero `"0"`.
 
 You can also ad at the `"||"` string at the end, to add a double bar at the end of the table.
@@ -215,7 +215,7 @@ There are 3 different types of bars :
 ]
 
 #pagebreak()
-If you want a double bar before the first sign,you can use a couple with a `"||"` first element instead of the first sign ; for a double bar in the end, add a `"||"` string at the end of the array.
+If you want a double bar before the first sign,you can use a couple with a `"||"` first element instead of the first sign ; for a double bar in the end, add a `"||"` string at the end of the array, all other types of bars are also supported, notably the insertion of any content in the middle of the bar..
 
 *Example :*
 
@@ -246,6 +246,44 @@ If you want a double bar before the first sign,you can use a couple with a `"||"
         label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$),
         contents: ((("||", $+$), $-$, "||"),),
+      )
+    ],
+  )
+]
+
+#rect(fill: luma(95%), radius: 10pt, width: 16cm)[
+  #grid(
+    column-gutter: -12mm,
+    columns: (8cm, 7cm),
+    align: horizon,
+    ```typ
+      #tabvar(
+
+        variable: $t$,
+        label: (([signe], "s"),),
+
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            ("||", $+$),
+            $-$,
+            box(
+              fill: white, 
+              stroke: (dash: "dotted"), 
+              inset: 1mm
+              )[
+                non
+              ]
+          ),
+        ),
+      )
+    ```,
+    scale(x: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([sign], "s"),),
+        domain: ($ 2 $, $4$, $6$),
+        contents: ((("||", $+$), $-$, box(fill: white, stroke: (dash: "dotted"), inset: 1mm)[no]),),
       )
     ],
   )

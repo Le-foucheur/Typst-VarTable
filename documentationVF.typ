@@ -61,7 +61,7 @@ Chaque élément doit être d’une de ces formes :
 
 - `()` - Vide : pour étendre le dernier signe en partant de la gauche sur les intervalles marqués vides
 - `body` - Le cas basique, constitué du type body de Typst, comme `$ + $` ou `$ - $`
-- `(style de la barre, body)` - Pour appliquer un style particulier à la barre de *devant* le signe. Ce style peut être : `"|"` barre simple, `"||"` double barre, ou `"0"` pour une barre avec un 0 en son centre. Ce peut aussi être un contenu quelconque (`[…]`, `$…$`, `box(…)`) : il est posé au centre de la barre, comme le 0 — par exemple une case vide à compléter, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`.
+- `(style de la barre, body)` - Pour appliquer un style particulier à la barre de *devant* le signe. Ce style peut être : `"|"` barre simple, `"||"` double barre, ou `"0"` pour une barre avec un 0 en son centre. Ce peut aussi être un contenu quelconque (`[…]`, `$…$`, `box(…)`) : il est posé au centre de la barre, comme le 0 — par exemple une case vide à compléter, `(box(width: 0.8em, height: 0.8em, fill: white, stroke: (dash: "dotted")), $-$)`, attention le tableau ne s’adapteras pas à cette injection.\
 *NB :* le paramètre `line-0` change la barre par défaut pour la barre avec un zéro `"0"`.
 
 Vous pouvez mettre en plus à la fin la chaine de caractères `"||"`, pour ajouter une double barre à la toute fin.
@@ -216,7 +216,7 @@ Il y a trois types différents de barres :
 ]
 
 #pagebreak()
-Si vous voulez avoir une double barre avant le premier signe, vous pouvez utiliser le couple avec en premier élément `"||"`, à la place du premier signe ; pour mettre une double barre à la fin, ajoutez à la fin de l’array la chaine de caractères `"||"`.
+Si vous voulez avoir une double barre avant le premier signe, vous pouvez utiliser le couple avec en premier élément `"||"`, à la place du premier signe ; pour mettre une double barre à la fin, ajoutez à la fin de l’array la chaine de caractères `"||"`, toute les autres types de bar sont également supporté, notament l’injection d’un contenus quelconque au milieu de la bar.
 
 *Example :*
 
@@ -247,6 +247,44 @@ Si vous voulez avoir une double barre avant le premier signe, vous pouvez utilis
         label: (([sign], "s"),),
         domain: ($ 2 $, $4$, $6$),
         contents: ((("||", $+$), $-$, "||"),),
+      )
+    ],
+  )
+]
+
+#rect(fill: luma(95%), radius: 10pt, width: 16cm)[
+  #grid(
+    column-gutter: -12mm,
+    columns: (8cm, 7cm),
+    align: horizon,
+    ```typ
+      #tabvar(
+
+        variable: $t$,
+        label: (([signe], "s"),),
+
+        domain: ($2$, $4$, $6$),
+        contents: (
+          (
+            ("||", $+$),
+            $-$,
+            box(
+              fill: white, 
+              stroke: (dash: "dotted"), 
+              inset: 1mm
+              )[
+                non
+              ]
+          ),
+        ),
+      )
+    ```,
+    scale(x: 80%)[
+      #tabvar(
+        variable: $t$,
+        label: (([sign], "s"),),
+        domain: ($ 2 $, $4$, $6$),
+        contents: ((("||", $+$), $-$, box(fill: white, stroke: (dash: "dotted"), inset: 1mm)[non]),),
       )
     ],
   )
