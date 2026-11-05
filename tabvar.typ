@@ -822,14 +822,9 @@
 
         if label.at(i).last() == "s" {
           // panic si il y a plus ou moins d’éléments qu’il faudrais
-          if ("0", "|", "||").contains(contents.at(i).at(-1)) {
-            if contents.at(i).len() != domain.len() {
-              panic("TabVar: Wrong number of elements in the table number " + str(i + 1))
-            }
-          } else {
-            if contents.at(i).len() != domain.len() - 1 {
-              panic("TabVar: Wrong number of elements in the table number " + str(i + 1))
-            }
+          // panic si il y a plus ou moins d’éléments qu’il faudrais
+          if contents.at(i).len() > domain.len()  {
+            panic("TabVar: Wrong number of elements in the table number " + str(i + 1))
           }
 
           for j in range(0, contents.at(i).len() - 1) {
@@ -1172,6 +1167,17 @@
             line(
               (coordX.at(-1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
               (coordX.at(-1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+            )
+          } else if contents.at(i).len() == domain.len() {
+            set-style(..line-style)
+            line(
+              (coordX.at(-1).at(0), coordY.at(i).at(0) - coordY.at(i).at(1) / 2),
+              (coordX.at(-1).at(0), coordY.at(i).at(0) + coordY.at(i).at(1) / 2),
+              name: "zero",
+            )
+            content(
+              "zero.mid",
+              contents.at(i).at(-1),
             )
           } else {
             if type(contents.at(i).at(-1)) == array and contents.at(i).at(-1).len() == 0 {

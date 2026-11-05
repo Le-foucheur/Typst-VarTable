@@ -43,3 +43,19 @@
   domain: ($ 0 $, $ 1 $, $ +oo $),
   contents: (((cache, $+$), ("0", $-$)),),
 )
+
+== Contenu en dernière position
+
+#tabvar(
+  variable: $x$,
+  label: (([signe], "s"),),
+  domain: ($ 0 $, $ 1 $, $ +oo $),
+  contents: (
+    (
+      (cache, $+$), 
+      ("0", $-$),
+      [test],
+    ),
+  ),
+)
+
